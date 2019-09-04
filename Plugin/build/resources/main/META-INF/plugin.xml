@@ -1,0 +1,21 @@
+<idea-plugin>
+  <version>1.0</version>
+  <change-notes>
+      Add change notes here.&lt;br&gt;
+      &lt;em&gt;most HTML tags may be used&lt;/em&gt;</change-notes>
+  <idea-version since-build="192.6262" until-build="192.*"/>
+  <id>oop_feedback_tool</id>
+  <name>OOP-Feedback-Tool</name>
+  <vendor email="" url="">Andrea Fischer Masterarbeit </vendor>
+  <description>
+    Kurze Beschreibung des Plugins.&lt;br&gt;
+    &lt;em&gt;Kurze Beschreibung&lt;/em&gt;
+    </description>
+  <extensions defaultExtensionNs="com.intellij"/>
+  <actions>
+    <group id="MyPlugin.SampleMenu" text="Cooles neues Plugin" description="Greeting menu">
+      <add-to-group group-id="MainMenu" anchor="last"/>
+      <action id="Myplugin.Textboxes" class="HelloAction" text="Hello" description="Says hello"/>
+    </group>
+  </actions>
+</idea-plugin>

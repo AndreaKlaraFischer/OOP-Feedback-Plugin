@@ -1,0 +1,30 @@
+<idea-plugin>
+    <id>oop_feedback_tool</id>
+    <name>OOP-Feedback-Tool</name>
+    <vendor email="" url="">Andrea Fischer Masterarbeit </vendor>
+
+    <description><![CDATA[
+    Kurze Beschreibung des Plugins.<br>
+    <em>Kurze Beschreibung</em>
+    ]]></description>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+        <group id="MyPlugin.SampleMenu" text="Cooles neues Plugin" description="Greeting menu">
+            <add-to-group group-id="MainMenu" anchor="last"/>
+            <action id="Myplugin.Textboxes" class="HelloAction" text="Hello" description="Says hello"/>
+        </group>
+    </actions>
+
+
+</idea-plugin>
