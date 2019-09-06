@@ -16,6 +16,8 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
+        <!--Toolwindow-->
+        <toolWindow id="Plugin Tool Window" icon="" anchor="right" factoryClass="gui.ToolWindowPluginFactory"/>
     </extensions>
 
     <actions>

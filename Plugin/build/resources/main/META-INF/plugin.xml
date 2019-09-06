@@ -11,7 +11,9 @@
     Kurze Beschreibung des Plugins.&lt;br&gt;
     &lt;em&gt;Kurze Beschreibung&lt;/em&gt;
     </description>
-  <extensions defaultExtensionNs="com.intellij"/>
+  <extensions defaultExtensionNs="com.intellij">
+    <toolWindow id="Plugin Tool Window" icon="" anchor="right" factoryClass="gui.ToolWindowPluginFactory"/>
+  </extensions>
   <actions>
     <group id="MyPlugin.SampleMenu" text="Cooles neues Plugin" description="Greeting menu">
       <add-to-group group-id="MainMenu" anchor="last"/>
