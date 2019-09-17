@@ -1,5 +1,7 @@
 package actions;
 // Hier die Github Kommunikation rein: Polling,...
+
+
 public class GitHubListener {
  /*public void checkForNewAnswers() {
      while (true) {

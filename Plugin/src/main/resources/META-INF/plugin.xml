@@ -24,7 +24,7 @@
         <!-- Add your actions here -->
         <group id="MyPlugin.SampleMenu" text="Cooles neues Plugin" description="Greeting menu">
             <add-to-group group-id="MainMenu" anchor="last"/>
-            <action id="Myplugin.Textboxes" class="HelloAction" text="Hello" description="Says hello"/>
+            <action id="Myplugin.Textboxes" class="actions.HelloAction" text="Hello" description="Says hello"/>
         </group>
     </actions>
 
