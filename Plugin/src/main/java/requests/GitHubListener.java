@@ -1,5 +1,5 @@
-package actions;
-// Hier die Github Kommunikation rein: Polling,...
+package requests;
+// Hier die "rückwärtige" Github Kommunikation rein: Polling,...
 
 
 public class GitHubListener {

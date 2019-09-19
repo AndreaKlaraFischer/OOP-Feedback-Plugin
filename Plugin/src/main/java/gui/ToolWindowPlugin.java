@@ -1,18 +1,25 @@
 package gui;
 
 import com.intellij.openapi.wm.ToolWindow;
-import com.intellij.openapi.ui.ComboBox;
-
+//import requests.GitHubListener
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import javax.swing.*;
+
+//import gui.AnswerScreen;
+//import gui.SendRequestScreen;
+//import gui.MailBoxScreen;
+//import gui.TutorialScreen;ß
 
 public class ToolWindowPlugin implements ActionListener{
     private JButton submitRequestButton;
+    //verschiedene Ansichten im ToolWindow
     private JPanel toolWindowContent;
-    //private JPanel contentAnswerScreen; //test
-   // private JPanel contentFAQScreen;
+    private JPanel contentAnswerScreen; //test
+    private JPanel contentTutorialScreen;
+    private JPanel contentMailBoxScreen;
+    private JPanel contentSendRequestScreen;
+    //Test UI Elemente
     private JLabel title;
     private JTextArea texti;
 
@@ -21,7 +28,8 @@ public class ToolWindowPlugin implements ActionListener{
     * Und dann noch für das Anzeigen der Antworten
     * Idee: Klicken auf das Plugin Icon geht der Posteingang auf und die Anfragen etc werden im ToolWindow angezeigt?*/
     public ToolWindowPlugin(ToolWindow toolwindow) {
-       submitRequestButton.addActionListener(this::actionPerformed);
+        submitRequestButton.setToolTipText("Das ist ein ToolTip-Test");
+        submitRequestButton.addActionListener(this::actionPerformed);
     }
 
     //TODO: verschiedene Contents anzeigen lassen!
@@ -31,14 +39,22 @@ public class ToolWindowPlugin implements ActionListener{
     //
     public JPanel getContent() {
        return toolWindowContent;
+
     }
 
+    //Bleibt der hier oder wird auch der ActionListener ausgelagert in die
+    // Sendrequest Klasse?
     @Override
     public void actionPerformed(ActionEvent e) {
         // ActionEvent anschauen!
+        //TODO: Request abschicken.
+        //StudentRequestModel.addRequest();
+
         System.out.println("Buttonklick funktioniert!");
         System.out.println(e.getActionCommand());
         System.out.println(texti.getText());
         System.out.println("yay!");
     }
+
+
 }
