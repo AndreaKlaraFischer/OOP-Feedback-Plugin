@@ -22,6 +22,7 @@ public class ToolWindowPlugin implements ActionListener{
     //Test UI Elemente
     private JLabel title;
     private JTextArea texti;
+    private int count = 0;
 
 
     /*Each ToolWindow can contain multiple contents --> Das brauche ich für das Anzeigen im ersten Schritt für das zweistufige Interface,
@@ -38,7 +39,11 @@ public class ToolWindowPlugin implements ActionListener{
     // TODO: Herausfinden --> wie bekomme ich es dann in die ToolWindow Klasse?
     //
     public JPanel getContent() {
-       return toolWindowContent;
+        if(count == 0) {
+            count++;
+            return toolWindowContent;
+        }
+       return contentAnswerScreen;
 
     }
 
