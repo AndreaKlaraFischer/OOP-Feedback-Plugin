@@ -11,6 +11,13 @@
     Kurze Beschreibung des Plugins.&lt;br&gt;
     &lt;em&gt;Kurze Beschreibung&lt;/em&gt;
     </description>
+  <project-components>
+    <component>
+      <implementation-class>
+                controller.Controller
+            </implementation-class>
+    </component>
+  </project-components>
   <extensions defaultExtensionNs="com.intellij">
     <toolWindow id="Plugin Tool Window" icon="/icons/preview.svg" anchor="right" factoryClass="gui.ToolWindowPluginFactory"/>
   </extensions>
