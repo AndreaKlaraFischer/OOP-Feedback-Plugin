@@ -12,12 +12,12 @@
     &lt;em&gt;Kurze Beschreibung&lt;/em&gt;
     </description>
   <extensions defaultExtensionNs="com.intellij">
-    <toolWindow id="Plugin Tool Window" icon="" anchor="right" factoryClass="gui.ToolWindowPluginFactory"/>
+    <toolWindow id="Plugin Tool Window" icon="/icons/preview.svg" anchor="right" factoryClass="gui.ToolWindowPluginFactory"/>
   </extensions>
   <actions>
     <group id="MyPlugin.SampleMenu" text="Cooles neues Plugin" description="Greeting menu">
       <add-to-group group-id="MainMenu" anchor="last"/>
-      <action id="Myplugin.Textboxes" class="HelloAction" text="Hello" description="Says hello"/>
+      <action id="Myplugin.Textboxes" class="actions.HelloAction" text="Hello" description="Says hello"/>
     </group>
   </actions>
 </idea-plugin>

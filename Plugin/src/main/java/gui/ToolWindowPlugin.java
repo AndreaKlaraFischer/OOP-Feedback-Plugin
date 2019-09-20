@@ -9,7 +9,8 @@ import java.awt.event.ActionListener;
 //import gui.AnswerScreen;
 //import gui.SendRequestScreen;
 //import gui.MailBoxScreen;
-//import gui.TutorialScreen;ß
+//import gui.TutorialScreen;
+//TODO: suchen: Java Swing GUI Builder (z.B. jvider)
 
 public class ToolWindowPlugin implements ActionListener{
     private JButton submitRequestButton;
