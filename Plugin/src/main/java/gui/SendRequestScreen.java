@@ -1,15 +1,33 @@
 package gui;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class SendRequestScreen {
+public class SendRequestScreen implements ActionListener {
     private JButton hilfeAnfragenButton;
     private JPanel contentSendRequest;
     private JComboBox comboBox1;
     private JTextArea halloHalloTestTestTextArea;
 
+    public SendRequestScreen() {
+        hilfeAnfragenButton.addActionListener(this::actionPerformed);
+    }
+
+    public JPanel getContent() {
+        return contentSendRequest;
+    }
+
     private void createUIComponents() {
         // TODO: place custom component creation code here
+    }
+
+   
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        System.out.println("Buttonklick funktioniert!");
+        System.out.println(e.getActionCommand());
+        System.out.println(halloHalloTestTestTextArea.getText());
     }
 
 

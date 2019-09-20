@@ -15,26 +15,25 @@ public class ToolWindowPluginFactory implements ToolWindowFactory {
     //https://github.com/JetBrains/intellij-sdk-docs/blob/master/code_samples/tool_window/src/myToolWindow/MyToolWindowFactory.java
     @Override
     public void createToolWindowContent(Project project, ToolWindow toolWindow) {
-        ToolWindowPlugin toolWindowPlugin = new ToolWindowPlugin(toolWindow) ;
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         //TODO: Hier wird geswitcht!
         //Entweder: Methoden ändern oder hier:
-
+        SendRequestScreen sendRequestScreen = new SendRequestScreen();
         TutorialScreen tutorialScreen = new TutorialScreen();
         AnswerDetailScreen answerScreen = new AnswerDetailScreen();
         MailBoxScreen mailBoxScreen = new MailBoxScreen();
-        //Content contentMailBox = contentFactory.createContent(mailBoxScreen.getContent());
-        Content contentAnswerDetail = contentFactory.createContent(answerScreen.getContent(),"Antworten", false);
+
+        Content contentMailBox = contentFactory.createContent(mailBoxScreen.getContent(),"Antworten", false);
+        //Content contentAnswerDetail = contentFactory.createContent(answerScreen.getContent(),"Antwort des Tutors", false);
         Content contentTutorial = contentFactory.createContent(tutorialScreen.getContent(),"FAQs", false);
-        Content contentRequest = contentFactory.createContent(toolWindowPlugin.getContent(), "Tutor fragen", false);
-        //Content contentFAQ = contentFactory.createContent(toolWindowPlugin.getContent(), "FAQs", false);
-        //Content contentAnswers = contentFactory.createContent(toolWindowPlugin.getContent(), "Antworten", false);
+        Content contentRequest = contentFactory.createContent(sendRequestScreen.getContent(), "Tutor fragen", false);
+
        //TODO: Hier noch die Namen anpassen!
         toolWindow.getContentManager().addContent(contentRequest);
         toolWindow.getContentManager().addContent(contentTutorial);
-        toolWindow.getContentManager().addContent(contentAnswerDetail);
+        toolWindow.getContentManager().addContent(contentMailBox);
         //contentAnswerDetail soll nur angezeigt werden, wenn auf ein Listen Item gedrückt wurde!Kein eigener Tab
-        toolWindow.getContentManager().addContent(contentAnswerDetail);
+        //toolWindow.getContentManager().addContent(contentAnswerDetail);
 
         toolWindow.getContentManager().addContentManagerListener(new ContentManagerListener() {
             @Override
@@ -60,9 +59,5 @@ public class ToolWindowPluginFactory implements ToolWindowFactory {
 
     }
 
-
-
-    //TODO: Herausfinden, welcher Tab angeklickt wurde! Wo passiert das?
-    //Contentmanager Listener? --> siehe Alex' eigener Branch
 
 }
