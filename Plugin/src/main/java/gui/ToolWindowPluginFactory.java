@@ -25,7 +25,7 @@ public class ToolWindowPluginFactory implements ToolWindowFactory {
 
         Content contentMailBox = contentFactory.createContent(mailBoxScreen.getContent(),"Antworten", false);
         //Content contentAnswerDetail = contentFactory.createContent(answerScreen.getContent(),"Antwort des Tutors", false);
-        Content contentTutorial = contentFactory.createContent(tutorialScreen.getContent(),"FAQs", false);
+        Content contentTutorial = contentFactory.createContent(tutorialScreen.getContent(),"Tutorial", false);
         Content contentRequest = contentFactory.createContent(sendRequestScreen.getContent(), "Tutor fragen", false);
 
        //TODO: Hier noch die Namen anpassen!

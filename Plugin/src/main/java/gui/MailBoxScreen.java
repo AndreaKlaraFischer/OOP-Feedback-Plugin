@@ -8,6 +8,7 @@ public class MailBoxScreen implements ActionListener {
     //TODO: Button für Actionlistener, Debugzwecke
     private JPanel mailBoxScreenContent;
     private JButton testButton;
+    private JList list1;
 
 
     public MailBoxScreen() {
@@ -25,8 +26,4 @@ public class MailBoxScreen implements ActionListener {
         System.out.println("Hier sollte dann etwas cooles passieren!");
     }
 
-
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
-    }
 }

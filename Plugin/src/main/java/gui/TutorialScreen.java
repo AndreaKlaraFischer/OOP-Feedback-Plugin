@@ -4,7 +4,7 @@ import javax.swing.*;
 
 public class TutorialScreen {
     private JPanel tutorialScreenContent;
-    private JEditorPane wieFunktioniertDasEditorPane;
+    private JTextField textField1;
 
     public TutorialScreen() {
 
@@ -13,6 +13,7 @@ public class TutorialScreen {
     public JPanel getContent() {
         return tutorialScreenContent;
     }
+
 
 
 }

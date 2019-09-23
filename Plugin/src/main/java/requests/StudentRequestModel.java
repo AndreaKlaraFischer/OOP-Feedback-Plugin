@@ -10,7 +10,7 @@ import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import java.io.File;
 import java.io.IOException;
 
-public class StudentRequestModel implements RequestHandler {
+public class StudentRequestModel {
     String repoUrl = "https://github.com/OOP-Feedback/OOP-Feedback";
     File repoPath = new File("https://github.com/OOP-Feedback/OOP-Feedback");
     File clonedRepoPath = new File("");
@@ -74,12 +74,15 @@ public class StudentRequestModel implements RequestHandler {
 
     private void createIssue() {
         //TODO: Use GitHub API here for creating issues
+        //Github-Java API? TODO: Anschauen und schnell entscheiden
         //Kopiert aus GitHub API:
         //POST /repos/:owner/:repo/issues
+
+        //TODO: Create Label
     }
 
     //Diese Methode soll auf dem Button aufgerufen werden
-    @Override
+
     public void addRequest(AddRequestArgument args) {
         createAndPushBranch();
         createIssue();
