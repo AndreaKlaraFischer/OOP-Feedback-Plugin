@@ -1,6 +1,12 @@
 package requests;
 // Hier die "rückwärtige" Github Kommunikation rein: Polling,...
 
+//GitHub API: Methode closedBy();
+
+//TODO: Status von Issue wissen
+//persistente Datenspeicherung
+
+import org.kohsuke.github.*;
 
 public class GitHubListener {
  /*public void checkForNewAnswers() {
@@ -17,8 +23,17 @@ public class GitHubListener {
              // TODO Auto-generated catch block
              e.printStackTrace();
          }
-     }
+     }*/
+     //Wenn issue nicht offen, zeige Notification
+     //https://www.codota.com/code/java/classes/org.kohsuke.github.GHIssue
+ public static boolean isOpen(GHIssue issue) {
+    GHIssueState state = issue.getState();
+    if (state == null) {
+      return true;
+    }
+    return state == GHIssueState.OPEN;
+  }
 
- } */
+  
 
 }

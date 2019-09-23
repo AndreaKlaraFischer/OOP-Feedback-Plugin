@@ -6,18 +6,26 @@ import org.eclipse.jgit.api.CreateBranchCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
+//GitHub API
+import org.kohsuke.github.GHIssue;
+import org.kohsuke.github.GitHub;
 
 import java.io.File;
 import java.io.IOException;
+
+// import org.eclipse.
 
 public class StudentRequestModel {
     String repoUrl = "https://github.com/OOP-Feedback/OOP-Feedback";
     File repoPath = new File("https://github.com/OOP-Feedback/OOP-Feedback");
     File clonedRepoPath = new File("");
 
+
+
     CreateBranchCommand createBranchCommand;
     CheckoutCommand checkoutCommand;
     Git git;
+
 
     //clonedRepoPath = project.getBasePath();
     //Konstruktor
@@ -79,6 +87,14 @@ public class StudentRequestModel {
         //POST /repos/:owner/:repo/issues
 
         //TODO: Create Label
+        try {
+            GitHub github = GitHub.connectUsingPassword("OOP-Feedback", "FredFeedback1920");
+            github.getRepository("OOP-Feedback-Plugin");
+            GHIssue issue;
+
+        } catch (IOException e) {
+
+        }
     }
 
     //Diese Methode soll auf dem Button aufgerufen werden

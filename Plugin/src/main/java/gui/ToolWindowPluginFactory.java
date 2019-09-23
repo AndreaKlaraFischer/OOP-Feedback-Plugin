@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class ToolWindowPluginFactory implements ToolWindowFactory {
     // Tool window content gets created
-    // TODO: mehrere Tabs!
     //https://github.com/JetBrains/intellij-sdk-docs/blob/master/code_samples/tool_window/src/myToolWindow/MyToolWindowFactory.java
     @Override
     public void createToolWindowContent(Project project, ToolWindow toolWindow) {
