@@ -1,36 +1,35 @@
 package requests;
 
 import com.intellij.openapi.project.Project;
+import gui.SendRequestScreen;
 import org.eclipse.jgit.api.CheckoutCommand;
 import org.eclipse.jgit.api.CreateBranchCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
-import org.kohsuke.github.GHIssue;
-import org.kohsuke.github.GitHub;
+import org.kohsuke.github.*;
 
 import java.io.File;
 import java.io.IOException;
-//GitHub API
+
 
 
 //This class handles the requests from Plugin to GitHub
 public class StudentRequestModel {
     private static final String REPO_URL = "https://github.com/OOP-Feedback/OOP-Feedback.git";
     private static final String CLONED_REPO_FOLDER ="/ClonedRepo";
+    private static final String REPO_LOGIN = "OOP-Feedback";
+    private static final String REPO_PASSWORD = "FredFeedback1920";
+    private SendRequestScreen sendRequestScreen;
     private IDCreator idCreator;
-    private File REPO_PATH = new File("https://github.com/OOP-Feedback/OOP-Feedback.git");
-    private CreateBranchCommand createBranchCommand;
-    private CheckoutCommand checkoutCommand;
     private File repoPath;
 
     //Konstruktor
     public StudentRequestModel(Project project) {
         this.idCreator = new IDCreator();
-        //TODO: zu speichernden Pfad festlegen!
+        this.sendRequestScreen = new SendRequestScreen(project);
         String clonedRepoPath = project.getBasePath() + CLONED_REPO_FOLDER;
         repoPath = new File(clonedRepoPath);
-
     }
 
 
@@ -42,69 +41,64 @@ public class StudentRequestModel {
             System.out.println("Repo Methodenaufruf funktioniert!");
             Git.cloneRepository()
                     .setURI(REPO_URL)
-                    .setCredentialsProvider( new UsernamePasswordCredentialsProvider( "OOP-Feedback", "FredFeedback1920" ) )
+                    .setCredentialsProvider( new UsernamePasswordCredentialsProvider( REPO_LOGIN, REPO_PASSWORD ) )
                     .setDirectory(repoPath)
                     .call();
             System.out.println("Repo wurde erfolgreich geklont");
         } catch (Exception e){
             System.out.println("Repo wurde nicht erfolgreich geklont" + e.toString());
         } finally {
-            //TODO: Ordner schließen
+            //TODO: Ordner schließen/löschen
         }
     }
 
     //Übernommen von diesem Codebeispiel
     //https:stackoverflow.com/questions/33168230/jgit-create-new-local-branch-and-push-to-remote-branch-does-not-exist-on-remote
     public void createAndPushBranch () {
-        //Branchname: ID, das funktioniert schon mal
         String branchName =idCreator.createRequestID();
         System.out.println("Branchname" + branchName);
         try {
-           //Das geht nicht!
+            // create branch
             Git git = Git.open(repoPath);
-            createBranchCommand = git.branchCreate();
+            CreateBranchCommand createBranchCommand = git.branchCreate();
             createBranchCommand.setName(branchName);
             createBranchCommand.call();
-            
-            checkoutCommand = git.checkout();
+
+            //checkout branch
+            CheckoutCommand checkoutCommand = git.checkout();
             checkoutCommand.setName(branchName);
             checkoutCommand.call();
 
-            // push to remote:
+            // push to remote
             PushCommand pushCommand = git.push();
-            pushCommand.setCredentialsProvider( new UsernamePasswordCredentialsProvider( "OOP-Feedback", "FredFeedback1920" ));
+            pushCommand.setCredentialsProvider( new UsernamePasswordCredentialsProvider( REPO_LOGIN, REPO_PASSWORD ));
             pushCommand.call();
             System.out.println("puschi");
 
         } catch (Exception e) {
             System.out.println("zweite Exception branch create" +  e.toString());
         }
-
-
-
     }
 
     private void createIssue() {
-        //TODO: Use GitHub API here for creating issues
-        //Github-Java API? TODO: Anschauen und schnell entscheiden
-        //Kopiert aus GitHub API:
-        //POST /repos/:owner/:repo/issues
-
-        //TODO: Create Label
         try {
-            GitHub github = GitHub.connectUsingPassword("OOP-Feedback", "FredFeedback1920");
-            github.getRepository("OOP-Feedback-Plugin");
-            GHIssue issue;
-
+            //https://github-api.kohsuke.org/apidocs/org/kohsuke/github/GitHub.html
+            GitHub github = GitHub.connectUsingPassword(REPO_LOGIN, REPO_PASSWORD);
+            GHRepository repo = github.getRepository("OOP-Feedback/OOP-Feedback");
+            //TODO: Namen dynamisch erstellen
+            GHIssue issue = repo.createIssue("TITEL3").create();
+            //TODO: Body dynamisch erstellen
+            issue.setBody("TEST");
+            //TODO: Labels dynamisch erstellen
+            issue.addLabels("Hans", "Wurscht");
         } catch (IOException e) {
-
+            System.out.println("excepti + " + e.toString());
         }
     }
 
-    //Diese Methode soll auf dem Button aufgerufen werden
     public void sendRequest() {
-        idCreator.createRequestID();
-        createAndPushBranch();
+        //idCreator.createRequestID();
+        //createAndPushBranch();
         createIssue();
     }
 
