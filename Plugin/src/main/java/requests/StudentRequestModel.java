@@ -6,44 +6,60 @@ import org.eclipse.jgit.api.CreateBranchCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
-//GitHub API
 import org.kohsuke.github.GHIssue;
 import org.kohsuke.github.GitHub;
 
 import java.io.File;
 import java.io.IOException;
 
-// import org.eclipse.
+//GitHub API
 
+
+//This class handles the requests from Plugin to GitHub
 public class StudentRequestModel {
-    String repoUrl = "https://github.com/OOP-Feedback/OOP-Feedback";
-    File repoPath = new File("https://github.com/OOP-Feedback/OOP-Feedback");
-    File clonedRepoPath = new File("");
+    private static final String REPO_URL = "https://github.com/OOP-Feedback/OOP-Feedback";
+    private static final String CLONED_REPO_FOLDER ="/ClonedRepo";
+   // File repoPath = new File("https://github.com/OOP-Feedback/OOP-Feedback");
+    //TODO: Richtig befüllen!
 
+    //File clonedRepoPath = new File(;
+    Project project;
 
+    private IDCreator idCreator;
 
     CreateBranchCommand createBranchCommand;
     CheckoutCommand checkoutCommand;
     Git git;
 
+    File repoPath;
+
 
     //clonedRepoPath = project.getBasePath();
     //Konstruktor
     public StudentRequestModel(Project project) {
+        this.idCreator = new IDCreator();
+        this.project = project;
+        //TODO: zu speichernden Pfad festlegen!
+        String clonedRepoPath = project.getBasePath() + CLONED_REPO_FOLDER;
+        repoPath = new File(clonedRepoPath);
 
     }
 
-    //TODO: Herausfinden: Wann wird das aufgerufen?
-    // --> Startklasse
-    public void cloneRepository() {
+
+   /* However the destination location is chosen, explicitly through your code or by JGit,
+   the designated directory must either be empty or must not exist.
+   Otherwise, an exception will be thrown.*/
+    public void cloneRepo() {
         try {
+            System.out.println("Repo Methodenaufruf funktioniert!");
             Git.cloneRepository()
-                .setURI(repoUrl)
-                .setDirectory(clonedRepoPath)// #1
+               .setURI(REPO_URL)
+                    .setDirectory(repoPath)// #1
                 .call();
+            System.out.println("Repo wurde erfolgreich geklont");
 
         } catch (Exception e){
-
+            //?
         } finally {
             //TODO: Ordner schließen
         }
@@ -98,8 +114,8 @@ public class StudentRequestModel {
     }
 
     //Diese Methode soll auf dem Button aufgerufen werden
-
-    public void addRequest(AddRequestArgument args) {
+    public void sendRequest() {
+        idCreator.createRequestID();
         createAndPushBranch();
         createIssue();
     }

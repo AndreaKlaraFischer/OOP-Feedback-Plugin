@@ -12,7 +12,8 @@ public class Controller {
         studentRequestModel = new StudentRequestModel(project);
         this.project = project;
         System.out.println("Startklasse funktioniert!");
-        //studentRequestModel.cloneRepo();
+        System.out.println(project.getBasePath());
+        studentRequestModel.cloneRepo();
     }
 
 }
