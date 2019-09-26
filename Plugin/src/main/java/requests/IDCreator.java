@@ -11,16 +11,14 @@ import java.util.UUID;
 public class IDCreator {
 
     //Muss das void bleiben?
-    public void createRequestID() {
-        //TODO: UUID, MAC Adresse
-
+    public String createRequestID() {
         //Hier ID aus uuid und MAC Adresse zusammen bauen
         String uuid = createUUID();
         String hardwareAddress = getHardwareAddress();
-        String seperator = " - ";
+        String seperator = "-";
         String requestId = uuid + seperator + hardwareAddress;
         System.out.println(requestId);
-
+        return requestId;
     }
 
     @NotNull
