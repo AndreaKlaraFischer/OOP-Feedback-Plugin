@@ -27,12 +27,13 @@
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
         <!--Toolwindow-->
-        <toolWindow id="Plugin Tool Window" icon="/icons/preview.svg" anchor="right" factoryClass="gui.ToolWindowPluginFactory"/>
+        <toolWindow id="Feedback Plugin" icon="/icons/preview.svg" anchor="right" factoryClass="gui.ToolWindowPluginFactory"/>
+        <applicationService serviceImplementation="config.SettingsService"/>
     </extensions>
 
     <actions>
         <!-- Add your actions here -->
-        <group id="MyPlugin.SampleMenu" text="Cooles neues Plugin" description="Greeting menu">
+        <group id="MyPlugin.SampleMenu" text="Feedback Plugin" description="Greeting menu">
             <add-to-group group-id="MainMenu" anchor="last"/>
             <action id="Myplugin.Textboxes" class="actions.HelloAction" text="Hello" description="Says hello"/>
         </group>
