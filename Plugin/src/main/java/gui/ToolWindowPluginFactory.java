@@ -17,7 +17,7 @@ public class ToolWindowPluginFactory implements ToolWindowFactory {
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         //TODO: Hier wird geswitcht!
         //Entweder: Methoden ändern oder hier:
-        SendRequestScreen sendRequestScreen = new SendRequestScreen();
+        SendRequestScreen sendRequestScreen = new SendRequestScreen(project);
         TutorialScreen tutorialScreen = new TutorialScreen();
         AnswerDetailScreen answerScreen = new AnswerDetailScreen();
         MailBoxScreen mailBoxScreen = new MailBoxScreen();

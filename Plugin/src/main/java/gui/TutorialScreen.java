@@ -4,6 +4,7 @@ import javax.swing.*;
 
 public class TutorialScreen {
     private JPanel tutorialScreenContent;
+    private JTextField loremIpsumTextField;
     private JTextField textField1;
 
     public TutorialScreen() {

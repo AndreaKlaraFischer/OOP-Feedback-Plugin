@@ -8,6 +8,7 @@ import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
@@ -18,6 +19,9 @@ public class SendRequestScreen implements ActionListener{
     private JTextArea inputMessageArea;
     private JTextField introductionText;
     private JButton uploadi;
+    //28.09. Versuch, öffentlich, damit ich aus dem StudentRequestModel darauf zugreifen kann
+    public static String inputMessage;
+    public static String problemCategory;
     JFileChooser screenshotUploader;
 
 
@@ -69,7 +73,7 @@ public class SendRequestScreen implements ActionListener{
     //https://javabeginners.de/Design_Patterns/Model-View-Controller.php
     @Override
     public void actionPerformed(ActionEvent e) {
-        String inputMessage = inputMessageArea.getText().trim();
+        inputMessage = inputMessageArea.getText().trim();
         //Abfragen, ob Nachricht leer ist!
         if(inputMessage.length() > 0) {
             getCategory(e);
@@ -84,10 +88,10 @@ public class SendRequestScreen implements ActionListener{
     }
 
     //TODO: Diese Methode noch auslagern, die hat in der View nichts zu suchen
-    private void getCategory(ActionEvent e) {
-        String category = selectCategory.getSelectedItem().toString();
-        if(category != null) {
-            System.out.println(category);
+    public void getCategory(ActionEvent e) {
+        problemCategory = Objects.requireNonNull(selectCategory.getSelectedItem()).toString();
+        if(problemCategory != null) {
+            System.out.println(problemCategory);
         }
     }
 
