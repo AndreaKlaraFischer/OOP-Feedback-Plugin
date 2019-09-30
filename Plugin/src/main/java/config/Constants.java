@@ -10,4 +10,10 @@ public class Constants {
     public static final String ISSUE_TITLE_BEGINNING = "Anfrage";
     public static final String ISSUE_TITLE_MIDDLE = "von";
     public static final String SEPARATOR = " ";
+
+    //30.09. Versuch, in ein UI Textfeld eine Konstante einzugeben
+    public static final String TEST_TEXT = "TestText";
+
+    //30.09. Versuch, Polling --> alle paar Sekunden was checken
+    public static final long THREAD_MILLISECONDS = 300000;
 }

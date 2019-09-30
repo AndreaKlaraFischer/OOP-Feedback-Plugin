@@ -11,48 +11,38 @@ package requests;
 //TODO: Sichtbarmachen, dass Antwort da ist
 //persistente Datenspeicherung
 
-import org.kohsuke.github.GHIssue;
-import org.kohsuke.github.GHIssueState;
-
 //TODO: Im Plugin Branch pullen
 //TODO: Der muss im Controller noch aufgerufen werden!
 //TODO: Liste mit ALLEN Issues aus dem Repo holen
 
+import config.Constants;
+
 public class GitHubListener {
-
-
 
     public  GitHubListener() {
 
     }
 
-    public boolean isOpen(GHIssue issue) {
-        GHIssueState state = issue.getState();
-        System.out.println(issue.getState());
-        if (state == null) {
-            return true;
-        }
-        return state == GHIssueState.OPEN;
-    }
 
 //TODO: Polling ?
- public void checkForNewAnswers() {
-       //TODO: Wenn issue state geschlossen, dann TutorAnswerModel.sendAnswer
-     /*while (true) {
-         try {
-             incomingMessages.addAll(fullPoll());
-             System.out.println("waiting 6 seconds");
-             //perform this operation in a loop
-             Thread.sleep(6000);
-         } catch (InterruptedException e) {
-             // TODO Auto-generated catch block
-             e.printStackTrace();
-         } catch (Exception e) {
-             // TODO Auto-generated catch block
-             e.printStackTrace();
-         }*/
+    public void waitForNewAnswers() {
+     //TODO: alle 5 Minuten schauen --> Ist in den letzten 5 Minuten eines von meinen Issues geschlossen worden?
+     //TODO: Wenn issue state geschlossen, dann TutorAnswerModel.sendAnswer
+        //Test aus Stackoverflow: Funktioniert!
+        try {
+         while (true) {
+             checkIssueState();
+             Thread.sleep(Constants.THREAD_MILLISECONDS);
+         }
+        } catch (InterruptedException e) {
+         System.out.println("Thread hat funktioniert");
+         e.printStackTrace();
+        }
      }
 
+    private void checkIssueState() {
+
+    }
 
 
 }
