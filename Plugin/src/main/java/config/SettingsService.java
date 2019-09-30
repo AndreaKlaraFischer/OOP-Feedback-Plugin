@@ -5,6 +5,7 @@ import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 
+//TODO: Angeln gehen 
 @State(name = "statiFisch", storages = {@Storage("fischifisch.xml")})
 public class SettingsService implements PersistentStateComponent<SettingsService.State> {
     //Subklasse
