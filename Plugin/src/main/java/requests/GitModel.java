@@ -16,23 +16,31 @@ public class GitModel {
         repoPath = new File(clonedRepoPath);
     }
 
-    //TODO: Abfragen, ob Ordner schon existiert
+
     /* However the destination location is chosen, explicitly through your code or by JGit,
     the designated directory must either be empty or must not exist.
     Otherwise, an exception will be thrown.*/
     public void cloneRepo() {
         try {
-            System.out.println("Repo Methodenaufruf funktioniert!");
-            Git.cloneRepository()
-                    .setURI(Constants.REPO_URL)
-                    .setCredentialsProvider( new UsernamePasswordCredentialsProvider(Constants.REPO_LOGIN, Constants.REPO_PASSWORD ) )
-                    .setDirectory(repoPath)
-                    .call();
-            System.out.println("Repo wurde erfolgreich geklont");
+            if(!repoPath.exists()) {
+                System.out.println("Repo Methodenaufruf funktioniert!");
+                Git.cloneRepository()
+                        .setURI(Constants.REPO_URL)
+                        .setCredentialsProvider( new UsernamePasswordCredentialsProvider(Constants.REPO_LOGIN, Constants.REPO_PASSWORD ) )
+                        .setDirectory(repoPath)
+                        .call();
+                System.out.println("Repo wurde erfolgreich geklont");
+            } else {
+                System.out.println("Ordner exisitiert bereits");
+            }
+
         } catch (Exception e){
             System.out.println("Repo wurde nicht erfolgreich geklont" + e.toString());
         } finally {
-            //TODO: Ordner schließen/löschen
+            //TODO: Ordner schließen/löschen, damit es das nächste Mal wieder geklont werden dann
+            //repoPath.delete();
+            System.out.println("Wurde gelöscht");
+
         }
     }
 }

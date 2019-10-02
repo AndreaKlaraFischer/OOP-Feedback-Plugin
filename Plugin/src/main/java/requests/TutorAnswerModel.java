@@ -1,14 +1,13 @@
 package requests;
-
-import org.kohsuke.github.GHIssueComment;
-import org.kohsuke.github.GHUser;
-
-import java.util.List;
-
+import config.Constants;
 //TODO: Mit ID abgleichen!
 public class TutorAnswerModel {
 
     //Equivalent to request class
+    /*TODO: Idee: Wenn der Tutor seine Antwort schreibt, dann soll er seinen Namen als Label einfügen
+    --> Wenn die Antwort dann angeschaut wird, soll angezeigt werden: Beantwortet von "Andrea Fischer" --> Konstanten
+    --> get Label (aber nur das)
+    */
 
     public TutorAnswerModel() {
 
@@ -19,14 +18,11 @@ public class TutorAnswerModel {
     }
 
     private void createAnswer() {
-        //TODO: Bestehend aus Uhrzeit, Name, Code und
-        //TODO: Pull Code
-        //Die Antwort ist der Kommentar unter dem Issue
-        try {
-
-        } catch (Exception e){
-
-        }
+     //TODO: neuen String erstellen mit getLabel so und so mit Namen
+        //ein bisschen overengineert, aber wenn kein neues Label angegeben wurde (also Labels unter drei), dann "Antwort von Tutor" (default Kontante)
+        //wenn neues Label angegeben wurde, dann "Antwort von Hans Wurscht") --> Variable
+        //TODO: aus den answerTitlen soll dann die Liste gebaut werden!
+        String answerTitle = Constants.ANSWER_TITEL_BEGINNING; //+Label
     }
 
     //TODO: Geänderten Code commiten
@@ -40,12 +36,6 @@ public class TutorAnswerModel {
     }
 
     //getClosedAt()
-    //Reports who has closed the issue.
-    GHUser getClosedBy() {
-        return null;
-    }
 
-    List<GHIssueComment> getComments() {
-        return null;
-    }
+
 }

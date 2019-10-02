@@ -1,6 +1,7 @@
 package gui;
 
 import com.intellij.openapi.project.Project;
+import org.kohsuke.github.GHIssue;
 import requests.IDCreator;
 import requests.StudentRequestModel;
 
@@ -8,6 +9,7 @@ import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.Objects;
 
 import static javax.swing.JOptionPane.showMessageDialog;
@@ -27,6 +29,7 @@ public class SendRequestScreen implements ActionListener{
 
     private StudentRequestModel studentRequestModel;
     private IDCreator idCreator;
+    private List<GHIssue> issueList;
 
     //Mit dem Branch erstellen sollen auch die Bilder mitgeschickt werden, Unterverzeichnis "Screenshot"
     //Java File API
@@ -43,16 +46,16 @@ public class SendRequestScreen implements ActionListener{
         this.studentRequestModel = new StudentRequestModel(project);
         this.idCreator = new IDCreator();
 
-
         submitRequestButton.addActionListener(this::actionPerformed);
-        selectCategory.addActionListener(this::actionPerformed);
+        selectCategory.addActionListener(this::getCategory);
         uploadi.addActionListener(this::openFileSelector);
     }
 
+    //TODO: Das ist noch nicht fertig
     private void openFileSelector(ActionEvent actionEvent) {
         //https://www.mkyong.com/swing/java-swing-jfilechooser-example/
         JFileChooser screenshotUploader = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-        screenshotUploader.setDialogTitle("TESTI");
+        screenshotUploader.setDialogTitle("Screenshots auswählen");
         screenshotUploader.setFileSelectionMode(JFileChooser.FILES_ONLY);
         int returnValue = screenshotUploader.showOpenDialog(null);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
@@ -60,6 +63,7 @@ public class SendRequestScreen implements ActionListener{
                 System.out.println("Deine gewählte Datei ist: " + screenshotUploader.getSelectedFile());
             }
         }
+        //TODO: Das noch zu dem Branch hinzufügen mit der ID, Ordner erstellen
     }
 
     public JPanel getContent() {
@@ -68,38 +72,30 @@ public class SendRequestScreen implements ActionListener{
 
     //MAC Adresse plus UUID, im Plugin an geeigneter Stelle merken, verwenden für Branch und Issue
 
-
     //TODO: Model / View / Controller --> ActionListener in Model auslagern?
     //https://javabeginners.de/Design_Patterns/Model-View-Controller.php
     @Override
     public void actionPerformed(ActionEvent e) {
         inputMessage = inputMessageArea.getText().trim();
-        //Abfragen, ob Nachricht leer ist!
-        if(inputMessage.length() > 0) {
-            getCategory(e);
+        getCategory(e);
+        if(inputMessage.length() == 0) {
+            showMessageDialog(null, "Feld darf nicht leer sein!");
+        } else if (SettingScreen.studentNameInput.length() == 0) {
+            showMessageDialog(null, "Bitte zuerst einen Namen eingeben!");
+        }  else{
             System.out.println(e.getActionCommand());
             System.out.println(inputMessageArea.getText());
             studentRequestModel.sendRequest();
-        } else {
-            //Fehlermeldung
-            showMessageDialog(null, "Feld darf nicht leer sein!");
-            System.out.println("Feld darf nicht leer sein!");
+            showMessageDialog(null, "Anfrage wurde erfolgreich abgeschickt!");
         }
     }
 
     //TODO: Diese Methode noch auslagern, die hat in der View nichts zu suchen
-    public void getCategory(ActionEvent e) {
+    private void getCategory(ActionEvent e) {
         problemCategory = Objects.requireNonNull(selectCategory.getSelectedItem()).toString();
         if(problemCategory != null) {
             System.out.println(problemCategory);
         }
     }
-
-
-    /*required UI-elements:
-        - Feld zum Auswählen von Screenshots (JFileChooser)
-            - ggf. Liste mit bereits hinzugefügten Dateien
-            - allow multiple selection of files
-     */
 
 }

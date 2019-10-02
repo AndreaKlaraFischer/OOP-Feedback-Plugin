@@ -8,6 +8,9 @@ import org.eclipse.jgit.api.CreateBranchCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
+import org.kohsuke.github.GHIssue;
+
+import java.util.List;
 
 
 //This class handles the requests from Plugin to GitHub
@@ -15,6 +18,7 @@ public class StudentRequestModel {
     private SendRequestScreen sendRequestScreen;
     private GitHubModel gitHubModel;
     private IDCreator idCreator;
+    private List<GHIssue> issueList;
 
    //private File repoPath;
 
@@ -63,9 +67,8 @@ public class StudentRequestModel {
         //idCreator.createRequestID();
         //createAndPushBranch();
 
-
+        //TODO: als geschlossenen Task betrachten und in eigene Klassen kapseln
         gitHubModel.createIssue();
-        //requestCounter++;
 
     }
 

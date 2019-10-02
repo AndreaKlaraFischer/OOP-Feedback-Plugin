@@ -7,13 +7,14 @@ public class Constants {
     public static final String REPO_LOGIN = "OOP-Feedback";
     public static final String REPO_PASSWORD = "FredFeedback1920";
 
-    public static final String ISSUE_TITLE_BEGINNING = "Anfrage";
-    public static final String ISSUE_TITLE_MIDDLE = "von";
+    public static final String ISSUE_TITLE_BEGINNING = "Anfrage von";
     public static final String SEPARATOR = " ";
+
+    public static final String ANSWER_TITEL_BEGINNING = "Antwort von Tutor/in";
 
     //30.09. Versuch, in ein UI Textfeld eine Konstante einzugeben
     public static final String TEST_TEXT = "TestText";
 
     //30.09. Versuch, Polling --> alle paar Sekunden was checken
-    public static final long THREAD_MILLISECONDS = 300000;
+    public static final long THREAD_MILLISECONDS = 60000;
 }
