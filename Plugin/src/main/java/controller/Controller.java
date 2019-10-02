@@ -25,6 +25,7 @@ public class Controller {
         idCreator = new IDCreator();
         gitModel = new GitModel(project);
         gitHubModel = new GitHubModel();
+        //Hier wird der Thread aufgerufen
         gitHubListener = new GitHubListener();
 
 
@@ -43,7 +44,7 @@ public class Controller {
         System.out.println("Startklasse funktioniert!");
         gitModel.cloneRepo();
         //TODO: Alle 5 Minuten oder so soll geschaut werden, ob sich der State von einem Issue aus der Liste von OPEN zu CLOSED geändert hat
-        gitHubListener.waitForNewAnswers();
+
         //gitHubModel.getIssueList();
         //Das steht hier nur zu Testzwecken
         idCreator.createRequestID();

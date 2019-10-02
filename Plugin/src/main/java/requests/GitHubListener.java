@@ -18,30 +18,28 @@ package requests;
 import config.Constants;
 
 public class GitHubListener {
-
-    public  GitHubListener() {
-
+    //Subklasse für Multithreading
+    class WaitForAnswerThread extends Thread {
+        private GitHubModel gitHubModel;
+        public WaitForAnswerThread() {
+            gitHubModel = new GitHubModel();
+        }
+        public void run() {
+            try {
+                while (true) {
+                    gitHubModel.getClosedIssueList();
+                    Thread.sleep(Constants.THREAD_MILLISECONDS);
+                }
+            } catch (InterruptedException e) {
+                System.out.println("Thread hat funktioniert");
+                e.printStackTrace();
+            }
+        }
     }
 
-
-//TODO: Polling ?
-    public void waitForNewAnswers() {
-     //TODO: alle 5 Minuten schauen --> Ist in den letzten 5 Minuten eines von meinen Issues geschlossen worden?
-     //TODO: Wenn issue state geschlossen, dann TutorAnswerModel.sendAnswer
-        //Test aus Stackoverflow: Funktioniert!
-        try {
-         while (true) {
-             checkIssueState();
-             Thread.sleep(Constants.THREAD_MILLISECONDS);
-         }
-        } catch (InterruptedException e) {
-         System.out.println("Thread hat funktioniert");
-         e.printStackTrace();
-        }
-     }
-
-    private void checkIssueState() {
-
+    public  GitHubListener() {
+        WaitForAnswerThread waitForAnswerThread = new WaitForAnswerThread();
+        waitForAnswerThread.start();
     }
 
 
