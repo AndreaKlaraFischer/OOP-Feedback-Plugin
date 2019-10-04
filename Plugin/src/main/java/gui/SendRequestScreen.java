@@ -2,17 +2,13 @@ package gui;
 
 import com.intellij.openapi.project.Project;
 import config.Constants;
-import org.codehaus.plexus.util.FileUtils;
 import org.kohsuke.github.GHIssue;
 import requests.IDCreator;
 import requests.StudentRequestModel;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileSystemView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,8 +25,9 @@ public class SendRequestScreen implements ActionListener{
     public static String inputMessage;
     public static String problemCategory;
     //03.10. Hier werden alle ausgewählten Screenshots gespeichert. Diese müssen ja nich persistent gespeichert werden, oder?
-    public static File[] screenshots;
+
     private String clonedRepoPath;
+
 
     private StudentRequestModel studentRequestModel;
     private IDCreator idCreator;
@@ -51,10 +48,9 @@ public class SendRequestScreen implements ActionListener{
         this.studentRequestModel = new StudentRequestModel(project);
         this.idCreator = new IDCreator();
 
-        submitRequestButton.addActionListener(this::actionPerformed);
+        submitRequestButton.addActionListener(this);
         selectCategory.addActionListener(this::getCategory);
         selectFileButton.addActionListener(this::openFileSelector);
-
 
         clonedRepoPath = project.getBasePath() + Constants.CLONED_REPO_FOLDER;
     }
@@ -63,64 +59,10 @@ public class SendRequestScreen implements ActionListener{
         return contentSendRequest;
     }
 
-
     //TODO: sollte eigentlich auch noch ausgelagert werden in ein Model --> keine Funktionen in der View
-    //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
     private void openFileSelector(ActionEvent actionEvent)  {
-        try {
-        //https://www.mkyong.com/swing/java-swing-jfilechooser-example/
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        JFileChooser screenshotUploader = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-        //UIManager.setLookAndFeel(String.valueOf(screenshotUploader));
-
-
-        screenshotUploader.setDialogTitle("Screenshots auswählen");
-        screenshotUploader.setMultiSelectionEnabled(true);
-        screenshotUploader.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        int returnValue = screenshotUploader.showOpenDialog(null);
-        if (returnValue == JFileChooser.APPROVE_OPTION) {
-            screenshots = screenshotUploader.getSelectedFiles();
-            System.out.println("Files Found\n");
-            Arrays.asList(screenshots).forEach(file -> {
-                if (file.isFile()) {
-                    System.out.println(file.getName());
-                }
-            });
-        }
-        //Wenn es Screenshots gibt, dann Screenshots hinzufügen
-        //TODO: Commiten zum funktionieren bringen!
-        if(screenshots.length > 0) {
-            addScreenshotsToBranch();
-        } } catch (Exception e) {
-
-        }
-
+        studentRequestModel.chooseFiles();
     }
-    //TODO: Auslagern
-    private void addScreenshotsToBranch(){
-        //TODO: hinzufügen und commiten
-        try {
-            //TODO: Schauen, ob das mit Konstante funktioniert hat
-            File screenshotFolder = new File(clonedRepoPath + Constants.SCREENSHOT_FOLDER);
-            screenshotFolder.mkdir();
-            System.out.println(clonedRepoPath);
-
-            for (int i = 0; i < screenshots.length; i++) {
-                    System.out.println(clonedRepoPath + "/screenshots/" + screenshots[i].getName());
-                    File screenshot = new File(clonedRepoPath + "/screenshots/" + screenshots[i].getName());
-
-                    FileUtils.copyFile(screenshots[i], screenshot);
-
-                    System.out.println("Schwurbel" + screenshot);
-            }
-        } catch (Exception e) {
-
-        }
-    }
-
-    //TODO: Das noch zu dem Branch hinzufügen mit der ID, Ordner erstellen
-
-
 
     //MAC Adresse plus UUID, im Plugin an geeigneter Stelle merken, verwenden für Branch und Issue
 
@@ -136,10 +78,8 @@ public class SendRequestScreen implements ActionListener{
         } else if (SettingScreen.studentNameInput.length() == 0) {
             showMessageDialog(null, "Bitte zuerst einen Namen eingeben!");
         }  else{
-            System.out.println(e.getActionCommand());
-            System.out.println(inputMessageArea.getText());
             studentRequestModel.sendRequest();
-            showMessageDialog(null, "Anfrage wurde erfolgreich abgeschickt!");
+            showMessageDialog(null, "Anfrage wurde abgeschickt!");
         }
     }
 
