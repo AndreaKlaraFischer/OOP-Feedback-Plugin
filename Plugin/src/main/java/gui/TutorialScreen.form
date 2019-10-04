@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="gui.TutorialScreen">
-  <grid id="27dc6" binding="tutorialScreenContent" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+  <grid id="27dc6" binding="tutorialScreenContent" layout-manager="GridLayoutManager" row-count="4" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="75" y="20" width="263" height="400"/>
+      <xy x="75" y="20" width="3318" height="400"/>
     </constraints>
     <properties/>
     <border type="line" title="Hier bekommst du Hilfestellung">
@@ -12,24 +12,51 @@
       <color color="-8585156"/>
     </border>
     <children>
-      <component id="a52c4" class="javax.swing.JTextField" binding="loremIpsumTextField" default-binding="true">
+      <component id="1836" class="javax.swing.JTextPane" binding="loremIpsumDolorSitTextPane" default-binding="true">
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="-1"/>
+          <grid row="0" column="0" row-span="4" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="50"/>
           </grid>
         </constraints>
         <properties>
           <editable value="false"/>
-          <text value="Lorem ipsum"/>
+          <selectionColor color="-8585156"/>
+          <text value="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."/>
         </properties>
       </component>
-      <component id="81006" class="javax.swing.JTextField" binding="textField1" default-binding="true">
+      <hspacer id="59212">
         <constraints>
-          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="-1"/>
-          </grid>
+          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
-        <properties/>
+      </hspacer>
+      <component id="1aea6" class="javax.swing.JButton" binding="helpfulButton">
+        <constraints>
+          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-13583599"/>
+          <icon value="general/add.png"/>
+          <text value="Feedback war hilfreich "/>
+        </properties>
+      </component>
+      <component id="977a5" class="javax.swing.JButton" binding="semiHelpfulButton" default-binding="true">
+        <constraints>
+          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-7241447"/>
+          <text value="mittelhilfreich"/>
+        </properties>
+      </component>
+      <component id="c75b8" class="javax.swing.JButton" binding="notHelpfulButton" default-binding="true">
+        <constraints>
+          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-10153191"/>
+          <enabled value="true"/>
+          <text value="Nicht hilfreich "/>
+        </properties>
       </component>
     </children>
   </grid>
