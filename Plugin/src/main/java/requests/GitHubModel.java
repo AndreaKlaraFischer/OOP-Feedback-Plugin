@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GitHubModel {
-    private String studentName;
+    public static  String studentName;
     private GitHub github;
     private GHIssue issue;
     private GHIssueComment ghIssueComment;
-    private GHRepository repo;
+    public static GHRepository repo;
     private static List<GHIssue> issueList;
     private static List<GHIssue> allClosedIssueList;
     public static List<GHIssue> closedIssueList;
@@ -25,7 +25,6 @@ public class GitHubModel {
         allClosedIssueList = new ArrayList<>();
         answers = new ArrayList<>();
 
-
         //https://github-api.kohsuke.org/apidocs/org/kohsuke/github/GitHub.html
         try {
             github = GitHub.connectUsingPassword(Constants.REPO_LOGIN, Constants.REPO_PASSWORD);
@@ -33,7 +32,6 @@ public class GitHubModel {
         } catch (Exception e) {
             System.out.println(e.toString());
         }
-
     }
 
     public void createIssue() {
@@ -45,11 +43,13 @@ public class GitHubModel {
                     studentName;
 
             String issueBody = SendRequestScreen.inputMessage;
-            String issueLabel = SendRequestScreen.problemCategory;
+            String issueLabel = Constants.COMMON_LABEL_BEGIN + SendRequestScreen.problemCategory;
+            //TODO: Brauche ich das Label mit der Id eigentlich? Würde das gerne vermeiden, da sonst die Labels überfüllt sind.
+           // String idLabel = Long.toString((issue.getId()));
 
             issue = repo.createIssue(issueTitle).create();
             issue.setBody(issueBody);
-            issue.addLabels(issueLabel, Long.toString((issue.getId())));
+            issue.addLabels(issueLabel);
             //Test 30.09. --> Alle erstellten Issues in einer Liste speichern, funktioniert
             //01.10. --> Brauche ich das überhaupt? --> Das könnte ich noch für Status Änderungen verwenden
             issueList.add(issue);
@@ -60,12 +60,8 @@ public class GitHubModel {
             System.out.println("excepti + " + e.toString());
         }
 
-        System.out.println("Issue List after add "+issueList);
     }
 
-
-
-    //TODO: Wo rufe ich das auf?
     public void getClosedIssueList() {
         try{
             allClosedIssueList = repo.getIssues(GHIssueState.CLOSED);
@@ -74,18 +70,38 @@ public class GitHubModel {
         } catch (Exception e) {
             System.out.println("Das hat leider nicht funktioniert" + e.toString());
         }
+        //Das steht hier auch nur zu Testzwecken
+        //TODO: An die richtige Stelle
         getAnswers();
     }
-    private void getAnswers() {
+
+    public void getAnswers() {
         //Muss leer sein am Anfang.
         answers = new ArrayList<>();
+
         for (GHIssue ghIssue : closedIssueList) {
             try {
-                List<GHIssueComment> comments = ghIssue.getComments();
-                for (GHIssueComment comment : comments) {
-                    //TODO: Hier noch die zugehörigen Kommentare zu einem String hinzugefügt --> dritte Schleife?
-                    answers.add(comment.getBody());
+                //Hier wird der Name des Tutors abgefragt
+                String tutorName = "";
+                List<GHLabel> labels = (List<GHLabel>) ghIssue.getLabels();
+                for(GHLabel label : labels) {
+                    if(label.getName().charAt(0) != '_' ) {
+                        tutorName = label.getName();
+                    }
                 }
+                System.out.println(tutorName);
+                //Hier die Kommentare geholt
+                List<GHIssueComment> comments = ghIssue.getComments();
+                StringBuilder result = new StringBuilder();
+
+                for (GHIssueComment comment : comments) {
+                    //if mehr als ein Kommentar vorhanden, dann zusammen bauen, trennen mit Absatz
+                   if(comments.indexOf(comment) > 0) {
+                      result.append("\n");
+                   }
+                   result.append(comment.getBody());
+                }
+                answers.add(result.toString());
             } catch (Exception e) {
                 System.out.println(e.toString());
             }
@@ -99,7 +115,7 @@ public class GitHubModel {
     private void filterOwnClosedIssues() {
         ArrayList<GHIssue> temp = new ArrayList<>();
         for(int i = 0; i < allClosedIssueList.size(); i++) {
-            for(int j = 0; j< issueList.size(); j++) {
+            for(int j = 0; j < issueList.size(); j++) {
                 long idxClosed = allClosedIssueList.get(i).getId();
                 long idxIssueList = issueList.get(j).getId();
                 if(idxClosed == idxIssueList) {
