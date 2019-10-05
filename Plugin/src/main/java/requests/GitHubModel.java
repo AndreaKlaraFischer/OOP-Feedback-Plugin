@@ -7,6 +7,7 @@ import org.kohsuke.github.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class GitHubModel {
@@ -17,8 +18,11 @@ public class GitHubModel {
     public static GHRepository repo;
     private static List<GHIssue> issueList;
     private static List<GHIssue> allClosedIssueList;
-    public static List<GHIssue> closedIssueList;
+    public static ArrayList<GHIssue> closedIssueList;
     public static ArrayList<String> answers;
+
+    public Date answeredAt;
+    public String tutorName;
 
     public GitHubModel() {
         issueList = new ArrayList<>();
@@ -81,8 +85,12 @@ public class GitHubModel {
 
         for (GHIssue ghIssue : closedIssueList) {
             try {
+                //TODO: das auch noch als Liste?
+                //Wann wurde geantwortet? Das kommt zur Antwortklasse
+                answeredAt = ghIssue.getClosedAt();
+                System.out.println(ghIssue.getClosedAt());
                 //Hier wird der Name des Tutors abgefragt
-                String tutorName = "";
+                tutorName = "";
                 List<GHLabel> labels = (List<GHLabel>) ghIssue.getLabels();
                 for(GHLabel label : labels) {
                     if(label.getName().charAt(0) != '_' ) {
@@ -90,12 +98,12 @@ public class GitHubModel {
                     }
                 }
                 System.out.println(tutorName);
-                //Hier die Kommentare geholt
+
+                //Hier werden die Kommentare geholt
                 List<GHIssueComment> comments = ghIssue.getComments();
                 StringBuilder result = new StringBuilder();
-
                 for (GHIssueComment comment : comments) {
-                    //if mehr als ein Kommentar vorhanden, dann zusammen bauen, trennen mit Absatz
+                    //wenn mehr als ein Kommentar vorhanden, dann zusammen bauen, trennen mit Absatz
                    if(comments.indexOf(comment) > 0) {
                       result.append("\n");
                    }
