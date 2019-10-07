@@ -8,10 +8,11 @@ import org.kohsuke.github.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class GitHubModel {
-    public static  String studentName;
+    public  String studentName;
     private GitHub github;
     private GHIssue issue;
     private GHIssueComment ghIssueComment;
@@ -122,17 +123,37 @@ public class GitHubModel {
     //TODO: Notiz: Funktioniert erst, wenn man mit dem Repo verbunden ist. Also vllt woanders hinpacken?
     private void filterOwnClosedIssues() {
         ArrayList<GHIssue> temp = new ArrayList<>();
-        for(int i = 0; i < allClosedIssueList.size(); i++) {
-            for(int j = 0; j < issueList.size(); j++) {
-                long idxClosed = allClosedIssueList.get(i).getId();
-                long idxIssueList = issueList.get(j).getId();
-                if(idxClosed == idxIssueList) {
-                    temp.add(allClosedIssueList.get(i));
+        for (GHIssue ghIssue : allClosedIssueList) {
+            for (GHIssue value : issueList) {
+                long idxClosed = ghIssue.getId();
+                long idxIssueList = value.getId();
+                if (idxClosed == idxIssueList) {
+                    temp.add(ghIssue);
                 }
             }
         }
         closedIssueList = temp;
         System.out.println("My closed issues " + closedIssueList);
+    }
+
+    //TODO: Das hier ist kriegsentscheidend
+    HashMap<String, Answer> requestIdsAndAnswers = new HashMap<>();
+    public void matchRequestAndAnswer() {
+        for (GHIssue ghIssue : issueList) {
+            for (GHIssue value : closedIssueList) {
+                long idxSent = ghIssue.getId();
+                long idXAnswered = value.getId();
+                if (idxSent == idXAnswered) {
+                    System.out.println("Found a match!");
+                    String keyId = Long.toString(idxSent);
+                    //TODO: Wie kann ich dem System sagen, dass sich der Issue in eine Antwort verwandeln soll??
+                    Answer valueAnswer = new Answer();
+                    //Answer valueAnswer = ghIssue;
+                    requestIdsAndAnswers.put(keyId, valueAnswer);
+                    System.out.println(requestIdsAndAnswers);
+                }
+            }
+        }
     }
 }
 

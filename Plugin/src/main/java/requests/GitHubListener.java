@@ -28,6 +28,7 @@ public class GitHubListener {
             try {
                 while (true) {
                     gitHubModel.getClosedIssueList();
+                    gitHubModel.matchRequestAndAnswer();
                     Thread.sleep(Constants.THREAD_MILLISECONDS);
                 }
             } catch (InterruptedException e) {
