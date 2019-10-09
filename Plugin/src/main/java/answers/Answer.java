@@ -7,15 +7,15 @@ import java.util.Date;
 public class Answer {
     private String answerMessage;
     private String tutorName;
-    private Date answerDate; //closed at --> Das würde ich mir auch noch woanders herholen!
+    private Date answerDate;
 
     private GitHubModel gitHubModel;
 
     public Answer (){
         this.gitHubModel = new GitHubModel();
-        //answerMessage
-        tutorName = gitHubModel.tutorName;
-        answerDate = gitHubModel.answeredAt;
+        //TODO: answerMessage!!
+       tutorName = gitHubModel.tutorName;
+       answerDate = gitHubModel.answeredAt;
     }
 
     public String getAnswerMessage() {
