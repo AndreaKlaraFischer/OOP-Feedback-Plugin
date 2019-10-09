@@ -1,5 +1,7 @@
 package requests;
 
+import adapters.GHIssueToAnswerAdapter;
+import answers.Answer;
 import config.Constants;
 import gui.SendRequestScreen;
 import gui.SettingScreen;
@@ -16,19 +18,23 @@ public class GitHubModel {
     private GitHub github;
     private GHIssue issue;
     private GHIssueComment ghIssueComment;
+    private GHIssueToAnswerAdapter adapter;
     public static GHRepository repo;
     private static List<GHIssue> issueList;
     private static List<GHIssue> allClosedIssueList;
     public static ArrayList<GHIssue> closedIssueList;
     public static ArrayList<String> answers;
+    public HashMap<String, Answer> requestIdsAndAnswers = new HashMap<>();
 
     public Date answeredAt;
     public String tutorName;
 
     public GitHubModel() {
         issueList = new ArrayList<>();
+        System.out.println("Hund und Sau\n\n\n");
         allClosedIssueList = new ArrayList<>();
         answers = new ArrayList<>();
+        this.adapter = new GHIssueToAnswerAdapter();
 
         //https://github-api.kohsuke.org/apidocs/org/kohsuke/github/GitHub.html
         try {
@@ -46,21 +52,14 @@ public class GitHubModel {
                     Constants.SEPARATOR +
                     Constants.SEPARATOR +
                     studentName;
-
             String issueBody = SendRequestScreen.inputMessage;
             String issueLabel = Constants.COMMON_LABEL_BEGIN + SendRequestScreen.problemCategory;
-            //TODO: Brauche ich das Label mit der Id eigentlich? Würde das gerne vermeiden, da sonst die Labels überfüllt sind.
-           // String idLabel = Long.toString((issue.getId()));
 
             issue = repo.createIssue(issueTitle).create();
             issue.setBody(issueBody);
             issue.addLabels(issueLabel);
-            //Test 30.09. --> Alle erstellten Issues in einer Liste speichern, funktioniert
-            //01.10. --> Brauche ich das überhaupt? --> Das könnte ich noch für Status Änderungen verwenden
             issueList.add(issue);
             System.out.println("issueList" + issueList);
-            //TODO: Alle Issues an sich noch in eine Liste speichern und Status abfragen?
-
         } catch (IOException e) {
             System.out.println("excepti + " + e.toString());
         }
@@ -123,6 +122,10 @@ public class GitHubModel {
     //TODO: Notiz: Funktioniert erst, wenn man mit dem Repo verbunden ist. Also vllt woanders hinpacken?
     private void filterOwnClosedIssues() {
         ArrayList<GHIssue> temp = new ArrayList<>();
+        System.out.println("allClosedIssueList");
+        System.out.println(allClosedIssueList);
+        System.out.println("issueList");
+        System.out.println(issueList);
         for (GHIssue ghIssue : allClosedIssueList) {
             for (GHIssue value : issueList) {
                 long idxClosed = ghIssue.getId();
@@ -136,8 +139,7 @@ public class GitHubModel {
         System.out.println("My closed issues " + closedIssueList);
     }
 
-    //TODO: Das hier ist kriegsentscheidend
-    HashMap<String, Answer> requestIdsAndAnswers = new HashMap<>();
+
     public void matchRequestAndAnswer() {
         for (GHIssue ghIssue : issueList) {
             for (GHIssue value : closedIssueList) {
@@ -146,9 +148,8 @@ public class GitHubModel {
                 if (idxSent == idXAnswered) {
                     System.out.println("Found a match!");
                     String keyId = Long.toString(idxSent);
-                    //TODO: Wie kann ich dem System sagen, dass sich der Issue in eine Antwort verwandeln soll??
-                    Answer valueAnswer = new Answer();
-                    //Answer valueAnswer = ghIssue;
+                    Answer valueAnswer = adapter.transform(value);
+                    System.out.println(valueAnswer);
                     requestIdsAndAnswers.put(keyId, valueAnswer);
                     System.out.println(requestIdsAndAnswers);
                 }

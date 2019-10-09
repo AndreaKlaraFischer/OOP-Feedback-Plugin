@@ -1,4 +1,5 @@
 package adapters;
 
-public interface BaseAdapter {
+public interface BaseAdapter<A, B> {
+     B transform(A fromObject);
 }
