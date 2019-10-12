@@ -1,10 +1,14 @@
-
+//TODO Bei Programmstart: PopUp mit: Willst du dich neu registrieren oder die verwendete ID benutzen?
 package controller;
 
 import com.intellij.openapi.project.Project;
 import config.SettingsService;
+import gui.MailBoxScreen;
 import org.kohsuke.github.GHIssue;
-import requests.*;
+import requests.GitHubModel;
+import requests.GitModel;
+import requests.IDCreator;
+import requests.StudentRequestModel;
 
 import java.util.List;
 
@@ -16,38 +20,46 @@ public class Controller {
     private StudentRequestModel studentRequestModel;
     private IDCreator idCreator;
     private GitModel gitModel;
-    private GitHubModel gitHubModel;
+    public GitHubModel gitHubModel;
     private GitHubListener gitHubListener;
     private SettingsService settings = SettingsService.getInstance();
+    public MailBoxScreen mailBoxScreen;
 
     public Controller(Project project) {
-        studentRequestModel = new StudentRequestModel(project);
+        studentRequestModel = new StudentRequestModel(project, this);
         idCreator = new IDCreator();
         gitModel = new GitModel(project);
-        gitHubModel = new GitHubModel();
+        gitHubModel = new GitHubModel(this);
         //Hier wird der Thread aufgerufen
-        gitHubListener = new GitHubListener();
+        gitHubListener = new GitHubListener(this);
+        gitHubListener.start();
 
-
-        /*try {
-            settings.setValue("Ich bin ein gespeicherter Text!");
-        }
-        catch (Exception e)
-        {
+        try {
+            //settings.setValue("Ich bin ein gespeicherter Text!");
+            settings.setValue(gitHubModel.studentName);
+        } catch (Exception e) {
             System.out.println("something something state" + e.toString());
-        }*/
+        }
 
 
         System.out.println("Our state is: " + settings.getValue());
 
         this.project = project;
         System.out.println("Startklasse funktioniert!");
-        gitModel.cloneRepo();
-        //TODO: Alle 5 Minuten oder so soll geschaut werden, ob sich der State von einem Issue aus der Liste von OPEN zu CLOSED geändert hat
 
-        //gitHubModel.getIssueList();
+        try {
+            gitModel.cloneRepo();
+        } catch (Exception e) {
+            System.out.println("failed cloning the repository");
+        }
+
         //Das steht hier nur zu Testzwecken
         idCreator.createRequestID();
+    }
+
+    public void onNewAnswerData() {
+        mailBoxScreen.refreshTable();
+        System.out.println("onNewAnswerData");
     }
 
 }

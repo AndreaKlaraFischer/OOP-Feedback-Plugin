@@ -2,7 +2,9 @@ package requests;
 
 import adapters.GHIssueToAnswerAdapter;
 import answers.Answer;
+import answers.AnswerList;
 import config.Constants;
+import controller.Controller;
 import gui.SendRequestScreen;
 import gui.SettingScreen;
 import org.kohsuke.github.*;
@@ -24,16 +26,20 @@ public class GitHubModel {
     private static List<GHIssue> allClosedIssueList;
     public static ArrayList<GHIssue> closedIssueList;
     public static ArrayList<String> answers;
+    public AnswerList answerList;
     public HashMap<String, Answer> requestIdsAndAnswers = new HashMap<>();
 
     public Date answeredAt;
     public String tutorName;
+    public Controller controller;
 
-    public GitHubModel() {
+    public GitHubModel(Controller controller) {
+        this.controller = controller;
         issueList = new ArrayList<>();
         System.out.println("Hund und Sau\n\n\n");
         allClosedIssueList = new ArrayList<>();
         answers = new ArrayList<>();
+        answerList = new AnswerList();
         this.adapter = new GHIssueToAnswerAdapter();
 
         //https://github-api.kohsuke.org/apidocs/org/kohsuke/github/GitHub.html
@@ -74,11 +80,9 @@ public class GitHubModel {
         } catch (Exception e) {
             System.out.println("Das hat leider nicht funktioniert" + e.toString());
         }
-        //Das steht hier auch nur zu Testzwecken
-        //TODO: An die richtige Stelle
-        getAnswers();
-    }
 
+    }
+/*
     public void getAnswers() {
         //Muss leer sein am Anfang.
         answers = new ArrayList<>();
@@ -115,7 +119,7 @@ public class GitHubModel {
             }
         }
         System.out.println(answers);
-    }
+    }*/
 
 
     //TODO: Noch asynchron und persistent machen!
@@ -148,9 +152,12 @@ public class GitHubModel {
                 if (idxSent == idXAnswered) {
                     System.out.println("Found a match!");
                     String keyId = Long.toString(idxSent);
+                    //Answer valueAnswer = new Answer("it's a new dawn", "tuti", new Date());
                     Answer valueAnswer = adapter.transform(value);
-                    System.out.println(valueAnswer);
+                    System.out.println(valueAnswer.getAnswerMessage());
                     requestIdsAndAnswers.put(keyId, valueAnswer);
+                    answerList.add(valueAnswer);
+                    controller.onNewAnswerData();
                     System.out.println(requestIdsAndAnswers);
                 }
             }

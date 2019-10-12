@@ -7,8 +7,8 @@ import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import com.intellij.ui.content.ContentManagerEvent;
 import com.intellij.ui.content.ContentManagerListener;
+import controller.Controller;
 import org.jetbrains.annotations.NotNull;
-import requests.GitHubModel;
 
 public class ToolWindowPluginFactory implements ToolWindowFactory {
     // Tool window content gets created
@@ -16,14 +16,18 @@ public class ToolWindowPluginFactory implements ToolWindowFactory {
     @Override
     public void createToolWindowContent(Project project, ToolWindow toolWindow) {
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
+
+
+        Controller controller = new Controller(project);
+
         //Hier wird geswitcht!
         //Entweder: Methoden ändern oder hier:
         //TODO: Neuen Reiter machen mit Einstellungen --> Namen eingeben / ändern / anonymen Namen generieren
-        SendRequestScreen sendRequestScreen = new SendRequestScreen(project);
-        TutorialScreen tutorialScreen = new TutorialScreen();
+        SendRequestScreen sendRequestScreen = new SendRequestScreen(project, controller);
+        TutorialScreen tutorialScreen = new TutorialScreen(controller);
         AnswerDetailScreen answerScreen = new AnswerDetailScreen();
-        MailBoxScreen mailBoxScreen = new MailBoxScreen();
-        SettingScreen settingScreen = new SettingScreen();
+        MailBoxScreen mailBoxScreen = new MailBoxScreen(controller);
+        SettingScreen settingScreen = new SettingScreen(controller);
 
         Content contentMailBox = contentFactory.createContent(mailBoxScreen.getContent(),"Antworten", false);
         //Content contentAnswerDetail = contentFactory.createContent(answerScreen.getContent(),"Antwort des Tutors", false);

@@ -16,7 +16,6 @@ public class ScreenshotModel {
     public File screenshotFolder;
 
     public ScreenshotModel(StudentRequestModel studentRequestModel) {
-
         this.studentRequestModel = studentRequestModel;
     }
 

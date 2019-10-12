@@ -14,10 +14,10 @@ public class Constants {
     public static final String COMMON_LABEL_BEGIN = "_";
 
     public static final String ANSWER_TITEL_BEGINNING = "Antwort von Tutor/in";
+    public static final String ANSWER_TITLE_MIDDLE = "am";
 
     //30.09. Versuch, in ein UI Textfeld eine Konstante einzugeben --> funktioniert noch nicht
     public static final String TEST_TEXT = "TestText";
 
-    //30.09. Versuch, Polling --> alle paar Sekunden was checken --> funktioniert soweit
-    public static final long THREAD_MILLISECONDS = 60000;
+    public static final long THREAD_MILLISECONDS = 300000;
 }

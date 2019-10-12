@@ -1,7 +1,7 @@
 package gui;
 
 
-
+import controller.Controller;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -14,11 +14,14 @@ public class SettingScreen implements ActionListener {
     private JTextField inputNameField;
     private JButton generateAnonymousNameButton;
     private JButton saveSettingsButton;
-
     public static String studentNameInput;
+    private Controller controller;
 
+    //07.10. --> Anmelden. Beim Start des Plugins StartScreen: Neuer Benutzer / Bestehender Benutzer --> ID generieren (leicht merkmar)
+    // Kann man daheim wieder eingeben, wenn man es rechnerübergreifend benutzen möchte
 
-    public SettingScreen() {
+    public SettingScreen(Controller controller) {
+        this.controller = controller;
         studentNameInput = inputNameField.getText();
         //generateAnonymousNameButton.addActionListener(this::generateAnonymousName);
         saveSettingsButton.addActionListener(this::actionPerformed);
@@ -36,18 +39,11 @@ public class SettingScreen implements ActionListener {
         return settingScreenContent;
     }
 
-    /*public void getCategoryName(ActionEvent e) {
-        studentNameInput = inputNameField.getText();
-        if(studentNameInput != null) {
-            System.out.println(studentNameInput);
-        }
-    }*/
 
     @Override
     public void actionPerformed(ActionEvent e) {
         studentNameInput = inputNameField.getText();
         if(studentNameInput.length() == 0) {
-            //TODO: Wenn das genau das gleiche ist wie in der SendRequestKlasse, dann refactoren
             showMessageDialog(null, "Feld darf nicht leer sein!");
         } else {
             System.out.println(studentNameInput);
