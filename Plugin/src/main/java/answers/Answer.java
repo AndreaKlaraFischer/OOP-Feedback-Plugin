@@ -1,7 +1,6 @@
 package answers;
 
 import org.kohsuke.github.GHCommit;
-import requests.GitHubModel;
 
 import java.util.Date;
 
@@ -10,12 +9,8 @@ public class Answer {
     private String tutorName;
     private Date answerDate;
 
-    private GitHubModel gitHubModel;
-
     public Answer(String message, String tutor, Date date){
-        // this.gitHubModel = new GitHubModel();
-        answerMessage = message;
-        //TODO: answerMessage!!
+       answerMessage = message;
        tutorName = tutor;
        answerDate = date;
     }

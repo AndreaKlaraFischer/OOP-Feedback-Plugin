@@ -1,16 +1,24 @@
-package requests;
+package answers;
+
+import gui.MailBoxScreen;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 
 //http://www2.hawaii.edu/~takebaya/ics111/jtable_custom/jtable_custom.html
-public class OverviewTableModel extends AbstractTableModel {
+public class AnswerTableModel extends AbstractTableModel {
     private String[] columnNames = {"Antwort", "Tutor", "Datum"};
     private ArrayList<Answer> rowList;
+    private MailBoxScreen mailBoxScreen;
 
-    public OverviewTableModel() {
-        //TODO: closedIssueList = rows!
-        //rowList =  GitHubModel.closedIssueList;
+
+    public AnswerTableModel(AnswerList answerList) {
+        rowList = answerList.getAnswerList();
+    }
+
+    @Override
+    public int getColumnCount() {
+        return columnNames.length;
     }
 
     @Override
@@ -18,17 +26,24 @@ public class OverviewTableModel extends AbstractTableModel {
         int size;
         if (rowList == null) {
             size = 0;
-            //TODO: Hier dann noch irgendwie eine Ausgabe, dass es noch keine Antworten gibt.
         } else {
             size = rowList.size();
         }
         return size;
     }
 
-    @Override
-    public int getColumnCount() {
-        return columnNames.length;
+
+
+    public void changeVisabilityOfTextfield() {
+
+        if(mailBoxScreen.noAnswersTextfield.isVisible()) {
+            mailBoxScreen.noAnswersTextfield.setVisible(false);
+        } else {
+            mailBoxScreen.noAnswersTextfield.setVisible(true);
+        }
     }
+
+
 
     //! Hier wird´s spannend!
     @Override
@@ -50,4 +65,13 @@ public class OverviewTableModel extends AbstractTableModel {
     public String getColumnName(int col) {
         return columnNames[col];
     }
+
+    public Class getColumnClass(int c) {
+        return getValueAt(0, c).getClass();
+    }
+
+    public void fireTableChanged() {
+
+    }
+
 }
