@@ -34,18 +34,6 @@ public class AnswerTableModel extends AbstractTableModel {
 
 
 
-    public void changeVisabilityOfTextfield() {
-
-        if(mailBoxScreen.noAnswersTextfield.isVisible()) {
-            mailBoxScreen.noAnswersTextfield.setVisible(false);
-        } else {
-            mailBoxScreen.noAnswersTextfield.setVisible(true);
-        }
-    }
-
-
-
-    //! Hier wird´s spannend!
     @Override
     public Object getValueAt(int row, int col) {
         Object temp = null;
@@ -66,12 +54,9 @@ public class AnswerTableModel extends AbstractTableModel {
         return columnNames[col];
     }
 
-    public Class getColumnClass(int c) {
+    /*public Class getColumnClass(int c) {
         return getValueAt(0, c).getClass();
-    }
+    }*/
 
-    public void fireTableChanged() {
-
-    }
 
 }

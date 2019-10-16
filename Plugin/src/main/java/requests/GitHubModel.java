@@ -82,45 +82,6 @@ public class GitHubModel {
         }
 
     }
-/*
-    public void getAnswers() {
-        //Muss leer sein am Anfang.
-        answers = new ArrayList<>();
-
-        for (GHIssue ghIssue : closedIssueList) {
-            try {
-                //TODO: das auch noch als Liste?
-                //Wann wurde geantwortet? Das kommt zur Antwortklasse
-                answeredAt = ghIssue.getClosedAt();
-                System.out.println(ghIssue.getClosedAt());
-                //Hier wird der Name des Tutors abgefragt
-                tutorName = "";
-                List<GHLabel> labels = (List<GHLabel>) ghIssue.getLabels();
-                for(GHLabel label : labels) {
-                    if(label.getName().charAt(0) != '_' ) {
-                        tutorName = label.getName();
-                    }
-                }
-                System.out.println(tutorName);
-
-                //Hier werden die Kommentare geholt
-                List<GHIssueComment> comments = ghIssue.getComments();
-                StringBuilder result = new StringBuilder();
-                for (GHIssueComment comment : comments) {
-                    //wenn mehr als ein Kommentar vorhanden, dann zusammen bauen, trennen mit Absatz
-                   if(comments.indexOf(comment) > 0) {
-                      result.append("\n");
-                   }
-                   result.append(comment.getBody());
-                }
-                answers.add(result.toString());
-            } catch (Exception e) {
-                System.out.println(e.toString());
-            }
-        }
-        System.out.println(answers);
-    }*/
-
 
     //TODO: Noch asynchron und persistent machen!
     //TODO: Notiz: Funktioniert erst, wenn man mit dem Repo verbunden ist. Also vllt woanders hinpacken?
@@ -152,13 +113,17 @@ public class GitHubModel {
                 if (idxSent == idXAnswered) {
                     System.out.println("Found a match!");
                     String keyId = Long.toString(idxSent);
-                    //Answer valueAnswer = new Answer("it's a new dawn", "tuti", new Date());
                     Answer valueAnswer = adapter.transform(value);
                     System.out.println(valueAnswer.getAnswerMessage());
-                    requestIdsAndAnswers.put(keyId, valueAnswer);
-                    answerList.add(valueAnswer);
-                    controller.onNewAnswerData();
-                    System.out.println(requestIdsAndAnswers);
+
+                    // containsID() gibts noch gar nicht! schadi :(
+                    // dann werd ich sie wohl schreiben müssen, kann ja nicht so schwer sein ¯\_(ツ)_/¯
+                    if(!answerList.containsId(keyId)) {
+                        requestIdsAndAnswers.put(keyId, valueAnswer);
+                        answerList.add(valueAnswer);
+                        controller.onNewAnswerData();
+                        System.out.println(requestIdsAndAnswers);
+                    }
                 }
             }
         }
