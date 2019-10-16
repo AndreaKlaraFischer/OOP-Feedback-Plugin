@@ -5,14 +5,16 @@ import org.kohsuke.github.GHCommit;
 import java.util.Date;
 
 public class Answer {
+    private long answerId;
     private String answerMessage;
     private String tutorName;
     private Date answerDate;
 
-    public Answer(String message, String tutor, Date date){
-       answerMessage = message;
-       tutorName = tutor;
-       answerDate = date;
+    public Answer(long id, String message, String tutor, Date date){
+        answerId = id;
+        answerMessage = message;
+        tutorName = tutor;
+        answerDate = date;
     }
 
     public String getAnswerMessage() {
@@ -21,10 +23,13 @@ public class Answer {
     public String  getTutorName() {
         return tutorName;
     }
+    //TODO: Answer muss noch ordentlich angezeigt werden wieder
     public Date getAnswerDate() {
         return answerDate;
     }
-
+    public long getAnswerId() {
+        return answerId;
+    }
 
     //TODO: Das wird noch ein riesiges Todo! --> Wird dann im AnnotatedCodeModel geregelt
     public GHCommit.File getAnswerCode() {
@@ -33,6 +38,6 @@ public class Answer {
 
     @Override
     public String toString() {
-        return "Msg " + answerMessage + " tutorname " + tutorName + " answerdate" + answerDate;
+        return "Msg " + answerId + answerMessage + " tutorname " + tutorName + " answerdate" + answerDate;
     }
 }

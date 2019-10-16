@@ -21,16 +21,12 @@ public class AnswerList {
         return answerList;
     }
 
-    //TODO: Vielleicht doch das benutzen?
-    public void readAnswersFromHashMap() {
-        System.out.println("readAnswersFromHashMap");
-        try {
-            answerList = new ArrayList<Answer>(gitHubModel.requestIdsAndAnswers.values());
-
-            System.out.println(answerList.get(0).getAnswerMessage());
-        } catch (Exception e) {
-            return;
+    public boolean containsId(String keyId) {
+        for (Answer answer : answerList) {
+            if (answer.getAnswerId() == Long.parseLong(keyId)) {
+                return true;
+            }
         }
-
+        return false;
     }
 }

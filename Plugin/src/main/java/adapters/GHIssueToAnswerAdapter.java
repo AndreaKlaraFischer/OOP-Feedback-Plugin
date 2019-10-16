@@ -13,8 +13,7 @@ import java.util.List;
 public class GHIssueToAnswerAdapter implements BaseAdapter<GHIssue, Answer> {
     @Override
     public Answer transform(GHIssue fromObject) {
-        //TODO: Hier stimmt noch was nicht. Hier müssen die Kommentare geholt werden
-            return new Answer(getAnswer(fromObject), getTutorName(fromObject), fromObject.getClosedAt());
+            return new Answer(fromObject.getId(), getAnswer(fromObject), getTutorName(fromObject), fromObject.getClosedAt());
     }
 
     private String getAnswer(GHIssue issue) {
