@@ -15,8 +15,11 @@ public class ScreenshotModel {
     public static File[] screenshots;
     public File screenshotFolder;
 
-    public ScreenshotModel(StudentRequestModel studentRequestModel) {
+    /*public ScreenshotModel(StudentRequestModel studentRequestModel) {
         this.studentRequestModel = studentRequestModel;
+    }*/
+    public ScreenshotModel() {
+
     }
 
     public void chooseFiles() {

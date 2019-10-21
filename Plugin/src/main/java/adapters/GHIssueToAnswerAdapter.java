@@ -13,10 +13,10 @@ import java.util.List;
 public class GHIssueToAnswerAdapter implements BaseAdapter<GHIssue, Answer> {
     @Override
     public Answer transform(GHIssue fromObject) {
-            return new Answer(fromObject.getId(), getAnswer(fromObject), getTutorName(fromObject), fromObject.getClosedAt());
+            return new Answer(fromObject.getNumber(), fromObject.getId(), getAnswerText(fromObject), getTutorName(fromObject), fromObject.getClosedAt());
     }
 
-    private String getAnswer(GHIssue issue) {
+    private String getAnswerText(GHIssue issue) {
         //Hier werden die Kommentare geholt
         ArrayList<String> answers = new ArrayList<>();
         List<GHIssueComment> comments = null;

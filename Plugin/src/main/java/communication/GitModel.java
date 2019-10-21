@@ -1,12 +1,14 @@
-package requests;
+package communication;
 
 
 import com.intellij.openapi.project.Project;
 import config.Constants;
+import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import java.io.File;
+import java.io.IOException;
 
 public class GitModel {
     public static File repoPath;
@@ -20,8 +22,9 @@ public class GitModel {
     /* However the destination location is chosen, explicitly through your code or by JGit,
     the designated directory must either be empty or must not exist.
     Otherwise, an exception will be thrown.*/
-    public void cloneRepo() {
+    public void cloneRepo() throws IOException {
         try {
+            //TODO: Das vllt in eine While-Schleife packen?
             if(!repoPath.exists()) {
                 System.out.println("Repo Methodenaufruf funktioniert!");
                 Git.cloneRepository()
@@ -36,10 +39,10 @@ public class GitModel {
 
         } catch (Exception e){
             System.out.println("Repo wurde nicht erfolgreich geklont" + e.toString());
+            FileUtils.deleteDirectory(repoPath);
         } finally {
             //TODO: Ordner schließen/löschen, damit es das nächste Mal wieder geklont werden dann
             //repoPath.delete();
-            System.out.println("Wurde gelöscht");
 
         }
     }

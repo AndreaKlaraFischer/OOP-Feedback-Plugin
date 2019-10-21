@@ -1,16 +1,14 @@
 package controller;
 // Hier die "rückwärtige" Github Kommunikation rein: Polling,...
 
-//TODO: Aktion ausführen, wenn Issue geschlossen wurde --> darauf lauschen
 //TODO: Code schicken, wenn Issue geschlossen
 //TODO: Pullen
-//TODO: Sichtbarmachen, dass Antwort da ist
 //persistente Datenspeicherung
 
 //TODO: Im Plugin Branch pullen
 
 import config.Constants;
-import requests.GitHubModel;
+import communication.GitHubModel;
 
 public class GitHubListener extends Thread {
     public Controller controller;

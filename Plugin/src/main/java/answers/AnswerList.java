@@ -1,6 +1,6 @@
 package answers;
 
-import requests.GitHubModel;
+import communication.GitHubModel;
 
 import java.util.ArrayList;
 
@@ -21,9 +21,9 @@ public class AnswerList {
         return answerList;
     }
 
-    public boolean containsId(String keyId) {
+    public boolean containsId(Long idxSent) {
         for (Answer answer : answerList) {
-            if (answer.getAnswerId() == Long.parseLong(keyId)) {
+            if (answer.getAnswerId() == idxSent) {
                 return true;
             }
         }
