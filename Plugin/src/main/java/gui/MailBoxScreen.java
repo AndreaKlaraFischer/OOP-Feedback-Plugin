@@ -1,8 +1,10 @@
 package gui;
 
-import answers.Answer;
+import actions.BalloonPopup;
 import answers.AnswerList;
 import answers.AnswerTableModel;
+import com.intellij.openapi.ui.MessageType;
+import com.intellij.openapi.ui.popup.Balloon;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.table.JBTable;
 import config.Constants;
@@ -11,150 +13,162 @@ import controller.Controller;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Date;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class MailBoxScreen implements ActionListener {
 
     private AnswerTableModel answerTableModel;
-    private JBTable table1;
+    private JBTable answerOverviewTable;
 
     private AnswerList rowList;
     private JPanel mailBoxScreenContent;
-    private JButton testButton;
+
     public JTextField noAnswersTextfield;
     private Controller controller;
-    private JBScrollPane scrollPane;
-    private JBScrollPane answerDetailView;
-    private JTextField testi;
-    private JButton openCodeButton;
-    private JTextField detailedAnswer;
-    private JLabel answerTitleLabel;
+    public JBScrollPane answerScrollPane;
+    private JBScrollPane detailScrollPane;
 
-    private String answerTitle;
+    private AnswerDetailScreen answerDetailScreen;
+
+    private int row;
+    private String tutorName;
 
 
-    //TODO 09.10 Das geht noch nicht!
     public MailBoxScreen(Controller controller) {
-        controller.mailBoxScreen = this;
-
         this.controller = controller;
-        testButton.addActionListener(this);
+        controller.mailBoxScreen = this;
+        //14.10.
+        answerDetailScreen = new AnswerDetailScreen(controller.mailBoxScreen, controller);
+
         rowList = controller.gitHubModel.answerList;
 
         //TODO: Das noch fixen
         mailBoxScreenContent = new JPanel();
+        noAnswersTextfield = new JTextField();
+        noAnswersTextfield.setText("Noch keine Antworten vorhanden.");
+        noAnswersTextfield.setEditable(false);
+        answerOverviewTable = new JBTable();
         answerTableModel = new AnswerTableModel(controller.gitHubModel.answerList);
+        answerOverviewTable.setModel(answerTableModel);
+        //12.10.
+        answerOverviewTable.setRowSelectionAllowed(true);
+        ListSelectionModel rowSelectionModel = answerOverviewTable.getSelectionModel();
+        rowSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        table1.setModel(answerTableModel);
 
-
-        //TODO: Wie bekomme ich die alle in ein Panel? Kann ich einen Container einem Panel hinzufügen?
-        //Das sind alles Testelemente für den "zweiten" Screen
-        testi = new JTextField();
-        testi.setText("teteteteetettststsstst"); //TODO: Kommentar zum Issue
-        answerTitleLabel = new JLabel();
-        answerTitle = Constants.ANSWER_TITEL_BEGINNING + "Tutorname" + Constants.ANSWER_TITLE_MIDDLE + "Datum";
-        answerTitleLabel.setText(answerTitle);
-        openCodeButton = new JButton();
-        openCodeButton.setText("zum Code");
-        openCodeButton.addActionListener(this::actionPerformed);
-        detailedAnswer = new JTextField();
-        detailedAnswer.setText(Constants.TEST_TEXT);
-        //Versuch, mehrere Components hinzuzufügen
-        answerDetailView = new JBScrollPane(answerDetailView);
-        addComponentsToAnswerDetailPanel();
-        answerDetailView.setVisible(false);
         //Das gehört zur Tabelle
-        scrollPane = new JBScrollPane(table1);
-        scrollPane.setViewportView(table1);
+        answerScrollPane = new JBScrollPane(answerOverviewTable);
+        answerScrollPane.setViewportView(answerOverviewTable);
+        //scrollPane.setSize(400,400);
         mailBoxScreenContent.add(noAnswersTextfield);
-        mailBoxScreenContent.add(scrollPane);
-        mailBoxScreenContent.add(testButton);
-        controller.gitHubModel.answerList.add(new Answer("messager", "name", new Date()));
+        mailBoxScreenContent.add(answerScrollPane);
 
-        //Da soll die andere View gesetzt werden
-        mailBoxScreenContent.add(answerDetailView);
+        detailScrollPane = answerDetailScreen.answerDetailScrollPane;
 
-    }
+        changeVisibilityOfTextFieldAndTable();
 
-    //TODO: ganz dringend noch implementieren, dass jede Antwort nur einmal in die Tabelle hinzugefügt wird!!!!
-    public void refreshTable() {
-        answerTableModel.fireTableDataChanged();
-        changeVisibilityOfTextField();
-        showNotification();
-    }
+        answerOverviewTable.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                //Zeile kann mit Einfach- oder mit Doppelklick ausgewählt werden
+                if (e.getClickCount() == 1 || e.getClickCount() == 2) {
+                    JTable target = (JTable) e.getSource();
+                    row = target.getSelectedRow();
+                    //TODO: Das geht nur beim ersten Mal! Fixen
+                    if(row >= 0) {
+                        //TODO 16.10.
+                        //TODO: Soll NUR auf angeklickter Reihe funktionieren
+                        System.out.println("Diese Zeile wurde geklickt: " + row);
 
-    //TODO: Das geht noch nicht leider
-    public void addComponentsToAnswerDetailPanel() {
-        answerDetailView.add(answerTitleLabel);
-        answerDetailView.add(testi);
-        answerDetailView.add(detailedAnswer);
-        answerDetailView.add(openCodeButton);
-    }
-
-    private void changeVisibilityOfTextField() {
-        try {
-            if(rowList.getAnswerList().size() == 0 ) {
-                showTextfield();
-            } else if(rowList.getAnswerList().size() > 0){
-                hideTextfield();
+                        showAnswerDetailContent();
+                    }
+                }
             }
-        } catch (Exception e) {
-            System.out.println("Aus diesem Grund hat diese Scheiße nicht funktioniert" + e.toString());
+        });
+    }
+
+    private void showAnswerDetailContent() {
+        mailBoxScreenContent.remove(answerScrollPane);
+        mailBoxScreenContent.remove(noAnswersTextfield);
+        mailBoxScreenContent.add(detailScrollPane);
+        detailScrollPane.setVisible(true);
+        setCorrectContents();
+        mailBoxScreenContent.revalidate();
+    }
+
+    //TODO: Hier auch noch mit Parametern arbeiten?!
+    //title, message, Code?
+    private void setCorrectContents() {
+        //TODO: Antwortzelle auslesen. Das funktioniert schon mal -->
+        // TODO: Das über ArrayList machen (Tabellenzeilen sind im UI verschiebbar)
+        String answerMessageCellContent = (String) answerOverviewTable.getValueAt(row, 0);
+        System.out.println(answerOverviewTable.getValueAt(row, 0));
+        answerDetailScreen.detailedAnswerField.setText(answerMessageCellContent);
+        createAnswerDetailTitle();
+    }
+
+    //TODO: Refactoren ? --> Das muss noch funktionieren
+    private void createAnswerDetailTitle() {
+        String answerTitle = "";
+        tutorName = (String) answerOverviewTable.getValueAt(row, 1);
+        if(!tutorName.equals("")) {
+            answerTitle = Constants.ANSWER_TITLE_BEGINNING + tutorName;
+            answerDetailScreen.answerTitleLabel.setText(answerTitle);
+        } else {
+            answerTitle = Constants.ANSWER_TITLE_BEGINNING;
+            answerDetailScreen.answerTitleLabel.setText(answerTitle);
         }
     }
 
+    public void navigateBackToTable(ActionEvent actionEvent) {
+        mailBoxScreenContent.remove(detailScrollPane);
+        mailBoxScreenContent.add(answerScrollPane);
+        mailBoxScreenContent.revalidate();
+    }
+
+
+    public void refreshTable() {
+        answerTableModel.fireTableDataChanged();
+        answerScrollPane.setVisible(true);
+        noAnswersTextfield.setVisible(false);
+        showNotification();
+    }
+
+    //TODO: Das noch resistenter machen. wird ja dann im Endeffekt bei refreshTable wieder aufgerufen --> dublicate code
+    private void changeVisibilityOfTextFieldAndTable() {
+        try {
+            if (rowList.getAnswerList().size() == 0) {
+                answerScrollPane.setVisible(false);
+                noAnswersTextfield.setVisible(true);
+            } else if (rowList.getAnswerList().size() > 0) {
+                noAnswersTextfield.setVisible(false);
+                answerScrollPane.setVisible(true);
+            }
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+    }
 
     public JPanel getContent() {
         return mailBoxScreenContent;
     }
 
-    private void showAnswerDetailContent() {
-        table1.getSelectedRow();
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
-        openCodeInNewWindow();
-        changeVisibilityOfTableTest();
+
     }
-
-    private void openCodeInNewWindow() {
-        //TODO: CodeModel
-    }
-
-    private void hideTextfield() {
-        noAnswersTextfield.setVisible(false);
-    }
-
-    private void showTextfield() {
-        noAnswersTextfield.setVisible(true);
-        System.out.println("Das wird ausgeführt");
-    }
-
-
-    //TODO: Das darf sich mit anderen Sichtbarkeiten nicht überschneiden
-    public void changeVisibilityOfTableTest() {
-        if(scrollPane.isVisible()) {
-           scrollPane.setVisible(false);
-           answerDetailView.setVisible(true);
-        } else {
-           scrollPane.setVisible(true);
-           answerDetailView.setVisible(false);
-        }
-    }
-
-
 
     private void showNotification() {
-        showMessageDialog(null, "Neue Antwort von Tutor!");
-        //TODO: Das ist nicht die ideale Lösung, aber momentan funktioniert sie --> Sticky Balloons
+        //TODO: Überlegen, ob man nicht doch beim MessageDialog bleibt, weil der so schön penetrant ist und erst weggeht,
+        // wenn was geklickt wurde und die IDE unten auch noch blinkt.
+        BalloonPopup stickyBalloonPopup = new BalloonPopup();
+        stickyBalloonPopup.createStickyBalloonPopup(mailBoxScreenContent, Balloon.Position.above, "Neue Antwort von Tutor", MessageType.WARNING);
+        //showMessageDialog(null, "Neue Antwort von Tutor!");
+        //TODO: Das ist nicht die ideale Lösung, aber momentan funktioniert sie --> Sticky Balloons (Marlena fragen und Link anschauen)
         //Also am besten einen Listener auf die Tabellenreihe machen, damit die Notification wieder verschwindet
     }
-
-    //TODO: Wenn eine Zeile angeklickt wird, soll der "AnswerDetailScreen" aufgehen
 
 }
 

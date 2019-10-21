@@ -10,6 +10,8 @@ import com.intellij.ui.content.ContentManagerListener;
 import controller.Controller;
 import org.jetbrains.annotations.NotNull;
 
+import javax.swing.*;
+
 public class ToolWindowPluginFactory implements ToolWindowFactory {
     // Tool window content gets created
     //https://github.com/JetBrains/intellij-sdk-docs/blob/master/code_samples/tool_window/src/myToolWindow/MyToolWindowFactory.java
@@ -25,20 +27,25 @@ public class ToolWindowPluginFactory implements ToolWindowFactory {
         //TODO: Neuen Reiter machen mit Einstellungen --> Namen eingeben / ändern / anonymen Namen generieren
         SendRequestScreen sendRequestScreen = new SendRequestScreen(project, controller);
         TutorialScreen tutorialScreen = new TutorialScreen(controller);
-        AnswerDetailScreen answerScreen = new AnswerDetailScreen();
+        //14.10. Versuch, das darüber zu regeln
+        JPanel answerDetailScreen = new JPanel();
         MailBoxScreen mailBoxScreen = new MailBoxScreen(controller);
         SettingScreen settingScreen = new SettingScreen(controller);
 
-        Content contentMailBox = contentFactory.createContent(mailBoxScreen.getContent(),"Antworten", false);
+        Content contentMailBox = contentFactory.createContent(mailBoxScreen.getContent(), "Antworten", false);
         //Content contentAnswerDetail = contentFactory.createContent(answerScreen.getContent(),"Antwort des Tutors", false);
         Content contentTutorial = contentFactory.createContent(tutorialScreen.getContent(),"Tutorial", false);
         Content contentRequest = contentFactory.createContent(sendRequestScreen.getContent(), "Tutor fragen", false);
         Content contentSettings = contentFactory.createContent(settingScreen.getContent(), "Einstellungen", false);
 
+
         toolWindow.getContentManager().addContent(contentRequest);
         toolWindow.getContentManager().addContent(contentTutorial);
         toolWindow.getContentManager().addContent(contentMailBox);
         toolWindow.getContentManager().addContent(contentSettings);
+
+        //14.10.
+       // toolWindow.getContentManager().addContent((Content) answerDetailScreen);
         //contentAnswerDetail soll nur angezeigt werden, wenn auf ein Listen Item gedrückt wurde!Kein eigener Tab
         //toolWindow.getContentManager().addContent(contentAnswerDetail);
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="gui.SendRequestScreen">
-  <grid id="27dc6" binding="contentSendRequest" layout-manager="GridLayoutManager" row-count="5" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+  <grid id="27dc6" binding="sendRequestScreenContent" layout-manager="GridLayoutManager" row-count="6" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="120" width="528" height="207"/>
+      <xy x="20" y="120" width="528" height="232"/>
     </constraints>
     <properties/>
     <border type="line" title="Das ist die Überschrift!">
@@ -12,7 +12,7 @@
     <children>
       <component id="18e8d" class="javax.swing.JButton" binding="submitRequestButton" default-binding="true">
         <constraints>
-          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <background color="-12828863"/>
@@ -26,20 +26,20 @@
       </component>
       <component id="6a98c" class="javax.swing.JTextArea" binding="inputMessageArea">
         <constraints>
-          <grid row="3" column="0" row-span="1" col-span="2" vsize-policy="2" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false">
+          <grid row="4" column="0" row-span="1" col-span="2" vsize-policy="2" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="50"/>
           </grid>
         </constraints>
         <properties>
           <editable value="true"/>
           <text value=""/>
-          <toolTipText value="Hier gibst du die Beschreibung deines Codes ein. Kann nicht leer gelassen werden. "/>
+          <toolTipText value="Hier gibst du die Beschreibung deines Problems ein. Kann nicht leer gelassen werden. "/>
           <wrapStyleWord value="false"/>
         </properties>
       </component>
       <component id="95b24" class="javax.swing.JLabel">
         <constraints>
-          <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="2" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value="Um welche Art Problem handelt es sich?"/>
@@ -47,7 +47,7 @@
       </component>
       <component id="6cf8b" class="javax.swing.JComboBox" binding="selectCategory" default-binding="true">
         <constraints>
-          <grid row="2" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="3" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <model>
@@ -60,7 +60,7 @@
       </component>
       <component id="c559e" class="javax.swing.JButton" binding="selectFileButton">
         <constraints>
-          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <hideActionText value="true"/>
@@ -78,6 +78,14 @@
         <properties>
           <editable value="false"/>
           <text value="&lt;Hier noch eine kurze Erklärung schreiben. "/>
+        </properties>
+      </component>
+      <component id="5326a" class="javax.swing.JLabel" binding="hyperlink">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="HyperlinkTest"/>
         </properties>
       </component>
     </children>

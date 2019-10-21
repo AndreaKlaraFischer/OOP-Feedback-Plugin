@@ -1,23 +1,24 @@
 package gui;
 
 import config.Constants;
+import controller.Controller;
+import org.kohsuke.github.GHIssue;
+import org.kohsuke.github.GHIssueComment;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
-public class TutorialScreen implements ActionListener {
+public class TutorialScreen {
     private JPanel tutorialScreenContent;
     private JTextPane loremIpsumDolorSitTextPane;
-    private JButton helpfulButton;
-    private JButton semiHelpfulButton;
-    private JButton notHelpfulButton;
+    private JTextField wasMussHierAllesTextField;
+    private Controller controller;
 
 
-    public TutorialScreen() {
-        helpfulButton.addActionListener(this);
-        semiHelpfulButton.addActionListener(this);
-        notHelpfulButton.addActionListener(this);
+    public TutorialScreen(Controller controller) {
+        this.controller = controller;
     }
 
     public JPanel getContent() {
@@ -25,36 +26,4 @@ public class TutorialScreen implements ActionListener {
     }
 
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        System.out.println(e.getSource());
-        //Herausfinden, welcher Button geklickt wurde, in Variable speichern
-        Object clickedButton = e.getSource();
-        if(clickedButton == helpfulButton) {
-            setHelpfulFeedbackLabel();
-        } else if (clickedButton == semiHelpfulButton) {
-            setSemiHelpfulFeedbackLabel();
-        } else if (clickedButton == notHelpfulButton) {
-            setNotHelpfulFeedbackLabel();
-        }
-    }
-
-    //TODO: Issues herbekommen!!
-    private void setNotHelpfulFeedbackLabel() {
-        String notHelpfulLabel = Constants.COMMON_LABEL_BEGIN + "nicht hilfreich";
-        System.out.println("NICHT HILFREICH :(");
-        //issue.addLabels(notHelpfulLabel);
-    }
-
-    private void setSemiHelpfulFeedbackLabel() {
-        String semiHelpfulLabel = Constants.COMMON_LABEL_BEGIN + "mittel hilfreich";
-        System.out.println("Das war so lala");
-        //issue.addLabels(semiHelpfulLabel);
-    }
-
-    private void setHelpfulFeedbackLabel() {
-        String helpfulLabel = Constants.COMMON_LABEL_BEGIN + "hilfreich";
-        System.out.println("Supi, danke für´s Feedback!");
-        //issue.addLabels(helpfulLabel);
-    }
 }

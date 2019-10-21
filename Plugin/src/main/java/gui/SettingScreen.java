@@ -21,6 +21,7 @@ public class SettingScreen implements ActionListener {
     // Kann man daheim wieder eingeben, wenn man es rechnerübergreifend benutzen möchte
 
     public SettingScreen(Controller controller) {
+        controller.settingScreen = this;
         this.controller = controller;
         studentNameInput = inputNameField.getText();
         //generateAnonymousNameButton.addActionListener(this::generateAnonymousName);
@@ -35,6 +36,10 @@ public class SettingScreen implements ActionListener {
         return anonymousName;
     }
 
+    public String getStudentNameInput() {
+        return inputNameField.getText();
+    }
+
     public JPanel getContent() {
         return settingScreenContent;
     }
@@ -43,10 +48,11 @@ public class SettingScreen implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         studentNameInput = inputNameField.getText();
-        if(studentNameInput.length() == 0) {
+        controller.getStudentName();
+       /* if(studentNameInput.length() == 0) {
             showMessageDialog(null, "Feld darf nicht leer sein!");
         } else {
             System.out.println(studentNameInput);
-        }
+        }*/
     }
 }

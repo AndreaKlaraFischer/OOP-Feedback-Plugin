@@ -9,6 +9,9 @@ import com.intellij.openapi.components.Storage;
 //TODO: Im Homeverzeichnis vom Benutzer einen Ordner anlegen und Daten dort abspeichern (weiter: Betriebssysteme abfragen) Windows: app data
 //TODO: in "LogManager" nachschauen: File getLogPath()
 //TODO: Beim Starten des Plugins einen neuen Ordner beim Benutzer anlegen (abfragen, ob er da schon ist)
+
+//TODO: 07.10. Überlegen: Initialisierungsvorgang: Überlegen, wie die Anwendung sich am Anfang verhält
+
 @State(name = "statiFisch", storages = {@Storage("fischifisch.xml")})
 public class SettingsService implements PersistentStateComponent<SettingsService.State> {
     //Subklasse
@@ -23,25 +26,29 @@ public class SettingsService implements PersistentStateComponent<SettingsService
 
     private State state;
 
-    public SettingsService()
-    {
+    public SettingsService() {
         state = new State();
     }
 
-    public void setValue(String value)
-    {
+    public void setValue(String value) {
         state.value = value;
+
+    }
+    public void setName(String name) {
+        state.name = name;
     }
 
-    public String getValue()
-    {
+    public String getValue() {
         return state.value;
+    }
+
+    public String getName() {
+        return state.name;
     }
 
 
     @Override
-    public void noStateLoaded()
-    {
+    public void noStateLoaded() {
         System.out.println("noStateLoaded()");
     }
 
