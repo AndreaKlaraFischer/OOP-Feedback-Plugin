@@ -31,6 +31,7 @@ public class GitHubModel {
 
     public int answerId;
     public int answerNumber;
+    private String requestDate;
 
     public GitHubModel(Controller controller) {
         this.controller = controller;
@@ -52,18 +53,23 @@ public class GitHubModel {
         }
     }
 
-    public String createIssueTitle(String studentName) {
+    public String createIssueTitle(String studentName, String requestDate) {
+        //TODO: Woher bekomme ich die Uhrzeit? Das muss wahrscheinlich beim Buttonklick passieren
         return Constants.ISSUE_TITLE_BEGINNING +
                 Constants.SEPARATOR +
                 Constants.SEPARATOR +
-                studentName;
+                studentName +
+                Constants.SEPARATOR +
+                Constants.ISSUE_TITLE_DATE +
+                Constants.SEPARATOR +
+                requestDate;
     }
 
-    public void createIssue(String title, String body, String label) {
+    public void createIssue(String title, String body, String labelCategory, String labelBranchname) {
         try {
             issue = repo.createIssue(title).create();
             issue.setBody(body);
-            issue.addLabels(label);
+            issue.addLabels(labelCategory, labelBranchname);
             issueList.add(issue);
             System.out.println("issueList" + issueList);
         } catch (IOException e) {
@@ -167,6 +173,8 @@ public class GitHubModel {
         }
     }
 
+
+
     //18.10. Versuch, das mit Parameter zu lösen. --> Funktioniert soweit.
     public void setFeedbackText(String prefix, String feedbackMessage) {
         try {
@@ -174,6 +182,11 @@ public class GitHubModel {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    //TODO (Test mit false funktioniert noch nicht)
+    public boolean checkIfChangesInCode() {
+        return false;
     }
 
 }
