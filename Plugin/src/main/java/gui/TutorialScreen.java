@@ -1,24 +1,25 @@
 package gui;
 
-import config.Constants;
 import controller.Controller;
-import org.kohsuke.github.GHIssue;
-import org.kohsuke.github.GHIssueComment;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
-public class TutorialScreen {
+public class TutorialScreen implements ActionListener{
     private JPanel tutorialScreenContent;
-    private JTextPane loremIpsumDolorSitTextPane;
+    private JTextPane platzhalterText;
     private JTextField wasMussHierAllesTextField;
+    private JButton testi;
     private Controller controller;
+    RegistrationMenu registrationMenu;
 
 
     public TutorialScreen(Controller controller) {
         this.controller = controller;
+        testi.addActionListener(this::actionPerformed);
+        //TODO: Das ist hier nur zu Testzwecken
+        registrationMenu = new RegistrationMenu();
     }
 
     public JPanel getContent() {
@@ -26,4 +27,8 @@ public class TutorialScreen {
     }
 
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        registrationMenu.showDialog();
+    }
 }

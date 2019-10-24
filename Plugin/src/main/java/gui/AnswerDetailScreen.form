@@ -18,13 +18,14 @@
           <text value="Label"/>
         </properties>
       </component>
-      <component id="c7e64" class="javax.swing.JButton" binding="backToTabelButton">
+      <component id="c7e64" class="javax.swing.JButton" binding="backToTableButton">
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="94" height="61"/>
           </grid>
         </constraints>
         <properties>
+          <hideActionText value="true"/>
           <icon value="actions/back_dark.png"/>
           <text value=""/>
         </properties>
@@ -99,6 +100,15 @@
           </grid>
         </constraints>
       </vspacer>
+      <component id="ac67a" class="javax.swing.JButton" binding="sendFeedbackButton">
+        <constraints>
+          <grid row="5" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <icon value="actions/forward.png"/>
+          <text value="Feedback abschicken"/>
+        </properties>
+      </component>
     </children>
   </grid>
 </form>

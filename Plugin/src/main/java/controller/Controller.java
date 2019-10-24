@@ -3,11 +3,11 @@ package controller;
 
 import actions.BalloonPopup;
 import actions.MailModel;
+import answers.Answer;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.MessageType;
-import com.intellij.openapi.ui.popup.Balloon;
 import config.Constants;
 import config.SettingsService;
+import gui.AnswerDetailScreen;
 import gui.MailBoxScreen;
 import gui.SendRequestScreen;
 import gui.SettingScreen;
@@ -15,10 +15,11 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.kohsuke.github.GHIssue;
 import communication.GitHubModel;
 import communication.GitModel;
+import requests.CodeModel;
 import requests.IDCreator;
 import requests.ScreenshotModel;
-import requests.StudentRequestModel;
 
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.List;
 
@@ -27,35 +28,32 @@ import java.util.List;
 public class Controller {
     private List<GHIssue> issueList;
     private Project project;
-    public StudentRequestModel studentRequestModel;
     public IDCreator idCreator;
     public GitModel gitModel;
     public GitHubModel gitHubModel;
     private GitHubListener gitHubListener;
     private SettingsService settings = SettingsService.getInstance();
     public MailBoxScreen mailBoxScreen;
+    public AnswerDetailScreen answerDetailScreen;
     private BalloonPopup balloonPopup;
     public SendRequestScreen sendRequestScreen;
     public SettingScreen settingScreen;
-
     public ScreenshotModel screenshotModel;
-    public String studentName;
+    private MailModel mailModel;
+    public CodeModel codeModel;
 
-
-    //18.10.
-    public MailModel mailModel;
     //Hier ist die Reihenfolge wichtig!
     public Controller(Project project) {
         idCreator = new IDCreator();
+        gitModel = new GitModel(project, this);
+        codeModel = new CodeModel(this);
 
-        gitModel = new GitModel(project);
+        screenshotModel = new ScreenshotModel(this);
+
+
         gitHubModel = new GitHubModel(this);
-        //18.10.
         mailModel = new MailModel();
         balloonPopup = new BalloonPopup();
-        screenshotModel = new ScreenshotModel();
-
-        studentRequestModel = new StudentRequestModel(project, this);
 
         //Hier wird der Thread aufgerufen
         gitHubListener = new GitHubListener(this);
@@ -103,6 +101,24 @@ public class Controller {
         System.out.println("openCodeButton Methodenaufruf aus Controller");
     }
 
+    public void sendFeedbackForFeedback() {
+        gitHubModel.matchFeedbackAndRequest(gitHubModel.answerNumber);
+        //Switch geht leider nicht mit Objekten
+       if(answerDetailScreen.selectedHelpfulness == 1) {
+           gitHubModel.setHelpfulFeedbackLabel();
+       } else if (answerDetailScreen.selectedHelpfulness == 2) {
+           gitHubModel.setNeutralLabel();
+       } else if(answerDetailScreen.selectedHelpfulness == 3) {
+           gitHubModel.setNotHelpfulFeedbackLabel();
+       }
+        answerDetailScreen.createFeedbackText();
+        answerDetailScreen.showSentFeedbackBalloon();
+    }
+
+    public void onAnswerSelected(Answer answer) {
+        mailBoxScreen.showAnswerDetailContent(answer);
+    }
+
     public void onSubmitRequestButtonPressed() {
         String requestMessage = sendRequestScreen.getInputMessage();
         //String studentName = settings.getName();
@@ -117,7 +133,7 @@ public class Controller {
             try {
                 String title = gitHubModel.createIssueTitle(getStudentName());
                 String label = Constants.COMMON_LABEL_BEGIN + SendRequestScreen.problemCategory;
-                studentRequestModel.createAndPushBranch();
+                gitModel.createAndPushBranch();
                 gitHubModel.createIssue(title, requestMessage, label);
                 mailModel.sendMailToTutors();
 

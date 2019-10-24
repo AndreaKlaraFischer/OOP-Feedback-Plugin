@@ -1,6 +1,7 @@
 package gui;
 
 import actions.BalloonPopup;
+import answers.Answer;
 import answers.AnswerList;
 import answers.AnswerTableModel;
 import com.intellij.openapi.ui.MessageType;
@@ -33,8 +34,6 @@ public class MailBoxScreen implements ActionListener {
 
     private AnswerDetailScreen answerDetailScreen;
 
-    private int row;
-    private String tutorName;
 
 
     public MailBoxScreen(Controller controller) {
@@ -43,6 +42,7 @@ public class MailBoxScreen implements ActionListener {
         //14.10.
         answerDetailScreen = new AnswerDetailScreen(controller.mailBoxScreen, controller);
 
+       //TODO: kapseln (nicht den Umweg über s GitHubModel, zB controller.getAnswers)
         rowList = controller.gitHubModel.answerList;
 
         //TODO: Das noch fixen
@@ -51,6 +51,8 @@ public class MailBoxScreen implements ActionListener {
         noAnswersTextfield.setText("Noch keine Antworten vorhanden.");
         noAnswersTextfield.setEditable(false);
         answerOverviewTable = new JBTable();
+        answerOverviewTable.setDragEnabled(false);
+        //controller!
         answerTableModel = new AnswerTableModel(controller.gitHubModel.answerList);
         answerOverviewTable.setModel(answerTableModel);
         //12.10.
@@ -73,56 +75,43 @@ public class MailBoxScreen implements ActionListener {
         answerOverviewTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 //Zeile kann mit Einfach- oder mit Doppelklick ausgewählt werden
-                if (e.getClickCount() == 1 || e.getClickCount() == 2) {
+                if (e.getClickCount() == 2) {
                     JTable target = (JTable) e.getSource();
-                    row = target.getSelectedRow();
-                    //TODO: Das geht nur beim ersten Mal! Fixen
+                    int row = target.rowAtPoint(e.getPoint());
                     if(row >= 0) {
-                        //TODO 16.10.
-                        //TODO: Soll NUR auf angeklickter Reihe funktionieren
-                        System.out.println("Diese Zeile wurde geklickt: " + row);
-
-                        showAnswerDetailContent();
+                        controller.onAnswerSelected(answerTableModel.getAnswerAt(row));
                     }
                 }
             }
         });
     }
 
-    private void showAnswerDetailContent() {
+    public void showAnswerDetailContent(Answer answer) {
         mailBoxScreenContent.remove(answerScrollPane);
         mailBoxScreenContent.remove(noAnswersTextfield);
         mailBoxScreenContent.add(detailScrollPane);
         detailScrollPane.setVisible(true);
-        setCorrectContents();
-        mailBoxScreenContent.revalidate();
-    }
 
-    //TODO: Hier auch noch mit Parametern arbeiten?!
-    //title, message, Code?
-    private void setCorrectContents() {
-        //TODO: Antwortzelle auslesen. Das funktioniert schon mal -->
-        // TODO: Das über ArrayList machen (Tabellenzeilen sind im UI verschiebbar)
-        String answerMessageCellContent = (String) answerOverviewTable.getValueAt(row, 0);
-        System.out.println(answerOverviewTable.getValueAt(row, 0));
-        answerDetailScreen.detailedAnswerField.setText(answerMessageCellContent);
-        createAnswerDetailTitle();
-    }
 
-    //TODO: Refactoren ? --> Das muss noch funktionieren
-    private void createAnswerDetailTitle() {
+        //setCorrectContents();
+        answerDetailScreen.detailedAnswerField.setText(answer.getAnswerMessage());
+
+        //createAnswerDetailTitle();
         String answerTitle = "";
-        tutorName = (String) answerOverviewTable.getValueAt(row, 1);
-        if(!tutorName.equals("")) {
-            answerTitle = Constants.ANSWER_TITLE_BEGINNING + tutorName;
+        String tutorName = answer.getTutorName();
+        //NPE gefixt?
+        if(tutorName.length() > 0) {
+            answerTitle = Constants.ANSWER_TITLE_BEGINNING + Constants.SEPARATOR + tutorName;
             answerDetailScreen.answerTitleLabel.setText(answerTitle);
         } else {
             answerTitle = Constants.ANSWER_TITLE_BEGINNING;
             answerDetailScreen.answerTitleLabel.setText(answerTitle);
         }
+        mailBoxScreenContent.revalidate();
     }
 
-    public void navigateBackToTable(ActionEvent actionEvent) {
+
+    public void navigateBackToTable() {
         mailBoxScreenContent.remove(detailScrollPane);
         mailBoxScreenContent.add(answerScrollPane);
         mailBoxScreenContent.revalidate();
@@ -161,14 +150,7 @@ public class MailBoxScreen implements ActionListener {
     }
 
     private void showNotification() {
-        //TODO: Überlegen, ob man nicht doch beim MessageDialog bleibt, weil der so schön penetrant ist und erst weggeht,
-        // wenn was geklickt wurde und die IDE unten auch noch blinkt.
-        BalloonPopup stickyBalloonPopup = new BalloonPopup();
-        stickyBalloonPopup.createStickyBalloonPopup(mailBoxScreenContent, Balloon.Position.above, "Neue Antwort von Tutor", MessageType.WARNING);
-        //showMessageDialog(null, "Neue Antwort von Tutor!");
-        //TODO: Das ist nicht die ideale Lösung, aber momentan funktioniert sie --> Sticky Balloons (Marlena fragen und Link anschauen)
-        //Also am besten einen Listener auf die Tabellenreihe machen, damit die Notification wieder verschwindet
+        showMessageDialog(null, "Neue Antwort von Tutor!");
+        navigateBackToTable();
     }
-
 }
-

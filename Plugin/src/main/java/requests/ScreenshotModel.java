@@ -1,6 +1,8 @@
 package requests;
 
+import communication.GitModel;
 import config.Constants;
+import controller.Controller;
 import org.apache.commons.io.FileUtils;
 
 import javax.swing.*;
@@ -11,15 +13,16 @@ import java.util.Arrays;
 
 public class ScreenshotModel {
 
-    private  StudentRequestModel studentRequestModel;
     public static File[] screenshots;
     public File screenshotFolder;
+    public Controller controller;
 
     /*public ScreenshotModel(StudentRequestModel studentRequestModel) {
         this.studentRequestModel = studentRequestModel;
     }*/
-    public ScreenshotModel() {
-
+    public ScreenshotModel(Controller controller) {
+        this.controller = controller;
+        //gitModel = controller.gitModel;
     }
 
     public void chooseFiles() {
@@ -53,12 +56,12 @@ public class ScreenshotModel {
     }
 
     public void addScreenshotsToBranch()  {
-        screenshotFolder = new File(studentRequestModel.clonedRepoPath + Constants.SCREENSHOT_FOLDER);
+        screenshotFolder = new File(controller.gitModel.clonedRepoPath + Constants.SCREENSHOT_FOLDER);
         screenshotFolder.mkdir();
 
         for (File file : screenshots) {
-            System.out.println(studentRequestModel.clonedRepoPath + Constants.SCREENSHOT_FOLDER + "/" + file.getName());
-            File screenshot = new File(studentRequestModel.clonedRepoPath + Constants.SCREENSHOT_FOLDER + "/" + file.getName());
+            System.out.println(controller.gitModel.clonedRepoPath + Constants.SCREENSHOT_FOLDER + "/" + file.getName());
+            File screenshot = new File(controller.gitModel.clonedRepoPath + Constants.SCREENSHOT_FOLDER + "/" + file.getName());
             try {
                 FileUtils.copyFile(file, screenshot);
             } catch (IOException e) {

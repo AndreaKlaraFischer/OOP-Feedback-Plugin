@@ -49,6 +49,12 @@ public class AnswerTableModel extends AbstractTableModel {
         return temp;
     }
 
+
+    public Answer getAnswerAt(int row)
+    {
+        return rowList.get(row);
+    }
+
     // needed to show column names in JTable
     public String getColumnName(int col) {
         return columnNames[col];
