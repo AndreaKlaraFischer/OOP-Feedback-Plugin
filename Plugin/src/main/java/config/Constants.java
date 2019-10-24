@@ -8,9 +8,13 @@ public class Constants {
     public static final String SCREENSHOT_FOLDER = "/screenshots";
     public static final String REPO_LOGIN = "OOP-Feedback";
     public static final String REPO_PASSWORD = "FredFeedback1920";
+    //23.10. Test
+    public static final String SRC_FOLDER = "/src";
     //Textelemente für UI
     public static final String ISSUE_TITLE_BEGINNING = "Anfrage von";
+    public static final String ISSUE_TITLE_DATE = "vom";
     public static final String SEPARATOR = " ";
+    public static final String HYPHEN = "-";
     public static final String COMMON_LABEL_BEGIN = "_";
     public static final String ANSWER_TITLE_BEGINNING = "Antwort von Tutor/in";
     public static final String FEEDBACK_FOR_FEEDBACK = "Feedback zum Feedback:";
@@ -28,6 +32,8 @@ public class Constants {
     public static final String EMAIL_SENDER_USER = "fia06900";
     public static final String HOST = "smtp.uni-regensburg.de";
     public static final String PORT = "587";
+    //Date
+    public static final String DATE_FORMAT = "dd.MM.yyyy HH:mm";
     //Threading
     public static final long THREAD_MILLISECONDS = 10000;
 }

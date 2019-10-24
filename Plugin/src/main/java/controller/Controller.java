@@ -19,8 +19,10 @@ import requests.CodeModel;
 import requests.IDCreator;
 import requests.ScreenshotModel;
 
-import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 //zentrale Startklasse
@@ -120,6 +122,9 @@ public class Controller {
     }
 
     public void onSubmitRequestButtonPressed() {
+        String requestCounter = gitModel.requestCounter();
+        String randomNumber = gitModel.getRandomBranchNumber();
+        String requestDate = getCurrentDate();
         String requestMessage = sendRequestScreen.getInputMessage();
         //String studentName = settings.getName();
         String studentName = getStudentName();
@@ -131,13 +136,16 @@ public class Controller {
              sendRequestScreen.showNoNameWarning();
         } else {
             try {
-                String title = gitHubModel.createIssueTitle(getStudentName());
-                String label = Constants.COMMON_LABEL_BEGIN + SendRequestScreen.problemCategory;
-                gitModel.createAndPushBranch();
-                gitHubModel.createIssue(title, requestMessage, label);
+                String title = gitHubModel.createIssueTitle(studentName, requestDate);
+                String labelCategory = Constants.COMMON_LABEL_BEGIN + SendRequestScreen.problemCategory;
+                //TODO: getBranchName umschreiben!
+                String labelBranchname = Constants.COMMON_LABEL_BEGIN + gitModel.createBranchName(studentName, requestCounter, randomNumber);
+                gitModel.createAndPushBranch(gitModel.createBranchName(studentName, requestCounter, randomNumber));
+                gitHubModel.createIssue(title, requestMessage, labelCategory, labelBranchname);
                 mailModel.sendMailToTutors();
 
-            } catch (IOException | GitAPIException e) {
+            //} catch (IOException | GitAPIException e) {
+            } catch (Exception e) {
                 //TODO Fehlermeldung (sinnvoll)
                 e.printStackTrace();
                 sendRequestScreen.showErrorMessage(e.getMessage());
@@ -145,6 +153,12 @@ public class Controller {
             }
             sendRequestScreen.showSentRequestInfo();
         }
+    }
+
+    private String getCurrentDate() {
+        DateFormat dateFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
+        Date currentTime = new Date();
+        return dateFormat.format(currentTime);
     }
 
 }
