@@ -2,14 +2,12 @@ package config;
 
 public class Constants {
     //Repozugang
-    public static final String REPO_URL = "https://github.com/OOP-Feedback/OOP-Feedback.git";
-    public static final String REPO_NAME = "OOP-Feedback/OOP-Feedback";
-    public static final String CLONED_REPO_FOLDER ="/ClonedRepo";
+    public static final String REPO_URL = "https://github.com/OOP-Feedback-Test/OOP-Feedback.git";
+   // public static final String REPO_NAME = "OOP-Feedback/OOP-Feedback";
+    public static final String REPO_NAME = "OOP-Feedback-Test/OOP-Feedback ";
     public static final String SCREENSHOT_FOLDER = "/screenshots";
-    public static final String REPO_LOGIN = "OOP-Feedback";
+    public static final String REPO_LOGIN = "OOP-Feedback-Test";
     public static final String REPO_PASSWORD = "FredFeedback1920";
-    //23.10. Test
-    public static final String SRC_FOLDER = "/src";
     //Textelemente für UI
     public static final String ISSUE_TITLE_BEGINNING = "Anfrage von";
     public static final String ISSUE_TITLE_DATE = "vom";

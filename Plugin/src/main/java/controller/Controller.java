@@ -19,7 +19,9 @@ import requests.CodeModel;
 import requests.IDCreator;
 import requests.ScreenshotModel;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -44,22 +46,25 @@ public class Controller {
     private MailModel mailModel;
     public CodeModel codeModel;
 
+    public File projectPath;
+
     //Hier ist die Reihenfolge wichtig!
-    public Controller(Project project) {
+    public Controller(Project project) throws IOException {
         idCreator = new IDCreator();
+        gitHubModel = new GitHubModel(this);
         gitModel = new GitModel(project, this);
         codeModel = new CodeModel(this);
-
         screenshotModel = new ScreenshotModel(this);
-
-
-        gitHubModel = new GitHubModel(this);
+        //gitHubModel = new GitHubModel(this);
         mailModel = new MailModel();
         balloonPopup = new BalloonPopup();
 
         //Hier wird der Thread aufgerufen
         gitHubListener = new GitHubListener(this);
         gitHubListener.start();
+
+        //TODO: Hier das Projekt holen!
+
 
         try {
             //settings.setValue("Ich bin ein gespeicherter Text!");
@@ -68,25 +73,15 @@ public class Controller {
             System.out.println("something something state" + e.toString());
         }
 
-
         System.out.println("Our state is: " + settings.getValue());
 
         this.project = project;
-        System.out.println("Startklasse funktioniert!");
+        gitModel.gitInit();
 
-        try {
-            gitModel.cloneRepo();
-        } catch (Exception e) {
-            System.out.println("failed cloning the repository");
-        }
-
-        //Das steht hier nur zu Testzwecken
-        idCreator.createRequestID();
     }
 
     public void onNewAnswerData() {
         mailBoxScreen.refreshTable();
-        System.out.println("onNewAnswerData");
     }
 
     //TODO: Das muss noch aufgerufen werden!
@@ -122,10 +117,11 @@ public class Controller {
     }
 
     public void onSubmitRequestButtonPressed() {
-        String requestCounter = gitModel.requestCounter();
-        String randomNumber = gitModel.getRandomBranchNumber();
+       String requestCounter = gitModel.requestCounter();
         String requestDate = getCurrentDate();
+        //TODO: Hier die Methode mit den imageStrings? Beides zusammenbauen und mit Zeilenumbrüchen trennen
         String requestMessage = sendRequestScreen.getInputMessage();
+
         //String studentName = settings.getName();
         String studentName = getStudentName();
         System.out.println(requestMessage + studentName);
@@ -139,19 +135,20 @@ public class Controller {
                 String title = gitHubModel.createIssueTitle(studentName, requestDate);
                 String labelCategory = Constants.COMMON_LABEL_BEGIN + SendRequestScreen.problemCategory;
                 //TODO: getBranchName umschreiben!
-                String labelBranchname = Constants.COMMON_LABEL_BEGIN + gitModel.createBranchName(studentName, requestCounter, randomNumber);
-                gitModel.createAndPushBranch(gitModel.createBranchName(studentName, requestCounter, randomNumber));
-                gitHubModel.createIssue(title, requestMessage, labelCategory, labelBranchname);
-                mailModel.sendMailToTutors();
+               String labelBranchName = Constants.COMMON_LABEL_BEGIN + gitModel.createBranchName(studentName, requestCounter, requestDate);
+               gitModel.createAndPushBranch(gitModel.createBranchName(studentName, requestCounter, requestDate));
+               gitHubModel.createIssue(title, requestMessage, labelCategory, labelBranchName);
 
-            //} catch (IOException | GitAPIException e) {
-            } catch (Exception e) {
+               // mailModel.sendMailToTutors();
+
+            } catch (IOException | GitAPIException | URISyntaxException e) {
+            //} catch (Exception e) {
                 //TODO Fehlermeldung (sinnvoll)
                 e.printStackTrace();
                 sendRequestScreen.showErrorMessage(e.getMessage());
                 return;
             }
-            sendRequestScreen.showSentRequestInfo();
+           sendRequestScreen.showSentRequestInfo();
         }
     }
 
@@ -160,5 +157,6 @@ public class Controller {
         Date currentTime = new Date();
         return dateFormat.format(currentTime);
     }
+
 
 }

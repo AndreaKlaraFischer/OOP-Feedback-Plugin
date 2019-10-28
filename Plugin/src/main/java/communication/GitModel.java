@@ -4,110 +4,97 @@ package communication;
 import com.intellij.openapi.project.Project;
 import config.Constants;
 import controller.Controller;
-import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.*;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
-import org.kohsuke.github.GHIssue;
 import requests.IDCreator;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.net.URISyntaxException;
 
 public class GitModel {
-    private GitHubModel gitHubModel;
+    //TODO: Den Branchnamen in eine eigene Klasse auslagern, das sind drei Methoden, die hier eigentlich nichts mit Git zu tun haben
     private IDCreator idCreator;
-    private List<GHIssue> issueList;
-
-    public String branchName;
-
+    private String branchName;
     public Controller controller;
-    public static Git git;
+    private Git git;
     public String clonedRepoPath;
-    public static File repoPath;
-    public String projectPath;
-    public File projectFolder;
-    public String srcFolderPath;
-    public int counter;
+    private static File directory;
+    private int counter;
 
-    public GitModel(Project project, Controller controller ) {
-        //23.10.
-        projectPath = project.getBasePath();
-        projectFolder = new File(projectPath);
-        srcFolderPath = projectPath + Constants.SRC_FOLDER;
-        //
-        clonedRepoPath = projectPath + Constants.CLONED_REPO_FOLDER;
-        //23.10.
-        //String clonedRepoPath = project.getBasePath() + Constants.CLONED_REPO_FOLDER;
-        clonedRepoPath = project.getBasePath() + Constants.CLONED_REPO_FOLDER;
-        repoPath = new File(clonedRepoPath);
-
-        //24.10.
+    public GitModel(Project project, Controller controller ) throws IOException {
+        String projectPath = project.getBasePath();
+        directory = new File(projectPath);
         counter = 0;
-
         this.controller = controller;
         idCreator = controller.idCreator;
-        gitHubModel = controller.gitHubModel;
     }
 
-    /* However the destination location is chosen, explicitly through your code or by JGit,
-    the designated directory must either be empty or must not exist.
-    Otherwise, an exception will be thrown.*/
-    public void cloneRepo() throws IOException {
+    public void gitInit() {
+       try {
+           //TODO: Noch wegen git.init und open schauen!
+            git = Git.init().setDirectory(directory).call();
+
+        } catch (GitAPIException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createAndPushBranch (String branchName) throws IOException, GitAPIException, URISyntaxException {
+        git = Git.open(directory);
+        System.out.println("createAndPushBranch ");
+
+        CreateBranchCommand createBranchCommand = git.branchCreate();
+        createBranchCommand.setName(branchName);
+        //NPE:
+        //createBranchCommand.setNewName( branchName).call();
+        //createBranchCommand.call();
+
+        checkoutBranch();
+        commitChanges();
+        pushToRemote();
+    }
+
+    private void checkoutBranch() {
+        CheckoutCommand checkoutCommand = git.checkout();
+        checkoutCommand.setCreateBranch(true);
+        checkoutCommand.setName(branchName);
         try {
-            //TODO: Das vllt in eine While-Schleife packen?
-            if(!repoPath.exists()) {
-                //TODO: Hier noch sagen, dass nur der jeweilige Branch geklont werden muss! --> Das noch der AnswerKlasse hinzufügen?
-                Git.cloneRepository()
-                        .setURI(Constants.REPO_URL)
-                        .setCredentialsProvider( new UsernamePasswordCredentialsProvider(Constants.REPO_LOGIN, Constants.REPO_PASSWORD ) )
-                        .setDirectory(repoPath)
-                        .call();
-                System.out.println("Repo wurde erfolgreich geklont");
-            } else {
-                System.out.println("Ordner exisitiert bereits");
-            }
-        } catch (Exception e){
-            System.out.println("Repo wurde nicht erfolgreich geklont" + e.toString());
-            FileUtils.deleteDirectory(repoPath);
+            checkoutCommand.call();
+        } catch (GitAPIException e) {
+            e.printStackTrace();
         }
     }
 
-    //https://www.java-forum.org/thema/4-stellige-random-zahl-erzeugen.76360/
-    public String getRandomBranchNumber() {
-        int randomNumber = (int) (Math.random()*10000);
-        if (randomNumber < 1) {
-            return "0000";
-        }
-        if (randomNumber < 10) {
-            return "000" + randomNumber;
-        }
-        if (randomNumber < 100) {
-            return "00" + randomNumber;
-        }
-        if (randomNumber < 1000) {
-            return "0" + randomNumber;
-        }
-        return "" + randomNumber;
 
+    private void commitChanges() throws GitAPIException {
+        AddCommand addCommand = git.add();
+        addCommand.addFilepattern(".");
+        addCommand.call();
+        //TODO: Commitmessage vielleicht noch ein bisschen dynamisch / individuell gestalten
+        git.commit().setMessage("Anfrage erstellt und geschickt").call();
     }
 
-    public String requestCounter() {
-       counter ++;
-       return String.valueOf(counter);
+    private void pushToRemote() throws GitAPIException, URISyntaxException {
+        PushCommand pushCommand = git.push();
+        pushCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(Constants.REPO_LOGIN, Constants.REPO_PASSWORD)).
+                setRemote("origin").
+                setPushAll().
+                setForce(true).
+                call();
+        System.out.println("Wurde erfolgreich gepusht");
     }
 
-    //TODO: In dem Branchname dürfen keine Leerzeichen stehen, im Namen allerdings schon!
-    public String createBranchName(String studentName, String requestCounter, String randomNumber) {
-        //geht das so?
+    public String createBranchName(String studentName, String requestCounter, String requestDate) {
         studentName = removeWhitespacesFromStudentName(studentName);
+        requestDate  = formatDateForBranchName(requestDate);
         branchName = "branch-" +
                 studentName +
                 Constants.HYPHEN +
                 requestCounter +
                 Constants.HYPHEN +
-                randomNumber;
+                requestDate;
         return branchName;
     }
 
@@ -118,65 +105,21 @@ public class GitModel {
         return studentName;
     }
 
-
-    public void createAndPushBranch (String branchName) throws IOException, GitAPIException {
-        controller.codeModel.addCodeToBranch();
-
-        git = Git.open(repoPath);
-        CreateBranchCommand createBranchCommand = git.branchCreate();
-        createBranchCommand.setName(branchName);
-        createBranchCommand.call();
-
-        checkoutBranch();
-        commitChanges();
-        pushToRemote();
-
-        //TODO: Hier funktioniert irgendetwas noch nicht richtig.
-        //Ordner wieder löschen: Pro Anfrage nur die jeweiligen Screenshots
-        controller.screenshotModel.deleteScreenshotFolder();
-    }
-
-    private void pushToRemote() {
-        try {
-            PushCommand pushCommand = git.push();
-            pushCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(Constants.REPO_LOGIN, Constants.REPO_PASSWORD));
-            pushCommand.call();
-            System.out.println("Wurde erfolgreich gepusht");
-        } catch (Exception e) {
-
+    //Hier werden alle Satzzeichen entfernt und nur die ersten vier Ziffern rausgeholt und dann noch die letzten 4.
+    private String formatDateForBranchName(String requestDate) {
+        for (int i = 0; i < requestDate.length(); i++) {
+            requestDate = requestDate.replaceAll("\\p{Punct}", "");
         }
+        String date = requestDate.substring(0,4);
+        String day = requestDate.substring(requestDate.length() - 4);
+        requestDate = date + Constants.HYPHEN + day;
+        return requestDate;
     }
 
 
-    private void checkoutBranch() {
-        try {
-            CheckoutCommand checkoutCommand = git.checkout();
-            checkoutCommand.setName(branchName);
-            checkoutCommand.call();
-        } catch (Exception e) {
-
-
-        }
+    public String requestCounter() {
+        counter ++;
+        return String.valueOf(counter);
     }
-
-    //TODO: Der Code muss auch komplett mitgeschickt werden!
-    private void commitChanges() {
-        try {
-            AddCommand addCommand = git.add();
-            addCommand.addFilepattern(".");
-
-            //TODO: Hier src folder adden
-
-            addCommand.call();
-            Status status = git.status().call();
-            for (String added : status.getAdded()) {
-                System.out.println("+ " + added);
-            }
-            git.commit().setMessage("Anfrage erstellt und geschickt").call();
-        } catch (Exception e) {
-
-        }
-    }
-
 
 }
