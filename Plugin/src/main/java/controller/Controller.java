@@ -15,7 +15,6 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.kohsuke.github.GHIssue;
 import communication.GitHubModel;
 import communication.GitModel;
-import requests.CodeModel;
 import requests.IDCreator;
 import requests.ScreenshotModel;
 
@@ -44,7 +43,6 @@ public class Controller {
     public SettingScreen settingScreen;
     public ScreenshotModel screenshotModel;
     private MailModel mailModel;
-    public CodeModel codeModel;
 
     public File projectPath;
 
@@ -53,9 +51,7 @@ public class Controller {
         idCreator = new IDCreator();
         gitHubModel = new GitHubModel(this);
         gitModel = new GitModel(project, this);
-        codeModel = new CodeModel(this);
         screenshotModel = new ScreenshotModel(this);
-        //gitHubModel = new GitHubModel(this);
         mailModel = new MailModel();
         balloonPopup = new BalloonPopup();
 
@@ -117,10 +113,12 @@ public class Controller {
     }
 
     public void onSubmitRequestButtonPressed() {
-       String requestCounter = gitModel.requestCounter();
+        String requestCounter = gitModel.requestCounter();
         String requestDate = getCurrentDate();
         //TODO: Hier die Methode mit den imageStrings? Beides zusammenbauen und mit Zeilenumbrüchen trennen
         String requestMessage = sendRequestScreen.getInputMessage();
+        //String requestMessage = sendRequestScreen.getInputMessage() + "\n" + "\n" + screenshotModel.getAllImagesString();
+        System.out.println(requestMessage);
 
         //String studentName = settings.getName();
         String studentName = getStudentName();
@@ -134,12 +132,12 @@ public class Controller {
             try {
                 String title = gitHubModel.createIssueTitle(studentName, requestDate);
                 String labelCategory = Constants.COMMON_LABEL_BEGIN + SendRequestScreen.problemCategory;
-                //TODO: getBranchName umschreiben!
+                String labelTask = Constants.COMMON_LABEL_BEGIN + readTaskFromConfigFile();
                String labelBranchName = Constants.COMMON_LABEL_BEGIN + gitModel.createBranchName(studentName, requestCounter, requestDate);
                gitModel.createAndPushBranch(gitModel.createBranchName(studentName, requestCounter, requestDate));
-               gitHubModel.createIssue(title, requestMessage, labelCategory, labelBranchName);
+               gitHubModel.createIssue(title, requestMessage, labelCategory, labelTask, labelBranchName);
 
-               // mailModel.sendMailToTutors();
+               mailModel.sendMailToTutors();
 
             } catch (IOException | GitAPIException | URISyntaxException e) {
             //} catch (Exception e) {
@@ -150,6 +148,11 @@ public class Controller {
             }
            sendRequestScreen.showSentRequestInfo();
         }
+    }
+
+    private String readTaskFromConfigFile() {
+        //Das hier ist jetzt nur gefaket - eigentlich soll hier wirklich was rausgelesen werden, zu Testzwecken steht da jetzt hardgecodet
+        return "SL3";
     }
 
     private String getCurrentDate() {

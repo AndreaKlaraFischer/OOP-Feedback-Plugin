@@ -24,7 +24,8 @@ public class Constants {
     //Email
     public static final String [] EMAIL_ADDRESS_LIST_TUTORS = {"", "", "", "", "", ""};
     public static final String EMAIL_SUBJECT = "Neue Anfrage im Repo";
-    public static final String EMAIL_BODY = "Das ist eine Testemail.";
+    public static final String EMAIL_BODY = "Es wurde eine neue Anfrage von einem Studierenden gestellt,\nsie befindet sich in eurem Repo auf GitHub. \n \n";
+    public static final String EMAIL_BODY_INFORMATION = "Das ist eine automatisch generierte Email, bitte nicht darauf antworten.";
     public static final String EMAIL_SENDER_ADDRESS = "andrea.fischer@stud.uni-regensburg.de";
     public static final String EMAIL_SENDER_PASSWORD = "Spezi123123";
     public static final String EMAIL_SENDER_USER = "fia06900";

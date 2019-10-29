@@ -65,13 +65,14 @@ public class GitHubModel {
                 requestDate;
     }
 
-    public void createIssue(String title, String body, String labelCategory, String labelBranchname) {
+    public void createIssue(String title, String body, String labelCategory, String labelTask, String labelBranchName) {
         try {
             issue = repo.createIssue(title).create();
             issue.setBody(body);
-            issue.addLabels(labelCategory, labelBranchname);
+            issue.addLabels(labelCategory, labelTask, labelBranchName);
             issueList.add(issue);
             System.out.println("issueList" + issueList);
+            //TODO: Hier Methode aus ScreenshotModel aufrufen! - ne quatsch, dem body hinzufügen!
         } catch (IOException e) {
             System.out.println("excepti + " + e.toString());
         }
@@ -132,7 +133,6 @@ public class GitHubModel {
         }
     }
 
-    //18.10. Versuch, das mit Paramtern und getNumber zu lösen.
     public void matchFeedbackAndRequest(int answerNumber) {
         try {
             System.out.println(answerId);
