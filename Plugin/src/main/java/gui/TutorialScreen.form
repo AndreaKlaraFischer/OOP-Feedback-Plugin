@@ -39,7 +39,7 @@
           <contentType value="text/plain"/>
           <editable value="false"/>
           <selectionColor color="-8585156"/>
-          <text value="üüüüüööö ä Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."/>
+          <text value="- Wenn eine neue Datei angelegt wird, und der Dialog erscheint &quot;Add to Git&quot; - Es kann beides gedrückt werden, darüber keine Gedanken machen. &#10;- Gesetzte Bookmarks reagieren nicht auf Mausklick. Möchte man eine Bookmark entfernen, den Cursor in die entprechende Zeile setzen und &quot;F11&quot; drücken"/>
         </properties>
         <clientProperties>
           <charset class="java.lang.String" value="UTF-8"/>

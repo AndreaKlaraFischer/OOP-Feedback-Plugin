@@ -12,7 +12,7 @@ public class TutorialScreen implements ActionListener{
     private JTextField wasMussHierAllesTextField;
     private JButton testi;
     private Controller controller;
-    RegistrationMenu registrationMenu;
+    private RegistrationMenu registrationMenu;
 
 
     public TutorialScreen(Controller controller) {
@@ -29,6 +29,7 @@ public class TutorialScreen implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        //Das steht da nur zu Testzwecken. Soll dann natürlich bei Projektstart aufgerufen werden.
         registrationMenu.showDialog();
     }
 }

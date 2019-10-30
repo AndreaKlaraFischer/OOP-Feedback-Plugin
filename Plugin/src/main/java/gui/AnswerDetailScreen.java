@@ -7,17 +7,23 @@ import com.intellij.ui.components.JBScrollPane;
 import config.Constants;
 import controller.Controller;
 
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
 
 //TODO: Das wird wahrscheinlich auch nur so lang funktionieren, bis die .form files wieder gehen
 public class AnswerDetailScreen  implements ActionListener {
+    private JPanel testPanel;
     private MailBoxScreen mailBoxScreen;
     public JBScrollPane answerDetailScrollPane;
-    private JPanel testPanel;
-    private JTextField textField1;
     private JButton openCodeButton;
     private JButton backToTableButton;
     private JLabel answerTitelLabel;
@@ -27,18 +33,27 @@ public class AnswerDetailScreen  implements ActionListener {
 
     private Controller controller;
 
+    JPanel answerDetailPanel;
     public JTextField detailedAnswerField;
     public JLabel answerTitleLabel;
     public JTextArea feedbackInputField;
     private JButton sendFeedbackButton;
+    private JCheckBox solvedCheckbox;
     public String feedbackMessage;
 
     public int selectedHelpfulness;
+    public String taskSuccessfullySolved;
+
+    public ImageIcon icon;
+    public BufferedImage img;
+    private JLabel imageLabel;
+
 
     public AnswerDetailScreen(MailBoxScreen mailBoxScreen, Controller controller) {
         this.controller = controller;
         this.mailBoxScreen = mailBoxScreen;
         controller.answerDetailScreen = this;
+
 
         GridLayout testLayout = new GridLayout(3,2);
         detailedAnswerField = new JTextField();
@@ -46,6 +61,7 @@ public class AnswerDetailScreen  implements ActionListener {
 
         answerTitleLabel = new JLabel();
 
+        solvedCheckbox.addActionListener(this::actionPerformed);
         JButton openCodeButton = new JButton();
         openCodeButton.setText("zum Code");
         openCodeButton.addActionListener(this::openCodeInNewWindow);
@@ -54,12 +70,16 @@ public class AnswerDetailScreen  implements ActionListener {
         //backButton.setText("Zurück zur Übersicht");
         //backButton.addActionListener(this::backToTable);
 
+        imageLabel = new JLabel();
+
         helpfulButton.addActionListener(this);
         semiHelpfulButton.addActionListener(this);
         notHelpfulButton.addActionListener(this);
         backToTableButton.addActionListener(this::backToTable);
+        //Test
 
-        JPanel answerDetailPanel = new JPanel();
+        //Testende
+        answerDetailPanel = new JPanel();
         answerDetailPanel.setLayout(testLayout);
         answerDetailPanel.setSize(500,600);
 
@@ -73,8 +93,35 @@ public class AnswerDetailScreen  implements ActionListener {
         answerDetailPanel.add(helpfulButton);
         answerDetailPanel.add(feedbackInputField);
         answerDetailPanel.add(sendFeedbackButton);
+        answerDetailPanel.add(solvedCheckbox);
+        //24.10. Test
+       // answerDetailPanel.add(imageLabel);
 
         answerDetailScrollPane = new JBScrollPane(answerDetailPanel);
+    }
+
+    //TODO: Bilder komprimieren
+    public  void createImageFromAttachedImageFile(List<String> imageUrls) {
+        //24.10. Test mit hardgecodeter URL, funktioniert
+        try {
+            for(int i = 0; i < imageUrls.size(); i++) {
+                img = ImageIO.read(new URL(
+                        //TODO: Hier den Link, den ich aus dem Bildkommentar geholt habe
+                        imageUrls.get(i)));
+                //"http://www.java2s.com/style/download.png"));
+                icon = new ImageIcon(img);
+                compressImages(img);
+                imageLabel.setIcon(icon);
+                answerDetailPanel.add(imageLabel);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void compressImages(BufferedImage img) {
+
     }
 
 
@@ -110,6 +157,8 @@ public class AnswerDetailScreen  implements ActionListener {
     //TODO: Das refactoren über den Controller. Auch wiedeer falsch
     @Override
     public void actionPerformed(ActionEvent e) {
+        //TODO: Hier überlegen, ob dort stehen soll: wurde nicht erfolgreich gelöst?
+        taskSuccessfullySolved = "";
         Object clickedButton = getClickedButton(e);
         if(clickedButton == helpfulButton) {
             selectedHelpfulness = 1;
@@ -119,6 +168,11 @@ public class AnswerDetailScreen  implements ActionListener {
             selectedHelpfulness = 3;
         } else if (clickedButton == sendFeedbackButton) {
             controller.sendFeedbackForFeedback();
+        } else if(clickedButton == solvedCheckbox) {
+            //TODO: Hier Label anhängen
+            taskSuccessfullySolved = Constants.PROBLEM_SOLVED_SUCCESSFULLY;
+            controller.sendProblemSolved();
+
         }
     }
 
@@ -135,6 +189,11 @@ public class AnswerDetailScreen  implements ActionListener {
     public void showSentFeedbackBalloon() {
         BalloonPopup balloonPopup = new BalloonPopup();
         balloonPopup.createBalloonPopup(answerDetailScrollPane, Balloon.Position.above, "Feedback zum Feedback wurde abgeschickt", MessageType.INFO);
+    }
+
+    public void showSolvedSuccessfullySentBalloon() {
+        BalloonPopup balloonPopup = new BalloonPopup();
+        balloonPopup.createBalloonPopup(answerDetailScrollPane, Balloon.Position.above, "Erfolgreich an Tutoren gesendet!", MessageType.INFO);
     }
 
 }
