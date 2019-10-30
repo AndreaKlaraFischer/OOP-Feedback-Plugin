@@ -65,14 +65,13 @@ public class GitHubModel {
                 requestDate;
     }
 
-    public void createIssue(String title, String body, String labelCategory, String labelTask, String labelBranchName) {
+    public void createIssue(String title, String body, String labelCategory, String labelTask, String labelBranchName, String labelScreenshot) {
         try {
             issue = repo.createIssue(title).create();
             issue.setBody(body);
-            issue.addLabels(labelCategory, labelTask, labelBranchName);
+            issue.addLabels(labelCategory, labelTask, labelBranchName, labelScreenshot);
             issueList.add(issue);
             System.out.println("issueList" + issueList);
-            //TODO: Hier Methode aus ScreenshotModel aufrufen! - ne quatsch, dem body hinzufügen!
         } catch (IOException e) {
             System.out.println("excepti + " + e.toString());
         }
@@ -123,6 +122,9 @@ public class GitHubModel {
                     System.out.println(answer.getAnswerMessage());
 
                     if(!answerList.containsId(idxSent)) {
+                        //30.10.
+                        controller.mailModel.sendMailToStudent(answer.getAnswerMessage());
+                        //
                         answerList.add(answer);
                         //18.10. Wichtig! Im Repo kann man nach einem Issue nur nur mit der Nummer, also dem fortlaufendem Index suchen
                         answerNumber = answer.getAnswerNumber();
@@ -135,12 +137,8 @@ public class GitHubModel {
 
     public void matchFeedbackAndRequest(int answerNumber) {
         try {
-            System.out.println(answerId);
             issue = repo.getIssue(answerNumber);
-            System.out.println(repo.getIssue(answerNumber));
-            //repo.getIssue(answerId);
         } catch (IOException e) {
-            System.out.println("Das hat nicht funktioniert, matchFeedbackAndRequest");
             e.printStackTrace();
         }
     }
@@ -183,6 +181,17 @@ public class GitHubModel {
             e.printStackTrace();
         }
     }
+
+    public void setProblemSolvedLabel() {
+        //TODO: Das hier holen! Also irgendwie übergeben oder so.
+        String problemSolvedLabel = "schwurbel"; //Überschreibt irgendwie wieder alles
+        try {
+            issue.addLabels(problemSolvedLabel);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     //TODO (Test mit false funktioniert noch nicht)
     public boolean checkIfChangesInCode() {

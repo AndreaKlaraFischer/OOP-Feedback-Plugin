@@ -1,6 +1,8 @@
 package actions;
 
+import android.os.SystemPropertiesProto;
 import config.Constants;
+import controller.Controller;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -10,20 +12,37 @@ import java.util.Properties;
 
 public class MailModel {
     private String password = Constants.EMAIL_SENDER_PASSWORD;
-    private String toEmail = "andrea.fischer@stud.uni-regensburg.de";
     private String fromEmail = Constants.EMAIL_SENDER_ADDRESS;
     private Authenticator auth;
     private Properties props;
+    public Controller controller;
 
-    public MailModel() {
+    public MailModel(Controller controller) {
+        this.controller = controller;
         configMail();
         authenticate();
     }
 
+    //TODO: Hier vielleicht ein Interface daraus bauen, braucht man ja für Studenten und Tutoren
     public void sendMailToTutors() {
+        String toEmail = "andrea.fischer@stud.uni-regensburg.de";
         //Test Mail an mich, später soll es natürlich an den Mailverteiler der Tutoren gehen
         Session session = Session.getInstance(props, auth);
-        sendEmail(session, fromEmail, toEmail, Constants.EMAIL_SUBJECT, Constants.EMAIL_BODY);
+        String body = " Hallo liebes Tutorenteam,\n \n" + Constants.EMAIL_BODY + "https://github.com" + "\n \n" + Constants.EMAIL_BODY_INFORMATION;
+        //private String toEmail = Constants.EMAIL_ADDRESS_LIST_TUTORS;
+
+        sendEmail(session, fromEmail, toEmail, Constants.EMAIL_SUBJECT, body);
+    }
+
+    //TODO: Wo wird das aufgerufen? Das muss ja gemacht werden, wenn der Tutor eine Anfrage beantwortet. Also vielleicht nach dem Match?
+    public void sendMailToStudent(String answerMessage) {
+        Session session = Session.getInstance(props, auth);
+        //Das funktioniert
+        String toMail = controller.getStudentMail();
+        //TODO: Hier die methode aus der Answer klasse aufrufen! answerMessage
+       // String body = controller.getRequestMessage();
+        System.out.println("sendMailToStudent wurde aufgerufen");
+        sendEmail(session, fromEmail, toMail, Constants.EMAIL_SUBJECT_ANSWER, answerMessage);
     }
 
     private void  configMail() {

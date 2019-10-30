@@ -14,6 +14,8 @@ public class SettingScreen implements ActionListener {
     private JTextField inputNameField;
     private JButton generateAnonymousNameButton;
     private JButton saveSettingsButton;
+    private JTextField inputMailAddressField;
+    public String studentMailInput;
     public static String studentNameInput;
     private Controller controller;
 
@@ -39,6 +41,9 @@ public class SettingScreen implements ActionListener {
     public String getStudentNameInput() {
         return inputNameField.getText();
     }
+    public String getStudentMailInput() {
+        return inputMailAddressField.getText();
+    }
 
     public JPanel getContent() {
         return settingScreenContent;
@@ -48,7 +53,9 @@ public class SettingScreen implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         studentNameInput = inputNameField.getText();
+        studentMailInput = inputMailAddressField.getText();
         controller.getStudentName();
+        controller.getStudentMail();
        /* if(studentNameInput.length() == 0) {
             showMessageDialog(null, "Feld darf nicht leer sein!");
         } else {

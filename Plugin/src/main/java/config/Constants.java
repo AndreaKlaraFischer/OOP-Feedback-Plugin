@@ -2,9 +2,9 @@ package config;
 
 public class Constants {
     //Repozugang
-    public static final String REPO_URL = "https://github.com/OOP-Feedback-Test/OOP-Feedback.git";
+    public static final String REPO_URL = "https://github.com/OOP-Feedback-Test/OOP-Feedback-2.0.git";
    // public static final String REPO_NAME = "OOP-Feedback/OOP-Feedback";
-    public static final String REPO_NAME = "OOP-Feedback-Test/OOP-Feedback ";
+    public static final String REPO_NAME = "OOP-Feedback-Test/OOP-Feedback-2.0";
     public static final String SCREENSHOT_FOLDER = "/screenshots";
     public static final String REPO_LOGIN = "OOP-Feedback-Test";
     public static final String REPO_PASSWORD = "FredFeedback1920";
@@ -21,9 +21,11 @@ public class Constants {
     public static final String FEEDBACK_LABEL_NEUTRAL = "neutral";
     public static final String GITHUB_ITALIC = "_";
     public static final String GITHUB_BOLD_AND_ITALIC = "***";
+    public static final String PROBLEM_SOLVED_SUCCESSFULLY = "Problem gelöst";
     //Email
-    public static final String [] EMAIL_ADDRESS_LIST_TUTORS = {"", "", "", "", "", ""};
+    public static final String EMAIL_ADDRESS_LIST_TUTORS = "andrea.fischer@stud.uni-regensburg.de";
     public static final String EMAIL_SUBJECT = "Neue Anfrage im Repo";
+ public static final String EMAIL_SUBJECT_ANSWER = "Neue Antwort von Tutor";
     public static final String EMAIL_BODY = "Es wurde eine neue Anfrage von einem Studierenden gestellt,\nsie befindet sich in eurem Repo auf GitHub. \n \n";
     public static final String EMAIL_BODY_INFORMATION = "Das ist eine automatisch generierte Email, bitte nicht darauf antworten.";
     public static final String EMAIL_SENDER_ADDRESS = "andrea.fischer@stud.uni-regensburg.de";
