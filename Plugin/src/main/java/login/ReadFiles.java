@@ -10,17 +10,14 @@ import org.jsoup.parser.Parser;
 
 import java.io.*;
 
-public class ReadXMLFile {
+public class ReadFiles {
     public Controller controller;
-    public Project project;
+    private Project project;
     private Document doc;
-    //TODO: Getter Methoden!
-    String token = "ddhthetzekrurzu";
-    String password = "dhghdth";
-    String nameFilePath;
-    String xmlFilePath;
+    private String nameFilePath;
+    private String xmlFilePath;
 
-    public ReadXMLFile(Controller controller) throws IOException {
+    public ReadFiles(Controller controller) throws IOException {
         project = controller.project;
         this.controller = controller;
         //String xmlFilePath = controller.xmlFilePath;
@@ -31,10 +28,10 @@ public class ReadXMLFile {
 
         doc = Jsoup.parse(fis, null, "", Parser.xmlParser());
 
-        readAndModifyXML();
     }
 
-    public void readAndModifyXML() throws IOException {
+    //Bekommt token und password übergeben aus dem controller
+    public void readAndModifyXML(String token, String password) throws IOException {
         for (Element e : doc.getElementsByTag("password")) {
             e.appendText(password);
         }
@@ -53,25 +50,35 @@ public class ReadXMLFile {
         bw.close();
     }
 
+    //Das wird beim Login aufgerufen dann! Würde ich doch wieder als String machen und dann ne MEthode schreiben, die das überprüft.
+    //TODO: Da funktioniert die Logik nochnicht ganz
+    public boolean readEncryptedPasswordFromXML() {
+        boolean isCorrectPassword = false;
+        for (Element e : doc.getElementsByTag("password")) {
+            String encryptedPassword = ""; //Das soll übergeben werden
+            if (e.text().equals(encryptedPassword)) {
+                isCorrectPassword = true;
+            }
+        }
+        return isCorrectPassword;
+    }
+
     //TODO: Das entweder in eine eigene Klasse oder die Datei umbenennen und in ein anderes package, passt nicht zu login
     //https://howtodoinjava.com/java/io/java-read-file-to-string-examples/
     //Hier hole ich den Namen der Studienleistung
     public String readNameFile() {
-        {
-            StringBuilder contentBuilder = new StringBuilder();
-            try (BufferedReader br = new BufferedReader(new FileReader(nameFilePath))) {
-                String sCurrentLine;
-                while ((sCurrentLine = br.readLine()) != null) {
-                    contentBuilder.append(sCurrentLine).append("\n");
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+        StringBuilder contentBuilder = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new java.io.FileReader(nameFilePath))) {
+            String sCurrentLine;
+            while ((sCurrentLine = br.readLine()) != null) {
+                contentBuilder.append(sCurrentLine).append("\n");
             }
-            System.out.println(contentBuilder.toString());
-            return contentBuilder.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        System.out.println(contentBuilder.toString());
+        return contentBuilder.toString();
 
-        //TODO: Konstanten. Methode dann aufrufen, wenn noch nicht initialisiert
     }
 }
 
