@@ -9,8 +9,6 @@ import java.util.ArrayList;
 public class AnswerTableModel extends AbstractTableModel {
     private String[] columnNames = {"Antwort", "Tutor", "Datum"};
     private ArrayList<Answer> rowList;
-    private MailBoxScreen mailBoxScreen;
-
 
     public AnswerTableModel(AnswerList answerList) {
         rowList = answerList.getAnswerList();
