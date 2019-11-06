@@ -4,11 +4,10 @@ import actions.BalloonPopup;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.openapi.ui.popup.Balloon;
+import com.intellij.openapi.wm.ToolWindow;
 import controller.Controller;
 import org.kohsuke.github.GHIssue;
-import requests.IDCreator;
 import requests.ScreenshotModel;
-import requests.StudentRequestModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,31 +28,28 @@ public class SendRequestScreen implements ActionListener{
     private JTextField introductionText;
     private JButton selectFileButton;
     private JLabel hyperlink;
+    private JLabel hyperlink2;
     //28.09. Versuch, öffentlich, damit ich aus dem StudentRequestModel darauf zugreifen kann
     public static String inputMessage;
     public static String problemCategory;
-    //03.10. Hier werden alle ausgewählten Screenshots gespeichert. Diese müssen ja nich persistent gespeichert werden, oder?
-
     public String clonedRepoPath;
 
     public Controller controller;
-    private StudentRequestModel studentRequestModel;
     private ScreenshotModel screenshotModel;
     private BalloonPopup balloonPopup;
-    private IDCreator idCreator;
     private List<GHIssue> issueList;
+
+    public ToolWindowPluginFactory toolWindowPluginFactory;
     //Beschreiben, wie man Screenshots macht (Screenshot Tool, Druck-Taste)
 
     //TODO: Bookmarks, übertragen in das Repo (wo werden Bookmarks gespeichert (Projektdatei?)
     //Bookmarks setzen: (Strg + )F11
     //Bookmarks vielleicht noch mal woanders speichern?
 
-    public SendRequestScreen(Project project, Controller controller) {
+    public SendRequestScreen(Project project, Controller controller, ToolWindow toolWindow, TutorialScreen tutorialScreen) {
         this.controller = controller;
         controller.sendRequestScreen = this;
-        //TODO: Das muss noch über den Controller geregelt werden!
-       // this.studentRequestModel = new StudentRequestModel(project, controller);
-        this.idCreator = new IDCreator();
+
         //this.screenshotModel = new ScreenshotModel(controller.studentRequestModel);
 
         balloonPopup = new BalloonPopup();
@@ -61,17 +57,12 @@ public class SendRequestScreen implements ActionListener{
         submitRequestButton.addActionListener(this);
         selectCategory.addActionListener(this::saveSelectedCategoryAsString);
         selectFileButton.addActionListener(this::openFileSelector);
-
+        //TODO: Wenn es funktioniert, dann noch mit Screenshots machen.
+        //über setSelectedContents gehen, toolWindow.getContentManager --> Konstruktor
         hyperlink.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                try {
-                    //TODO: hier den anderen Content zeigen, switch tabs
-                    Desktop.getDesktop().browse(new URI("http://www.codejava.net"));
-
-                } catch (IOException | URISyntaxException e1) {
-                    e1.printStackTrace();
-                }
+               toolWindow.getContentManager().setSelectedContent(toolWindow.getContentManager().getContent(tutorialScreen.getContent()));
             }
 
             @Override
@@ -105,8 +96,6 @@ public class SendRequestScreen implements ActionListener{
         controller.onSelectFileButtonPressed();
     }
 
-    //MAC Adresse plus UUID, im Plugin an geeigneter Stelle merken, verwenden für Branch und Issue
-
     //TODO: Model / View / Controller --> ActionListener in Model auslagern?
     //https://javabeginners.de/Design_Patterns/Model-View-Controller.php
     @Override
@@ -117,13 +106,13 @@ public class SendRequestScreen implements ActionListener{
         controller.onSubmitRequestButtonPressed();
     }
 
+    //TODO: Noch abfangen, dass wenn Screenshots angehängt wurden, ist der Input nicht mehr 0!
     public String getInputMessage() {
         return inputMessageArea.getText().trim();
     }
 
     public void showEmptyMessageError() {
         balloonPopup.createBalloonPopup(sendRequestScreenContent, Balloon.Position.above, "Bitte eine Nachricht eingeben!", MessageType.ERROR);
-
     }
 
     public void showNoNameWarning() {
