@@ -3,6 +3,7 @@ package gui;
 import actions.BalloonPopup;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.openapi.ui.popup.Balloon;
+import config.Constants;
 import controller.Controller;
 
 import javax.swing.*;
@@ -16,19 +17,19 @@ import java.io.IOException;
 public class LoginMenu implements ActionListener {
     private BalloonPopup balloonPopup;
     private Controller controller;
-    private boolean isInitialized = false;
-    private JPasswordField passwordFieldLogin;
+    public JPasswordField passwordFieldLogin;
     private JPasswordField passwordFieldFirstInput;
     private JPasswordField passwordFieldValidateInput;
-    //TODO: Beide Möglichkeiten in Konstanten speichern
     private String welcomeText;
     private JLabel introduction;
     private JButton registrationButton;
-    private JOptionPane registrationDialog;
-    private JOptionPane loginDialog;
+    public JOptionPane registrationOptionPane;
+    public JDialog loginDialog;
+    public JDialog registrationDialog;
+    public JOptionPane loginOptionPane;
     private JFrame test;
     private JButton loginButton;
-    private JButton gotToLoginButton;
+    private JButton goToLoginButton;
 
     public LoginMenu(Controller controller) {
         this.controller = controller;
@@ -41,13 +42,15 @@ public class LoginMenu implements ActionListener {
         registrationButton.setText("Abschicken");
         registrationButton.addActionListener(this::actionPerformed);
         balloonPopup = new BalloonPopup();
-        loginDialog = new JOptionPane();
+        loginOptionPane = new JOptionPane();
         loginButton = new JButton();
         loginButton.setText("Einloggen");
         loginButton.addActionListener(this);
-        gotToLoginButton = new JButton();
-        gotToLoginButton.setText("Ich habe bereits ein Passwort und möchte mich einloggen");
-        gotToLoginButton.addActionListener(this::actionPerformed);
+        goToLoginButton = new JButton();
+        goToLoginButton.setText("Ich habe bereits ein Passwort und möchte mich einloggen");
+        goToLoginButton.addActionListener(this::actionPerformed);
+        registrationDialog = new JDialog();
+        loginDialog = new JDialog();
     }
 
 
@@ -56,25 +59,37 @@ public class LoginMenu implements ActionListener {
     //Wenn der State schon true gesetzt ist, dann das login
 
     public void showRegistrationMenu() {
+        //Idee: Wenn das funktioniert, dann aufdröseln in create (Constructor) und show (controller)
         //TODO: Hier noch eine Art Link einbauen oder Button: Ich bin bereits registriert--> show login
         welcomeText = "Turbi";
-        introduction.setText("Wähle hier ein Passwort, um deine persönlichen Daten zu haben. Mindestens 8 Zeichen");
-        Object[] message = {welcomeText, introduction, passwordFieldFirstInput, passwordFieldValidateInput, registrationButton, gotToLoginButton};
-        registrationDialog = new JOptionPane(message);
-        registrationDialog.createDialog("Willkommen").setVisible(true);
+        introduction.setText(Constants.REGISTRATION_WELCOME_TEXT);
+        //Das mit dem Object muss ich noch anders lösen, solange das dabei ist, kann das glaube ich nie ohne Button seiN!
+        Object[] message = {welcomeText, introduction, passwordFieldFirstInput, passwordFieldValidateInput, registrationButton, goToLoginButton};
+        registrationOptionPane = new JOptionPane(message);
+
+        registrationDialog = registrationOptionPane.createDialog("Willkommen");
+        registrationDialog.setVisible(true);
     }
 
     public void showLoginMenu() {
-        //TODO: Hier noch den gespeicherten Studentennamen
-        welcomeText = "Schwurbi";
-        introduction.setText("Gib hier dein Passwort ein, um wieder Zugriff auf deine persönlichen Antworten zu haben");
+        String studentName = controller.getStudentNameInXML();
+        welcomeText = "Willkommen " + studentName + "!";
+        introduction.setText("Gib hier dein Passwort ein, um wieder Zugriff auf deine persönlichen Antworten zu haben" );
         Object[] message = {welcomeText, introduction, passwordFieldLogin, loginButton};
-        loginDialog = new JOptionPane(message);
-        loginDialog.createDialog(null, "Willkommen zurück!").setVisible(true);
-        registrationDialog.setVisible(false);
+        loginOptionPane = new JOptionPane(message);
+
+        loginDialog = loginOptionPane.createDialog(null, "Willkommen zurück!");
+        loginDialog.setVisible(true);
     }
 
-    //Das ist beim login wichtig
+    public void hideRegistrationMenu() {
+        registrationDialog.dispose();
+    }
+
+    public void hideLoginMenu() {
+        loginDialog.dispose();
+    }
+
     public char[] getPasswordLogin() {
         return passwordFieldLogin.getPassword();
     }
@@ -83,33 +98,31 @@ public class LoginMenu implements ActionListener {
     public char[] getPasswordFirstInput() {
         return passwordFieldFirstInput.getPassword();
     }
-    //Zeites Feld --> Diese beiden müssen miteinander verglichen werden
+
+    //Zweites Feld --> Diese beiden müssen miteinander verglichen werden
     public char[] getPasswordValidateInput() {
         return passwordFieldValidateInput.getPassword();
     }
 
     public void showValidPasswordInfo() {
-        balloonPopup.createBalloonPopup(loginDialog, Balloon.Position.above, "Passwort erfolgreich gespeichert", MessageType.INFO);
-    }
-    //TODO: Das sollte wahrscheinlich im SendRequestScreen stehen!
-    public void showWelcomeBackInfo() {
-        balloonPopup.createBalloonPopup(loginDialog, Balloon.Position.above, "Willkommen zurück", MessageType.INFO);
+        balloonPopup.createBalloonPopup(loginOptionPane, Balloon.Position.above, "Passwort erfolgreich gespeichert", MessageType.INFO);
     }
 
+
     public void showLoginSuccessfulInfo() {
-        balloonPopup.createBalloonPopup(loginDialog, Balloon.Position.above, "Passwort akzeptiert, Login erfolgreich", MessageType.ERROR);
+        balloonPopup.createBalloonPopup(loginOptionPane, Balloon.Position.above, "Passwort akzeptiert, Login erfolgreich", MessageType.ERROR);
     }
 
     public void showPasswordTooShortError() {
-        balloonPopup.createBalloonPopup(registrationDialog, Balloon.Position.above, "Passwort muss mindestens 8 Zeichen sein!", MessageType.ERROR);
+        balloonPopup.createBalloonPopup(registrationOptionPane, Balloon.Position.above, "Passwort muss mindestens 8 Zeichen sein!", MessageType.ERROR);
     }
 
     public void showPasswordsNotEqualError() {
-        balloonPopup.createBalloonPopup(registrationDialog, Balloon.Position.above, "Passwörter stimmen nicht überein!", MessageType.ERROR);
+        balloonPopup.createBalloonPopup(registrationOptionPane, Balloon.Position.above, "Passwörter stimmen nicht überein!", MessageType.ERROR);
     }
 
     public void showWrongPasswordError() {
-        balloonPopup.createBalloonPopup(loginDialog, Balloon.Position.above, "Passwort ungültig! Probiere es nochmal.", MessageType.ERROR);
+        balloonPopup.createBalloonPopup(loginOptionPane, Balloon.Position.above, "Passwort ist falsch! Probiere es nochmal.", MessageType.ERROR);
     }
 
     public Object getClickedButton(ActionEvent e) {
@@ -119,18 +132,17 @@ public class LoginMenu implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         Object clickedButton = getClickedButton(e);
-        if(clickedButton == loginButton) {
+        if (clickedButton == loginButton) {
             controller.onLoginButtonPressed();
-            loginDialog.setVisible(false);
             System.out.println("loginButtonPressed");
-        } else if(clickedButton == registrationButton) {
+        } else if (clickedButton == registrationButton) {
             try {
                 controller.onRegistrationButtonPressed();
                 System.out.println("registrationButtonPressed");
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-        } else if(clickedButton == gotToLoginButton) {
+        } else if (clickedButton == goToLoginButton) {
             showLoginMenu();
         }
     }

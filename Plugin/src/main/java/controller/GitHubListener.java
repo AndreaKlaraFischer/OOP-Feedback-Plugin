@@ -2,9 +2,6 @@ package controller;
 // Hier die "rückwärtige" Github Kommunikation rein: Polling,...
 
 //TODO: Code schicken, wenn Issue geschlossen
-//TODO: Pullen
-//persistente Datenspeicherung
-
 //TODO: Im Plugin Branch pullen
 
 import config.Constants;

@@ -22,19 +22,23 @@ public class Constants {
     public static final String GITHUB_ITALIC = "_";
     public static final String GITHUB_BOLD_AND_ITALIC = "***";
     public static final String PROBLEM_SOLVED_SUCCESSFULLY = "Problem gelöst";
+
+    public static final String REGISTRATION_WELCOME_TEXT = "Wähle hier ein Passwort, um deine persönlichen Daten zu schützen. Es muss mindestens 8 Zeichen lang sein.";
     //Email
     public static final String EMAIL_ADDRESS_LIST_TUTORS = "andrea.fischer@stud.uni-regensburg.de";
     public static final String EMAIL_SUBJECT = "Neue Anfrage im Repo";
- public static final String EMAIL_SUBJECT_ANSWER = "Neue Antwort von Tutor";
+    public static final String EMAIL_SUBJECT_ANSWER = "Neue Antwort von Tutor";
     public static final String EMAIL_BODY = "Es wurde eine neue Anfrage von einem Studierenden gestellt,\nsie befindet sich in eurem Repo auf GitHub. \n \n";
     public static final String EMAIL_BODY_INFORMATION = "Das ist eine automatisch generierte Email, bitte nicht darauf antworten.";
     public static final String EMAIL_SENDER_ADDRESS = "andrea.fischer@stud.uni-regensburg.de";
-    public static final String EMAIL_SENDER_PASSWORD = "Spezi123123";
+    public static final String EMAIL_SENDER_PASSWORD = "FredFeedback19";
     public static final String EMAIL_SENDER_USER = "fia06900";
     public static final String HOST = "smtp.uni-regensburg.de";
     public static final String PORT = "587";
     //Date
     public static final String DATE_FORMAT = "dd.MM.yyyy HH:mm";
+    //Config
+    public static final String CONFIG_FILE_PATH = "/.idea/personalConfig.xml";
     //Threading
     public static final long THREAD_MILLISECONDS = 10000;
 }

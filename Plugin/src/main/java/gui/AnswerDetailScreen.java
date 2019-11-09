@@ -26,7 +26,6 @@ public class AnswerDetailScreen  implements ActionListener {
     public JBScrollPane answerDetailScrollPane;
     private JButton openCodeButton;
     private JButton backToTableButton;
-    private JLabel answerTitelLabel;
     public JButton notHelpfulButton;
     public JButton semiHelpfulButton;
     public JButton helpfulButton;
@@ -110,7 +109,7 @@ public class AnswerDetailScreen  implements ActionListener {
                         imageUrls.get(i)));
                 //"http://www.java2s.com/style/download.png"));
                 icon = new ImageIcon(img);
-                compressImages(img);
+                //compressImages(img);
                 imageLabel.setIcon(icon);
                 answerDetailPanel.add(imageLabel);
             }
@@ -120,16 +119,16 @@ public class AnswerDetailScreen  implements ActionListener {
 
     }
 
-    private void compressImages(BufferedImage img) {
-
+    //public void compressImages(BufferedImage img) {
+    public void compressImages() {
+        System.out.println("Das hat jetzt funktioniert, das Aufrufen");
     }
 
 
+    //TODO: Das brauche ich nicht mehr in dieser Art und Weise.
     private void openCodeInNewWindow(ActionEvent e) {
         activateOpenCodeButton();
         controller.onOpenCodeButtonPressed();
-        //TODO: CodeModel, herausfinden, wie das geht.
-        //TODO: Marlena fragen, was sie bis jetzt herausgefunden hat über die File API
         System.out.println("Open annotated Code");
     }
 
@@ -172,7 +171,6 @@ public class AnswerDetailScreen  implements ActionListener {
             //TODO: Hier Label anhängen
             taskSuccessfullySolved = Constants.PROBLEM_SOLVED_SUCCESSFULLY;
             controller.sendProblemSolved();
-
         }
     }
 

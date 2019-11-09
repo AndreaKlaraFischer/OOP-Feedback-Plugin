@@ -1,10 +1,13 @@
 package gui;
 
+import answers.TextEditorDemo;
 import controller.Controller;
 
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class TutorialScreen implements ActionListener{
     private JPanel tutorialScreenContent;
@@ -12,14 +15,21 @@ public class TutorialScreen implements ActionListener{
     private JTextField wasMussHierAllesTextField;
     private JButton testi;
     private Controller controller;
-    private RegistrationMenu registrationMenu;
+    //Testi
+    private LoginMenu loginMenu;
+    //testi 5.11.
+    public LoginMenu1 loginMenu1;
+    private TextEditorDemo textEditorDemo;
 
 
-    public TutorialScreen(Controller controller) {
+    public TutorialScreen(Controller controller) throws BadLocationException {
         this.controller = controller;
         testi.addActionListener(this::actionPerformed);
         //TODO: Das ist hier nur zu Testzwecken
-        registrationMenu = new RegistrationMenu();
+        loginMenu = new LoginMenu(controller);
+        loginMenu1 = new LoginMenu1();
+
+        textEditorDemo = new TextEditorDemo();
     }
 
     public JPanel getContent() {
@@ -29,7 +39,9 @@ public class TutorialScreen implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        //Das steht da nur zu Testzwecken. Soll dann natürlich bei Projektstart aufgerufen werden.
-        registrationMenu.showDialog();
+        //Das hier soll bei den Klick auf den "zum Code" Button aufgerufen werden!
+        textEditorDemo.showTextEditor();
+        //controller.annotatedCodeModel.showAnnotatedCode();
+        controller.annotatedCodeModel.createWindow();
     }
 }

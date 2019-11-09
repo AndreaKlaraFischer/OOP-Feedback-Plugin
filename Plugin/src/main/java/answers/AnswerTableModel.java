@@ -30,8 +30,6 @@ public class AnswerTableModel extends AbstractTableModel {
         return size;
     }
 
-
-
     @Override
     public Object getValueAt(int row, int col) {
         Object temp = null;
@@ -57,10 +55,4 @@ public class AnswerTableModel extends AbstractTableModel {
     public String getColumnName(int col) {
         return columnNames[col];
     }
-
-    /*public Class getColumnClass(int c) {
-        return getValueAt(0, c).getClass();
-    }*/
-
-
 }

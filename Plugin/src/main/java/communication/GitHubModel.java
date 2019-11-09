@@ -17,7 +17,6 @@ import java.util.*;
 
 
 public class GitHubModel {
-    public  String studentName;
     private GitHub github;
     private GHIssue issue;
     private GHIssueComment feedbackComment;
@@ -54,7 +53,6 @@ public class GitHubModel {
     }
 
     public String createIssueTitle(String studentName, String requestDate) {
-        //TODO: Woher bekomme ich die Uhrzeit? Das muss wahrscheinlich beim Buttonklick passieren
         return Constants.ISSUE_TITLE_BEGINNING +
                 Constants.SEPARATOR +
                 Constants.SEPARATOR +
@@ -65,11 +63,13 @@ public class GitHubModel {
                 requestDate;
     }
 
-    public void createIssue(String title, String body, String labelCategory, String labelTask, String labelBranchName, String labelScreenshot) {
+    public void createIssue(String title, String body, String labelCategory, String labelTask, String labelBranchName) {
         try {
             issue = repo.createIssue(title).create();
             issue.setBody(body);
-            issue.addLabels(labelCategory, labelTask, labelBranchName, labelScreenshot);
+            issue.addLabels(labelCategory, labelTask, labelBranchName);
+            //31.10. Test --> Das geht nicht! Überschreibt die anderen
+            //issue.addLabels("testiiiii");
             issueList.add(issue);
             System.out.println("issueList" + issueList);
         } catch (IOException e) {
@@ -182,9 +182,10 @@ public class GitHubModel {
         }
     }
 
+    //TODO: Wenn das beim Screenshot funktioniert, also nur bei Bedarf gelabelt wird, dann sich daran orientieren!
     public void setProblemSolvedLabel() {
         //TODO: Das hier holen! Also irgendwie übergeben oder so.
-        String problemSolvedLabel = "schwurbel"; //Überschreibt irgendwie wieder alles
+        String problemSolvedLabel = "schwurbel";
         try {
             issue.addLabels(problemSolvedLabel);
         } catch (IOException e) {

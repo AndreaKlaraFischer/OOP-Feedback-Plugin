@@ -9,8 +9,13 @@ import com.intellij.ui.content.ContentManagerEvent;
 import com.intellij.ui.content.ContentManagerListener;
 import controller.Controller;
 import org.jetbrains.annotations.NotNull;
+import org.xml.sax.SAXException;
 
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import java.io.IOException;
 
 public class ToolWindowPluginFactory implements ToolWindowFactory {
     // Tool window content gets created
@@ -18,22 +23,32 @@ public class ToolWindowPluginFactory implements ToolWindowFactory {
     @Override
     public void createToolWindowContent(Project project, ToolWindow toolWindow) {
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
-
-
-        Controller controller = new Controller(project);
+        Controller controller = null;
+        try {
+            controller = new Controller(project);
+        } catch (IOException | TransformerException | SAXException | ParserConfigurationException e) {
+            e.printStackTrace();
+        }
 
         //Hier wird geswitcht!
         //Entweder: Methoden ändern oder hier:
         //TODO: Neuen Reiter machen mit Einstellungen --> Namen eingeben / ändern / anonymen Namen generieren
-        SendRequestScreen sendRequestScreen = new SendRequestScreen(project, controller);
-        TutorialScreen tutorialScreen = new TutorialScreen(controller);
+
+        TutorialScreen tutorialScreen = null;
+        try {
+            tutorialScreen = new TutorialScreen(controller);
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+        SendRequestScreen sendRequestScreen = new SendRequestScreen(controller, toolWindow, tutorialScreen);
         //14.10. Versuch, das darüber zu regeln
         JPanel answerDetailScreen = new JPanel();
-        MailBoxScreen mailBoxScreen = new MailBoxScreen(controller);
+        MailBoxScreen mailBoxScreen = new MailBoxScreen(controller, toolWindow);
         SettingScreen settingScreen = new SettingScreen(controller);
 
         Content contentMailBox = contentFactory.createContent(mailBoxScreen.getContent(), "Antworten", false);
         //Content contentAnswerDetail = contentFactory.createContent(answerScreen.getContent(),"Antwort des Tutors", false);
+       // assert tutorialScreen != null;
         Content contentTutorial = contentFactory.createContent(tutorialScreen.getContent(),"Tutorial", false);
         Content contentRequest = contentFactory.createContent(sendRequestScreen.getContent(), "Tutor fragen", false);
         Content contentSettings = contentFactory.createContent(settingScreen.getContent(), "Einstellungen", false);
@@ -41,13 +56,14 @@ public class ToolWindowPluginFactory implements ToolWindowFactory {
 
         toolWindow.getContentManager().addContent(contentRequest);
         toolWindow.getContentManager().addContent(contentTutorial);
+
+        //26.10. - Das wird dann beim Start angezeigt
+        toolWindow.getContentManager().setSelectedContent(contentRequest);
+        //
+
         toolWindow.getContentManager().addContent(contentMailBox);
         toolWindow.getContentManager().addContent(contentSettings);
 
-        //14.10.
-       // toolWindow.getContentManager().addContent((Content) answerDetailScreen);
-        //contentAnswerDetail soll nur angezeigt werden, wenn auf ein Listen Item gedrückt wurde!Kein eigener Tab
-        //toolWindow.getContentManager().addContent(contentAnswerDetail);
 
         toolWindow.getContentManager().addContentManagerListener(new ContentManagerListener() {
             @Override
@@ -67,7 +83,7 @@ public class ToolWindowPluginFactory implements ToolWindowFactory {
 
             @Override
             public void selectionChanged(@NotNull ContentManagerEvent event) {
-                System.out.println("Content selection changed");
+                //System.out.println("Content selection changed");
             }
         });
 

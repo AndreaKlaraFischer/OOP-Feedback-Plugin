@@ -30,7 +30,6 @@ public class LoginManager {
        return sha256hex;
     }
 
-
     public String createToken() {
         return UUID.randomUUID().toString();
     }

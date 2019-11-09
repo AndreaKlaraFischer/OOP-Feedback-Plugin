@@ -7,7 +7,6 @@ import controller.Controller;
 import org.eclipse.jgit.api.*;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
-import requests.IDCreator;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,20 +14,19 @@ import java.net.URISyntaxException;
 
 public class GitModel {
     //TODO: Den Branchnamen in eine eigene Klasse auslagern, das sind drei Methoden, die hier eigentlich nichts mit Git zu tun haben
-    private IDCreator idCreator;
     private String branchName;
     public Controller controller;
     private Git git;
     public String clonedRepoPath;
     private static File directory;
     private int counter;
+    public String projectPath;
 
     public GitModel(Project project, Controller controller ) throws IOException {
-        String projectPath = project.getBasePath();
+        projectPath = project.getBasePath();
         directory = new File(projectPath);
         counter = 0;
         this.controller = controller;
-        idCreator = controller.idCreator;
     }
 
     public void gitInit() {
@@ -79,7 +77,7 @@ public class GitModel {
     private void pushToRemote() throws GitAPIException, URISyntaxException {
         PushCommand pushCommand = git.push();
         pushCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(Constants.REPO_LOGIN, Constants.REPO_PASSWORD)).
-                setRemote("origin").
+                setRemote(Constants.REPO_URL).
                 setPushAll().
                 setForce(true).
                 call();
@@ -89,13 +87,22 @@ public class GitModel {
     public String createBranchName(String studentName, String requestCounter, String requestDate) {
         studentName = removeWhitespacesFromStudentName(studentName);
         requestDate  = formatDateForBranchName(requestDate);
-        branchName = "branch-" +
+        branchName = "Branch-" +
                 studentName +
                 Constants.HYPHEN +
                 requestCounter +
                 Constants.HYPHEN +
                 requestDate;
         return branchName;
+    }
+
+    private String getBranchName() {
+        return branchName;
+    }
+
+    public String createImageUrl() {
+        //return "OOP-Feedback-Test/OOP-Feedback/blob/" + getBranchName() + "/screenshots/";
+        return "OOP-Feedback-Test/OOP-Feedback/blob/" + getBranchName() + "/screenshots/";
     }
 
     private String removeWhitespacesFromStudentName(String studentName) {

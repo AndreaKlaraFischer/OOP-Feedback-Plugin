@@ -6,16 +6,23 @@ import answers.AnswerList;
 import answers.AnswerTableModel;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.openapi.ui.popup.Balloon;
+import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.ui.components.JBScrollPane;
+import com.intellij.ui.content.Content;
 import com.intellij.ui.table.JBTable;
 import config.Constants;
 import controller.Controller;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
@@ -34,9 +41,7 @@ public class MailBoxScreen implements ActionListener {
 
     private AnswerDetailScreen answerDetailScreen;
 
-
-
-    public MailBoxScreen(Controller controller) {
+    public MailBoxScreen(Controller controller, ToolWindow toolWindow) {
         this.controller = controller;
         controller.mailBoxScreen = this;
         //14.10.
@@ -52,6 +57,7 @@ public class MailBoxScreen implements ActionListener {
         noAnswersTextfield.setEditable(false);
         answerOverviewTable = new JBTable();
         answerOverviewTable.setDragEnabled(false);
+
         //controller!
         answerTableModel = new AnswerTableModel(controller.gitHubModel.answerList);
         answerOverviewTable.setModel(answerTableModel);
@@ -84,6 +90,8 @@ public class MailBoxScreen implements ActionListener {
                 }
             }
         });
+
+        //toolWindow.getContentManager().setSelectedContent((Content) getContent());
     }
 
     public void showAnswerDetailContent(Answer answer) {
@@ -92,9 +100,9 @@ public class MailBoxScreen implements ActionListener {
         mailBoxScreenContent.add(detailScrollPane);
         detailScrollPane.setVisible(true);
 
-
         //setCorrectContents();
         answerDetailScreen.detailedAnswerField.setText(answer.getAnswerMessage());
+        answerDetailScreen.createImageFromAttachedImageFile(answer.getImageUrls());
 
         //createAnswerDetailTitle();
         String answerTitle = "";
@@ -113,6 +121,7 @@ public class MailBoxScreen implements ActionListener {
 
     public void navigateBackToTable() {
         mailBoxScreenContent.remove(detailScrollPane);
+        //TODO: Hier wird ein ganz seltsamwer Fehler geworfen - das beheben --> Wie: Siehe unten!
         mailBoxScreenContent.add(answerScrollPane);
         mailBoxScreenContent.revalidate();
     }
@@ -151,6 +160,10 @@ public class MailBoxScreen implements ActionListener {
 
     private void showNotification() {
         showMessageDialog(null, "Neue Antwort von Tutor!");
-        navigateBackToTable();
+        //TODO: Set selected content auf mailboxscreen setzen
+        //TODO: Hier nur zurück navigieren, wenn man sich im AnswerDetailScreen befindet! Ansonsten wirft es eine Fehlermeldung
+        if(!mailBoxScreenContent.isVisible()) {
+            navigateBackToTable();
+        }
     }
 }

@@ -12,7 +12,7 @@ public class HelloAction extends AnAction {
 
         public void actionPerformed(AnActionEvent event) {
             Project project = event.getProject();
-            //ToolWindow öffnen? An sich macht das ja keinen Sinn hier
+            //TODO: ToolWindow öffnen
             Messages.showMessageDialog(project, "Liste mit allen erhaltenen Antworten", "Posteingang", Messages.getInformationIcon());
         }
     }

@@ -16,6 +16,9 @@ public class ScreenshotModel {
     public static File[] screenshots;
     public File screenshotFolder;
     public Controller controller;
+    public String allImagesString;
+    public String screenshotLabel;
+    public boolean screenshotAttached;
 
     /*public ScreenshotModel(StudentRequestModel studentRequestModel) {
         this.studentRequestModel = studentRequestModel;
@@ -39,6 +42,7 @@ public class ScreenshotModel {
             if (returnValue == JFileChooser.APPROVE_OPTION) {
                 screenshots = screenshotUploader.getSelectedFiles();
                 System.out.println("Files Found\n");
+                //TODO: Hier komprimieren?
                 Arrays.asList(screenshots).forEach(file -> {
                     if (file.isFile()) {
                         System.out.println(file.getName());
@@ -46,28 +50,73 @@ public class ScreenshotModel {
                 });
             }
             //Wenn es Screenshots gibt, dann Ordner erstellen und Screenshots hinzufügen
+
             if (screenshots.length > 0) {
+               hasScreenShotAttached();
+                screenshotLabel = "screenshot angehängt";
                 addScreenshotsToBranch();
+                addScreenshotsToIssue(screenshots);
+            } else {
+                screenshotLabel = "";
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        //TODO: Hier Balloon machen
 
     }
 
+    public boolean hasScreenShotAttached() {
+        screenshotAttached = true;
+        return true;
+    }
+
+    public String getScreenshotLabel() {
+        return screenshotLabel;
+    }
+
+    //Hier das Bild zusammenwurschteln und das dann dem Issue mitgeben! --> Im Controller!
+    public String addScreenshotsToIssue(File [] screenshots) {
+        String imageUrl = ""; // Das wird spannend
+        String image;
+        if(screenshots.length > 0) {
+            for (int i = 0; i < screenshots.length; i++) {
+                File screenshot = screenshots[i];
+                String fileName = screenshot.getName();
+                String imageName = fileName.substring(0, fileName.lastIndexOf('.'));
+                System.out.println("Imagename: " + imageName);
+                //TODO: Das vllt ins GitModel auslagern um zu tricksen?
+                String linkToImage = controller.gitModel.createImageUrl();
+                System.out.println(linkToImage);
+                //String fileExtension = fileName.substring(fileName.lastIndexOf('.'));
+               // System.out.println("Endung: " + fileExtension);
+                //https://github.com/OOP-Feedback-Test/OOP-Feedback/blob/branch-zdt-2-2810-2107/screenshots/testBild.jpg
+                //imageUrl = "https://user-images.githubusercontent.com/" + linkToImage + fileName;
+                imageUrl = "https://raw.githubusercontent.com/" + linkToImage + fileName;
+                image = "![" + imageName + "]" + "(" + imageUrl + ")" + "\n";
+                allImagesString += image;
+            }
+        }
+        System.out.println(allImagesString);
+        return allImagesString;
+    }
+
+    public String getAllImagesString() {
+        return allImagesString;
+    }
+
     public void addScreenshotsToBranch()  {
-        screenshotFolder = new File(controller.gitModel.clonedRepoPath + Constants.SCREENSHOT_FOLDER);
+       screenshotFolder = new File( controller.gitModel.projectPath + Constants.SCREENSHOT_FOLDER);
         screenshotFolder.mkdir();
 
         for (File file : screenshots) {
-            System.out.println(controller.gitModel.clonedRepoPath + Constants.SCREENSHOT_FOLDER + "/" + file.getName());
-            File screenshot = new File(controller.gitModel.clonedRepoPath + Constants.SCREENSHOT_FOLDER + "/" + file.getName());
+            System.out.println(controller.gitModel.projectPath + Constants.SCREENSHOT_FOLDER + "/" + file.getName());
+            File screenshot = new File(controller.gitModel.projectPath + Constants.SCREENSHOT_FOLDER + "/" + file.getName());
             try {
                 FileUtils.copyFile(file, screenshot);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            //FileUtils.copyFile(screenshots[i], screenshot);
             System.out.println("Schwurbel" + screenshot);
         }
     }

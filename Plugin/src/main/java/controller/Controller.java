@@ -7,10 +7,9 @@ import answers.AnnotatedCodeModel;
 import answers.Answer;
 import com.intellij.openapi.project.Project;
 import config.Constants;
-import config.SettingsService;
 import gui.*;
-import login.CreateXMLFile;
-import login.ReadFiles;
+import login.XMLFileCreator;
+import login.XMLFileReader;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.kohsuke.github.GHIssue;
 import communication.GitHubModel;
@@ -18,6 +17,7 @@ import communication.GitModel;
 import org.xml.sax.SAXException;
 import requests.ScreenshotModel;
 import login.LoginManager;
+import requests.TaskNameReader;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -38,7 +38,6 @@ public class Controller {
     public GitModel gitModel;
     public GitHubModel gitHubModel;
     private GitHubListener gitHubListener;
-    private SettingsService settings = SettingsService.getInstance();
     public MailBoxScreen mailBoxScreen;
     public AnswerDetailScreen answerDetailScreen;
     private BalloonPopup balloonPopup;
@@ -48,10 +47,10 @@ public class Controller {
     public MailModel mailModel;
     public LoginManager loginManager;
     public LoginMenu loginMenu;
-    public ReadFiles readFiles;
-    public CreateXMLFile createXMLFile;
+    public XMLFileReader XMLFileReader;
+    public TaskNameReader taskNameReader;
+    public XMLFileCreator XMLFileCreator;
     public AnnotatedCodeModel annotatedCodeModel;
-    public String xmlFilePath;
     public HashMap<String, String> loginData;
     //TODO: Alle unbenutzen Variablen in allen Klassen raushauen und TODOS ein bisschen abarbeiten
     public File projectPath;
@@ -62,14 +61,13 @@ public class Controller {
         //this.xmlFilePath = project.getBasePath()  + "/.idea/personalConfig.xml";
         loginManager = new LoginManager(this); //TODO: Das noch umschreiben, immer aus dem Controller aufrufen
         loginMenu = new LoginMenu(this);
-        //TODO: Wenn ich das mit dem login und so mache, dann muss readFiles vor loginManager stehen
         //Create File: file wird nur einmal angelegt.
-        createXMLFile = new CreateXMLFile(this);
-        //dann schauen, was so drin steht
-        readFiles = new ReadFiles(this);
+        XMLFileCreator = new XMLFileCreator(this);
+        XMLFileReader = new XMLFileReader(this);
         //Bin ich initialisiert?
-         readFiles.checkIfInitialized();
-
+         XMLFileReader.checkIfInitialized();
+         //9.11. Steht das an der richtigen Stelle?
+        taskNameReader = new TaskNameReader(this);
         //6.11.
         loginData = new HashMap<>();
        // createXMLFile = new CreateXMLFile(this);
@@ -86,15 +84,6 @@ public class Controller {
         gitHubListener.start();
 
         annotatedCodeModel = new AnnotatedCodeModel(this);
-
-        try {
-            //settings.setValue("Ich bin ein gespeicherter Text!");
-            settings.setValue(gitHubModel.studentName);
-        } catch (Exception e) {
-            System.out.println("something something state" + e.toString());
-        }
-
-        System.out.println("Our state is: " + settings.getValue());
         gitModel.gitInit();
         showWelcomeMenu();
 
@@ -104,15 +93,12 @@ public class Controller {
         mailBoxScreen.refreshTable();
     }
 
-    //TODO: Das muss noch aufgerufen werden!
-    //TODO: Mit SettingScreen und ReadFiles noch kombinieren
-    public String getStudentName() {
-        //return settings.getName();
+    private String getStudentName() {
         return settingScreen.inputNameField.getText();
     }
 
     public String getStudentNameInXML() {
-        return readFiles.readNameFromXML();
+        return XMLFileReader.readNameFromXML();
     }
 
     public String getStudentMail() {
@@ -120,21 +106,21 @@ public class Controller {
     }
 
     public String getStudentMailInXML() {
-        return readFiles.readMailFromXML();
+        return XMLFileReader.readMailFromXML();
     }
 
     public void onSelectFileButtonPressed() {
         screenshotModel.chooseFiles();
     }
 
-    public void showWelcomeMenu() {
+    private void showWelcomeMenu() {
         System.out.println("Controller showWelcomeMenu");
         //Wenn da was bei <token> steht
-        if(readFiles.checkIfInitialized()) {
-            System.out.println("initailisiert? Sollte true sein" + readFiles.checkIfInitialized());
+        if(XMLFileReader.checkIfInitialized()) {
+            System.out.println("initailisiert? Sollte true sein" + XMLFileReader.checkIfInitialized());
             loginMenu.showLoginMenu();
         } else {
-            System.out.println("initailisiert? Sollte false sein" + readFiles.checkIfInitialized());
+            System.out.println("initailisiert? Sollte false sein" + XMLFileReader.checkIfInitialized());
             loginMenu.showRegistrationMenu();
         }
     }
@@ -166,10 +152,10 @@ public class Controller {
                 String labelScreenshot = "screenshot";
                 gitModel.createAndPushBranch(gitModel.createBranchName(studentName, requestCounter, requestDate));
                 gitHubModel.createIssue(title, requestMessage, labelCategory, labelTask, labelBranchName);
-                mailModel.sendMailToTutors();
+                //9.11. auskommentiert zu Testzwecken
+                //mailModel.sendMailToTutors();
 
             } catch (IOException | GitAPIException | URISyntaxException e) {
-                //} catch (Exception e) {
                 //Fehlermeldung (sinnvoll)
                 e.printStackTrace();
                 sendRequestScreen.showErrorMessage(e.getMessage());
@@ -191,11 +177,9 @@ public class Controller {
             if (Arrays.equals(loginMenu.getPasswordFirstInput(), loginMenu.getPasswordValidateInput())) {
                 loginManager.createToken();
                 loginManager.encryptPassword(password);
-                //TODO: Die noch umschreiben, also aufdröseln in zwei Methoden
-                readFiles.modifyXMLTokenAndPassword(token, encryptedPassword);
+                XMLFileReader.modifyXMLTokenAndPassword(token, encryptedPassword);
                 //TODO: Das noch in HashMap speichern? Token ist die ID --> Alex fragen
                 //Wichtig!
-                //TODO: Das muss noch gespeichert werden --> Damit es beim Programmstart aufgerufen wird!
                 loginData.put(token, encryptedPassword);
                 System.out.println("HashMap: " + loginData);
                 loginMenu.showValidPasswordInfo();
@@ -214,21 +198,19 @@ public class Controller {
         String password = Arrays.toString(loginMenu.passwordFieldLogin.getPassword());
         //String encryptedPasswordLogin = loginManager.encryptPassword(password);
         String encryptedPasswordLogin = Arrays.toString(loginMenu.getPasswordLogin());
-        String encryptedPasswordXML = readFiles.readEncryptedPasswordFromXML();
+        String encryptedPasswordXML = XMLFileReader.readEncryptedPasswordFromXML();
         if(encryptedPasswordLogin.equals(encryptedPasswordXML)) {
             loginMenu.hideLoginMenu();
         } else {
             loginMenu.showWrongPasswordError();
         }
-        //TODO Hier: Zusammenpassen von Token und Password überprüfen --> Wie?
+        //TODO Hier: Zusammenpassen von Token und Password überprüfen --> Wie? ids und token vergleichen
     }
 
-    //TODO: Was genau soll hier passieren? Die eingegeben Daten sollen in die XML File gespeichert werden
-    //Ich glaube, das passt jetzt so schon.
     public void onSaveSettingsButtonPressed() throws IOException {
         String studentName = getStudentName();
         String studentMail = getStudentMail();
-        readFiles.modifyXMLNameAndMail(studentName, studentMail);
+        XMLFileReader.modifyXMLNameAndMail(studentName, studentMail);
     }
 
     public void onOpenCodeButtonPressed() {
@@ -269,7 +251,7 @@ public class Controller {
     }
 
     private String getTaskNameFromFile() {
-        return readFiles.readNameOfTaskFromNameFile();
+        return taskNameReader.readNameOfTaskFromNameFile();
     }
 
     private String getCurrentDate() {
