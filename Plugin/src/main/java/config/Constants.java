@@ -39,6 +39,8 @@ public class Constants {
     public static final String DATE_FORMAT = "dd.MM.yyyy HH:mm";
     //Config
     public static final String CONFIG_FILE_PATH = "/.idea/personalConfig.xml";
+    //Password
+    public static final int MINIMUM_PASSWORD_LENGTH = 8;
     //Threading
     public static final long THREAD_MILLISECONDS = 10000;
 }

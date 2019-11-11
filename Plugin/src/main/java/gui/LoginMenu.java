@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Arrays;
 
 //TODO: Das am besten noch über zwei verschiedene Klassen laufen lassen - package "login" - eine Klasse für die View und eine für die Funktionalitäten
 //-- siehe "safety/LoginManager"
@@ -46,25 +47,16 @@ public class LoginMenu implements ActionListener {
         loginButton = new JButton();
         loginButton.setText("Einloggen");
         loginButton.addActionListener(this);
-        goToLoginButton = new JButton();
-        goToLoginButton.setText("Ich habe bereits ein Passwort und möchte mich einloggen");
-        goToLoginButton.addActionListener(this::actionPerformed);
         registrationDialog = new JDialog();
         loginDialog = new JDialog();
     }
 
-
-    //TODO: Neue Idee: Ein JOptionPane, wo steht: Willkommen zum Feedback-Tool, bist du bereits registriert,...?
-    //--> Dann die anderen Optionen sichtbar machen
-    //Wenn der State schon true gesetzt ist, dann das login
-
     public void showRegistrationMenu() {
         //Idee: Wenn das funktioniert, dann aufdröseln in create (Constructor) und show (controller)
-        //TODO: Hier noch eine Art Link einbauen oder Button: Ich bin bereits registriert--> show login
         welcomeText = "Turbi";
         introduction.setText(Constants.REGISTRATION_WELCOME_TEXT);
-        //Das mit dem Object muss ich noch anders lösen, solange das dabei ist, kann das glaube ich nie ohne Button seiN!
-        Object[] message = {welcomeText, introduction, passwordFieldFirstInput, passwordFieldValidateInput, registrationButton, goToLoginButton};
+        //Das mit dem Object muss ich noch anders lösen, solange das dabei ist, kann das glaube ich nie ohne Button sein!
+        Object[] message = {welcomeText, introduction, passwordFieldFirstInput, passwordFieldValidateInput, registrationButton};
         registrationOptionPane = new JOptionPane(message);
 
         registrationDialog = registrationOptionPane.createDialog("Willkommen");
@@ -74,7 +66,7 @@ public class LoginMenu implements ActionListener {
     public void showLoginMenu() {
         String studentName = controller.getStudentNameInXML();
         welcomeText = "Willkommen " + studentName + "!";
-        introduction.setText("Gib hier dein Passwort ein, um wieder Zugriff auf deine persönlichen Antworten zu haben" );
+        introduction.setText("Gib hier dein Passwort ein, um wieder Zugriff auf deine persönlichen Antworten zu haben");
         Object[] message = {welcomeText, introduction, passwordFieldLogin, loginButton};
         loginOptionPane = new JOptionPane(message);
 
@@ -90,24 +82,25 @@ public class LoginMenu implements ActionListener {
         loginDialog.dispose();
     }
 
-    public char[] getPasswordLogin() {
-        return passwordFieldLogin.getPassword();
+    //TODO: Wieso wird das nicht aufgerufen?? Vielleicht ist das das Problem, dass das n Char array ist
+    public String getPasswordLogin() {
+        System.out.println("getPasswordLogin" + Arrays.toString(passwordFieldLogin.getPassword()));
+        return Arrays.toString(passwordFieldLogin.getPassword());
     }
 
     //Erstes Feld
-    public char[] getPasswordFirstInput() {
-        return passwordFieldFirstInput.getPassword();
+    public String getPasswordFirstInput() {
+        return Arrays.toString(passwordFieldFirstInput.getPassword());
     }
 
     //Zweites Feld --> Diese beiden müssen miteinander verglichen werden
-    public char[] getPasswordValidateInput() {
-        return passwordFieldValidateInput.getPassword();
+    public String getPasswordValidateInput() {
+        return Arrays.toString(passwordFieldValidateInput.getPassword());
     }
 
     public void showValidPasswordInfo() {
         balloonPopup.createBalloonPopup(loginOptionPane, Balloon.Position.above, "Passwort erfolgreich gespeichert", MessageType.INFO);
     }
-
 
     public void showLoginSuccessfulInfo() {
         balloonPopup.createBalloonPopup(loginOptionPane, Balloon.Position.above, "Passwort akzeptiert, Login erfolgreich", MessageType.ERROR);
@@ -125,7 +118,7 @@ public class LoginMenu implements ActionListener {
         balloonPopup.createBalloonPopup(loginOptionPane, Balloon.Position.above, "Passwort ist falsch! Probiere es nochmal.", MessageType.ERROR);
     }
 
-    public Object getClickedButton(ActionEvent e) {
+    private Object getClickedButton(ActionEvent e) {
         return e.getSource();
     }
 
@@ -142,8 +135,6 @@ public class LoginMenu implements ActionListener {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-        } else if (clickedButton == goToLoginButton) {
-            showLoginMenu();
         }
     }
 }

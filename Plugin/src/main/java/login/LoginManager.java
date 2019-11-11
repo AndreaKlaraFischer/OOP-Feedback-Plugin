@@ -24,6 +24,7 @@ public class LoginManager {
 
 
     //TODO: Hier vielleicht noch eine andere Library einbinden, damit das nicht mehr "unstable" gemeckert wird
+    //TODO: vielleicht noch als Interface?
     public String encryptPassword(String password) {
        String sha256hex = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
        System.out.println("SHA-256: " + sha256hex);

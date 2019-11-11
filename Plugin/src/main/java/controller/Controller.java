@@ -19,6 +19,7 @@ import requests.ScreenshotModel;
 import login.LoginManager;
 import requests.TaskNameReader;
 
+import javax.swing.text.BadLocationException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.File;
@@ -26,7 +27,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -54,9 +54,11 @@ public class Controller {
     public HashMap<String, String> loginData;
     //TODO: Alle unbenutzen Variablen in allen Klassen raushauen und TODOS ein bisschen abarbeiten
     public File projectPath;
+    //10.11. Test
+    public boolean hasChanges;
 
     //Hier ist die Reihenfolge wichtig!
-    public Controller(Project project) throws IOException, TransformerException, SAXException, ParserConfigurationException {
+    public Controller(Project project) throws IOException, TransformerException, SAXException, ParserConfigurationException, BadLocationException {
         this.project = project;
         //this.xmlFilePath = project.getBasePath()  + "/.idea/personalConfig.xml";
         loginManager = new LoginManager(this); //TODO: Das noch umschreiben, immer aus dem Controller aufrufen
@@ -73,6 +75,8 @@ public class Controller {
        // createXMLFile = new CreateXMLFile(this);
         //readFiles = new ReadFiles(this);
 
+
+        hasChanges = false;
         gitHubModel = new GitHubModel(this);
         gitModel = new GitModel(project, this);
         screenshotModel = new ScreenshotModel(this);
@@ -126,14 +130,12 @@ public class Controller {
     }
 
     public void onSubmitRequestButtonPressed() {
-        String requestCounter = gitModel.requestCounter();
+        String requestCounter = gitModel.incrementRequestCounter();
         String requestDate = getCurrentDate();
         //TODO: Hier die Methode mit den imageStrings? Beides zusammenbauen und mit Zeilenumbrüchen trennen
         String requestMessage = getRequestMessage();
         //String requestMessage = sendRequestScreen.getInputMessage() + "\n" + "\n" + screenshotModel.getAllImagesString();
         System.out.println(requestMessage);
-
-        //String studentName = settings.getName();
         String studentName = getStudentName();
         System.out.println(requestMessage + studentName);
 
@@ -161,8 +163,6 @@ public class Controller {
                 sendRequestScreen.showErrorMessage(e.getMessage());
                 return;
             }
-            //TODO: Hier die XML File dann verändern? Issue Id kriegen - Kriege ich die an dieser Stelle schon? Wenn nein, wo rufe änder ich dann die XMl File?
-            //readFiles.modifyXMLRequests();
             sendRequestScreen.showSentRequestInfo();
         }
     }
@@ -173,8 +173,11 @@ public class Controller {
         //String encryptedPassword = getEncryptedPassword();
         String token = getToken();
         //Hier wird das Passwort validiert
-        if(loginMenu.getPasswordValidateInput().length >= 8 && loginMenu.getPasswordFirstInput().length >= 8) {
-            if (Arrays.equals(loginMenu.getPasswordFirstInput(), loginMenu.getPasswordValidateInput())) {
+        //TODO: Hier vielleicht auch noch die getter Methoden in den Controller schreiben
+        //TODO: Das noch ein bisschen auslagern
+        if(loginMenu.getPasswordValidateInput().length() >= Constants.MINIMUM_PASSWORD_LENGTH && loginMenu.getPasswordFirstInput().length() >= Constants.MINIMUM_PASSWORD_LENGTH) {
+            if(loginMenu.getPasswordValidateInput().equals(loginMenu.getPasswordFirstInput())) {
+            //if (Arrays.equals(loginMenu.getPasswordFirstInput(), loginMenu.getPasswordValidateInput())) {
                 loginManager.createToken();
                 loginManager.encryptPassword(password);
                 XMLFileReader.modifyXMLTokenAndPassword(token, encryptedPassword);
@@ -194,17 +197,17 @@ public class Controller {
     }
 
     public void onLoginButtonPressed() {
-        //TODO: Daten holen
-        String password = Arrays.toString(loginMenu.passwordFieldLogin.getPassword());
-        //String encryptedPasswordLogin = loginManager.encryptPassword(password);
-        String encryptedPasswordLogin = Arrays.toString(loginMenu.getPasswordLogin());
+        //TODO: Daten holen, Liste erstellen oder so und Listen vergleichen
+        String password = loginMenu.getPasswordLogin();
+        String encryptedPasswordLogin = loginManager.encryptPassword(password);
+        System.out.println("encryptedPasswordLogin: " + encryptedPasswordLogin);
         String encryptedPasswordXML = XMLFileReader.readEncryptedPasswordFromXML();
+        System.out.println("encryptedPasswordXML" + encryptedPasswordXML);
         if(encryptedPasswordLogin.equals(encryptedPasswordXML)) {
             loginMenu.hideLoginMenu();
         } else {
             loginMenu.showWrongPasswordError();
         }
-        //TODO Hier: Zusammenpassen von Token und Password überprüfen --> Wie? ids und token vergleichen
     }
 
     public void onSaveSettingsButtonPressed() throws IOException {
