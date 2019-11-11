@@ -2,6 +2,7 @@ package gui;
 
 
 import actions.BalloonPopup;
+import com.github.javafaker.Faker;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.openapi.ui.popup.Balloon;
 import controller.Controller;
@@ -33,21 +34,24 @@ public class SettingScreen implements ActionListener {
         controller.settingScreen = this;
         this.controller = controller;
         studentNameInput = inputNameField.getText(); //Brauche ich das überhaupt noch?
-        //generateAnonymousNameButton.addActionListener(this::generateAnonymousName);
+        generateAnonymousNameButton.addActionListener(this::generateAnonymousName);
         saveSettingsButton.addActionListener(this::actionPerformed);
         balloonPopup = new BalloonPopup();
         inputNameField.setText(controller.getStudentNameInXML());
         inputMailAddressField.setText(controller.getStudentMailInXML());
     }
 
-    //TODO: Florin fragen
-    private String generateAnonymousName(ActionEvent actionEvent) {
+    //TODO: Das auslagern noch, hat auch nichts in der View zu suchen
+    //https://rieckpil.de/howto-generate-random-data-in-java-using-java-faker/
+    private void generateAnonymousName(ActionEvent actionEvent) {
         String anonymousName = "";
-        /*TODO hier: Jeweils ein Array aus n beliebigen Vornamen und Nachnamen basteln,
-        jeweils zufällig einen auswählen und in das Textfeld eintragen. Prio Low
-        */
-        //TODO: Falls das noch funktionieren sollte irgendwann, muss ich das auch noch abfangen
-        return anonymousName;
+        //TODO: Branchname muss dann natürlich auch angepasst werden, damit man dort nicht den Namen rausfinden kann
+        Faker faker = new Faker();
+        String firstName = faker.name().firstName();
+        String lastName = faker.name().lastName();
+        anonymousName = "Anonyme/r " + firstName + " " + lastName;
+        System.out.println("anonymousName: " + anonymousName);
+        inputNameField.setText(anonymousName);
     }
 
 
@@ -63,7 +67,7 @@ public class SettingScreen implements ActionListener {
             //TODO: Das muss noch irgendwie wegklickbar sein oder so, dass man es auch nach der Warnung noch abschicken kann.
             showNoMailWarning();
         } else {
-            if (validateMail(inputMailAddressField.getText())) {
+            if (controller.loginManager.validateMail(inputMailAddressField.getText())) {
                 try {
                     controller.onSaveSettingsButtonPressed();
                     showSuccessfullySavedInfo();
@@ -74,15 +78,6 @@ public class SettingScreen implements ActionListener {
                 showInvalidMailError();
             }
         }
-    }
-
-
-    //https://stackoverflow.com/questions/8204680/java-regex-email
-    public boolean validateMail(String mailAddressInput) {
-        String emailRegex = "^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
-        Pattern emailPattern = Pattern.compile(emailRegex, Pattern.CASE_INSENSITIVE);
-        Matcher emailMatcher = emailPattern.matcher(mailAddressInput);
-        return emailMatcher.find();
     }
 
     private void showSuccessfullySavedInfo() {
