@@ -67,10 +67,16 @@ public class GitHubModel {
         try {
             issue = repo.createIssue(title).create();
             issue.setBody(body);
-            issue.addLabels(labelCategory, labelTask, labelBranchName);
+            //09.11. Das geht nicht mehr! TODO: Beheben!!!!!!!!!
+            //issue.addLabels(labelCategory, labelTask, labelBranchName);
             //31.10. Test --> Das geht nicht! Überschreibt die anderen
             //issue.addLabels("testiiiii");
+            issue.getId();
+            //TODO: Hier dann die XML File überschreiben mit den issues
+            controller.XMLFileReader.modifyXMLRequests(issue.getId());
+            System.out.println("issue-getId(): " + issue.getId());
             issueList.add(issue);
+
             System.out.println("issueList" + issueList);
         } catch (IOException e) {
             System.out.println("excepti + " + e.toString());
@@ -191,12 +197,6 @@ public class GitHubModel {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-
-    //TODO (Test mit false funktioniert noch nicht)
-    public boolean checkIfChangesInCode() {
-        return false;
     }
 
 }

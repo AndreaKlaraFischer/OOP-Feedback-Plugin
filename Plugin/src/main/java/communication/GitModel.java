@@ -22,10 +22,15 @@ public class GitModel {
     private int counter;
     public String projectPath;
 
-    public GitModel(Project project, Controller controller ) throws IOException {
+    public GitModel(Project project, Controller controller ) {
         projectPath = project.getBasePath();
         directory = new File(projectPath);
+
         counter = 0;
+        controller.XMLFileReader.modifyCounter(counter);
+        controller.XMLFileReader.readCounterValueFromXML();
+        counter = controller.XMLFileReader.readCounterValueFromXML();
+
         this.controller = controller;
     }
 
@@ -65,16 +70,15 @@ public class GitModel {
         }
     }
 
-
     private void commitChanges() throws GitAPIException {
         AddCommand addCommand = git.add();
         addCommand.addFilepattern(".");
         addCommand.call();
         //TODO: Commitmessage vielleicht noch ein bisschen dynamisch / individuell gestalten
-        git.commit().setMessage("Anfrage erstellt und geschickt").call();
+        git.commit().setMessage("Anfrage erstellt und geschickt von " + controller.getStudentNameInXML()).call();
     }
 
-    private void pushToRemote() throws GitAPIException, URISyntaxException {
+    private void pushToRemote() throws GitAPIException {
         PushCommand pushCommand = git.push();
         pushCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(Constants.REPO_LOGIN, Constants.REPO_PASSWORD)).
                 setRemote(Constants.REPO_URL).
@@ -84,6 +88,15 @@ public class GitModel {
         System.out.println("Wurde erfolgreich gepusht");
     }
 
+    //10.11. Das wird jetzt ein riesen TODO
+    //Branches vergleichen, schauen ob Änderungen da sind, wenn Änderungen da sind - Button zeigen und enablen
+
+    //TODO: Das wird wahrscheinlich an der falschen Stelle angerufen! Es muss zu Programmstart schon false gesetzt werden.
+    public boolean checkForCodeChanges() {
+        return false;
+    }
+
+    //TODO: Gehört das hier her?
     public String createBranchName(String studentName, String requestCounter, String requestDate) {
         studentName = removeWhitespacesFromStudentName(studentName);
         requestDate  = formatDateForBranchName(requestDate);
@@ -96,15 +109,16 @@ public class GitModel {
         return branchName;
     }
 
+    //TODO: Gehört das hier her?
     private String getBranchName() {
         return branchName;
     }
 
     public String createImageUrl() {
-        //return "OOP-Feedback-Test/OOP-Feedback/blob/" + getBranchName() + "/screenshots/";
         return "OOP-Feedback-Test/OOP-Feedback/blob/" + getBranchName() + "/screenshots/";
     }
 
+    //TODO: Gehört das hier her?
     private String removeWhitespacesFromStudentName(String studentName) {
         for(int i = 0; i < studentName.length(); i++ ){
             studentName = studentName.replaceAll("\\s+","");
@@ -112,6 +126,7 @@ public class GitModel {
         return studentName;
     }
 
+    //TODO: Gehört das hier her?
     //Hier werden alle Satzzeichen entfernt und nur die ersten vier Ziffern rausgeholt und dann noch die letzten 4.
     private String formatDateForBranchName(String requestDate) {
         for (int i = 0; i < requestDate.length(); i++) {
@@ -123,9 +138,10 @@ public class GitModel {
         return requestDate;
     }
 
-
-    public String requestCounter() {
+    //TODO: Gehört das hier her?
+    public String incrementRequestCounter() {
         counter ++;
+        controller.XMLFileReader.modifyCounter(counter);
         return String.valueOf(counter);
     }
 

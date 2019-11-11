@@ -16,6 +16,7 @@ public class XMLFileReader {
     private Project project;
     private Document doc;
     private String xmlFilePath;
+    String docString;
 
     public XMLFileReader(Controller controller) throws IOException {
         project = controller.project;
@@ -23,6 +24,12 @@ public class XMLFileReader {
         xmlFilePath = project.getBasePath() + Constants.CONFIG_FILE_PATH;
         FileInputStream fileInputStream = new FileInputStream(xmlFilePath);
         doc = Jsoup.parse(fileInputStream, null, "", Parser.xmlParser());
+        docString = doc.toString();
+    }
+
+    //Das ist ein Test, 9.11.
+    public String getDocString() {
+        return docString;
     }
 
     public void modifyXMLTokenAndPassword(String token, String password) throws IOException {
@@ -58,6 +65,22 @@ public class XMLFileReader {
         return isInitialized;
     }
 
+    //TODO: Getter Methode schreiben und so den counter dem branchnamen dem counter mitgeben
+    //TODO: Warum ist das so einfach? Geht das bei den anderen Sachen auch so leicht?
+    public void modifyCounter(int counter) {
+        for (Element e : doc.getElementsByTag("counter")) {
+            e.text(String.valueOf(counter));
+        }
+    }
+
+    public int readCounterValueFromXML() {
+        String counterValue = "";
+        for (Element e : doc.getElementsByTag("counter")) {
+            counterValue = e.text();
+        }
+        return Integer.parseInt(counterValue);
+    }
+
     public void modifyXMLNameAndMail(String name, String mail) throws IOException {
         for (Element e : doc.getElementsByTag("name")) {
             e.text(name);
@@ -66,30 +89,44 @@ public class XMLFileReader {
             e.text(mail);
         }
 
-        String content = doc.toString();
+        String content = doc.toString(); //Das hole ich mir, damit ich den TexteditorTab testen kann
         System.out.println("content: " + content);
         File file = new File(xmlFilePath);
-        FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
-        PrintWriter pw = new PrintWriter(fw);
-        System.out.println("fw: " + fw);
-        BufferedWriter bw = new BufferedWriter(fw);
+        FileWriter fileWriter = new FileWriter(file.getAbsoluteFile());
+        System.out.println("fw: " + fileWriter);
+        BufferedWriter bw = new BufferedWriter(fileWriter);
         bw.write(content);
         bw.close();
     }
 
-    public void modifyXMLRequests(String id) {
-        //TODO: jede RequestID dort speichern!
-        //TODO: Neue Tags erstellen: <request> </request>
-        Element newElement = doc.createElement("request");
-        newElement.appendText(id);
+    public void modifyXMLRequests(long id) throws IOException {
+        for (Element e : doc.getElementsByTag("requests")) {
+            Element newElement = e.appendElement("request");
+            newElement.text(String.valueOf(id));
+            System.out.println(newElement);
+        }
+        System.out.println(doc);
+
+        File file = new File(xmlFilePath);
+        String content = doc.toString();
+
+        FileWriter fw = new FileWriter(file.getAbsoluteFile());
+        BufferedWriter bw = new BufferedWriter(fw);
+        // Write in file, overwrites file
+        bw.write(content);
+        bw.close();
     }
 
+    //TODO: Das noch weniger duplicate Code machen?
     public String readEncryptedPasswordFromXML() {
-        StringBuilder encryptedPasswordXML = new StringBuilder();
+        //StringBuilder encryptedPasswordXML = new StringBuilder();
+        String encryptedPasswordXML = "";
         for (Element e : doc.getElementsByTag("password")) {
-            encryptedPasswordXML.append(e.text());
+            //encryptedPasswordXML.append(e.text());
+            encryptedPasswordXML = e.text();
         }
-        return encryptedPasswordXML.toString();
+        return encryptedPasswordXML;
+        //return encryptedPasswordXML.toString();
     }
 
     public String readNameFromXML() {
@@ -108,7 +145,4 @@ public class XMLFileReader {
         }
         return studentMailInXML;
     }
-
 }
-
-

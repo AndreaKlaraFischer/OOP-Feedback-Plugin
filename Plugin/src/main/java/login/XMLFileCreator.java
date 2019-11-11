@@ -34,7 +34,6 @@ public class XMLFileCreator {
                 file.createNewFile(); //boolean
                 FileWriter fileWriter = new FileWriter(file.getAbsoluteFile(), true);
                 bufferedWriter = new BufferedWriter(fileWriter);
-                //Hier wird die XML Struktur erstellt
                 writeXMLStructure();
                 bufferedWriter.close();
             }
@@ -44,6 +43,7 @@ public class XMLFileCreator {
         }
     }
 
+    //"\\s" = space
     private void writeXMLStructure() throws IOException {
        bufferedWriter.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "\n" +
                "<configuration>" + "\n" +
@@ -53,8 +53,9 @@ public class XMLFileCreator {
                 "\t" + "\t" + "<token>" + "</token>" + "\n" +
                 "\t" + "\t" + "<password>" + "</password>" + "\n" +
                 "\t" + "</component>" + "\n" +
-                "\t" + "<component name='requests'>" + "\n" +
-                "\t" + "</component>" + "\n" +
+                "\t" + "<requests>" + "\n" +
+                "\t" + "\t" + "<counter>" + "</counter>" +
+                "\t" + "</requests>" + "\n" +
                "</configuration>");
     }
 }
