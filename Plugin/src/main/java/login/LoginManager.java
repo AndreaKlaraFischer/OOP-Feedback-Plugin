@@ -10,6 +10,8 @@ import java.io.FileReader;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LoginManager {
     private Controller controller;
@@ -34,5 +36,13 @@ public class LoginManager {
     public String createToken() {
         return UUID.randomUUID().toString();
     }
+
+    public boolean validateMail(String mailAddressInput) {
+        String emailRegex = "^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+        Pattern emailPattern = Pattern.compile(emailRegex, Pattern.CASE_INSENSITIVE);
+        Matcher emailMatcher = emailPattern.matcher(mailAddressInput);
+        return emailMatcher.find();
+    }
+
 
 }

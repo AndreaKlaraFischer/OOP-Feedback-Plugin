@@ -2,6 +2,7 @@ package gui;
 
 
 import actions.BalloonPopup;
+import android.os.SystemPropertiesProto;
 import com.github.javafaker.Faker;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.openapi.ui.popup.Balloon;
@@ -11,6 +12,9 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,24 +38,11 @@ public class SettingScreen implements ActionListener {
         controller.settingScreen = this;
         this.controller = controller;
         studentNameInput = inputNameField.getText(); //Brauche ich das überhaupt noch?
-        generateAnonymousNameButton.addActionListener(this::generateAnonymousName);
-        saveSettingsButton.addActionListener(this::actionPerformed);
+        generateAnonymousNameButton.addActionListener(this);
+        saveSettingsButton.addActionListener(this);
         balloonPopup = new BalloonPopup();
         inputNameField.setText(controller.getStudentNameInXML());
         inputMailAddressField.setText(controller.getStudentMailInXML());
-    }
-
-    //TODO: Das auslagern noch, hat auch nichts in der View zu suchen
-    //https://rieckpil.de/howto-generate-random-data-in-java-using-java-faker/
-    private void generateAnonymousName(ActionEvent actionEvent) {
-        String anonymousName = "";
-        //TODO: Branchname muss dann natürlich auch angepasst werden, damit man dort nicht den Namen rausfinden kann
-        Faker faker = new Faker();
-        String firstName = faker.name().firstName();
-        String lastName = faker.name().lastName();
-        anonymousName = "Anonyme/r " + firstName + " " + lastName;
-        System.out.println("anonymousName: " + anonymousName);
-        inputNameField.setText(anonymousName);
     }
 
 
@@ -59,23 +50,32 @@ public class SettingScreen implements ActionListener {
         return settingScreenContent;
     }
 
+    private Object getClickedButton(ActionEvent e) {
+        return e.getSource();
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (inputNameField.getText().length() == 0) {
-            showNoNameError();
-        } else if (inputMailAddressField.getText().length() == 0) {
-            //TODO: Das muss noch irgendwie wegklickbar sein oder so, dass man es auch nach der Warnung noch abschicken kann.
-            showNoMailWarning();
-        } else {
-            if (controller.loginManager.validateMail(inputMailAddressField.getText())) {
-                try {
-                    controller.onSaveSettingsButtonPressed();
-                    showSuccessfullySavedInfo();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
+        Object clickedButton = getClickedButton(e);
+        if(clickedButton == generateAnonymousNameButton) {
+            controller.nameGenerator.generateAnonymousName();
+        } else if(clickedButton == saveSettingsButton) {
+            if (inputNameField.getText().length() == 0) {
+                showNoNameError();
+            } else if (inputMailAddressField.getText().length() == 0) {
+                //TODO: Das muss noch irgendwie wegklickbar sein oder so, dass man es auch nach der Warnung noch abschicken kann.
+                showNoMailWarning();
             } else {
-                showInvalidMailError();
+                if (controller.loginManager.validateMail(inputMailAddressField.getText())) {
+                    try {
+                        controller.onSaveSettingsButtonPressed();
+                        showSuccessfullySavedInfo();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                } else {
+                    showInvalidMailError();
+                }
             }
         }
     }
