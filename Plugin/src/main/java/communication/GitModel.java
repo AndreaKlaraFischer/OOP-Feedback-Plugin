@@ -6,30 +6,30 @@ import config.Constants;
 import controller.Controller;
 import org.eclipse.jgit.api.*;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.diff.DiffEntry;
+import org.eclipse.jgit.diff.DiffFormatter;
+import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
+import org.eclipse.jgit.treewalk.AbstractTreeIterator;
+import org.eclipse.jgit.treewalk.FileTreeIterator;
+import org.kohsuke.github.GHRepository;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 
 public class GitModel {
-    //TODO: Den Branchnamen in eine eigene Klasse auslagern, das sind drei Methoden, die hier eigentlich nichts mit Git zu tun haben
-    private String branchName;
     public Controller controller;
     private Git git;
     public String clonedRepoPath;
     private static File directory;
-    private int counter;
     public String projectPath;
 
     public GitModel(Project project, Controller controller ) {
         projectPath = project.getBasePath();
+        assert projectPath != null;
         directory = new File(projectPath);
-
-        counter = 0;
-        controller.XMLFileReader.modifyCounter(counter);
-        controller.XMLFileReader.readCounterValueFromXML();
-        counter = controller.XMLFileReader.readCounterValueFromXML();
 
         this.controller = controller;
     }
@@ -54,12 +54,12 @@ public class GitModel {
         //createBranchCommand.setNewName( branchName).call();
         //createBranchCommand.call();
 
-        checkoutBranch();
+        checkoutBranch(branchName);
         commitChanges();
         pushToRemote();
     }
 
-    private void checkoutBranch() {
+    private void checkoutBranch(String branchName) {
         CheckoutCommand checkoutCommand = git.checkout();
         checkoutCommand.setCreateBranch(true);
         checkoutCommand.setName(branchName);
@@ -69,6 +69,7 @@ public class GitModel {
             e.printStackTrace();
         }
     }
+
 
     private void commitChanges() throws GitAPIException {
         AddCommand addCommand = git.add();
@@ -88,61 +89,42 @@ public class GitModel {
         System.out.println("Wurde erfolgreich gepusht");
     }
 
+    //https://github.com/centic9/jgit-cookbook/blob/master/src/main/java/org/dstadler/jgit/porcelain/ShowBranchDiff.java
+    private void compareBranchesForCodeChanges() throws GitAPIException, IOException {
+        /*DiffCommand diffCommand = git.diff();
+        AbstractTreeIterator oldTreeIterator = new FileTreeIterator(git.getRepository());
+        AbstractTreeIterator newTreeIterator = new FileTreeIterator(git.getRepository());
+      //git.diff().setOutputStream(System.out).call();
+
+     diffCommand.setOldTree(oldTreeIterator)
+              .setNewTree(newTreeIterator)
+              .call();
+     for(DiffEntry diffEntry : listDiffs) {
+         DiffFormatter formatter = new DiffFormatter(System.out);
+         formatter.setRepository();
+         formatter.format(diffEntry);
+     }*/
+    }
+
+    private void listDiffs(Repository repository, Git git, String oldCommit, String newCommit) {
+
+    }
+
     //10.11. Das wird jetzt ein riesen TODO
     //Branches vergleichen, schauen ob Änderungen da sind, wenn Änderungen da sind - Button zeigen und enablen
+    //Alle geänderten Files in einer Liste speichern
+    //Alle geänderten Zeilen holen
+    //File als String, geänderte Zeilen hinterlegen
 
     //TODO: Das wird wahrscheinlich an der falschen Stelle angerufen! Es muss zu Programmstart schon false gesetzt werden.
-    public boolean checkForCodeChanges() {
+    public boolean hasCodeChanged() {
         return false;
     }
 
-    //TODO: Gehört das hier her?
-    public String createBranchName(String studentName, String requestCounter, String requestDate) {
-        studentName = removeWhitespacesFromStudentName(studentName);
-        requestDate  = formatDateForBranchName(requestDate);
-        branchName = "Branch-" +
-                studentName +
-                Constants.HYPHEN +
-                requestCounter +
-                Constants.HYPHEN +
-                requestDate;
-        return branchName;
-    }
-
-    //TODO: Gehört das hier her?
-    private String getBranchName() {
-        return branchName;
-    }
-
     public String createImageUrl() {
-        return "OOP-Feedback-Test/OOP-Feedback/blob/" + getBranchName() + "/screenshots/";
+        return "OOP-Feedback-Test/OOP-Feedback/blob/" + controller.getBranchName() + "/screenshots/";
     }
 
-    //TODO: Gehört das hier her?
-    private String removeWhitespacesFromStudentName(String studentName) {
-        for(int i = 0; i < studentName.length(); i++ ){
-            studentName = studentName.replaceAll("\\s+","");
-        }
-        return studentName;
-    }
 
-    //TODO: Gehört das hier her?
-    //Hier werden alle Satzzeichen entfernt und nur die ersten vier Ziffern rausgeholt und dann noch die letzten 4.
-    private String formatDateForBranchName(String requestDate) {
-        for (int i = 0; i < requestDate.length(); i++) {
-            requestDate = requestDate.replaceAll("\\p{Punct}", "");
-        }
-        String date = requestDate.substring(0,4);
-        String day = requestDate.substring(requestDate.length() - 4);
-        requestDate = date + Constants.HYPHEN + day;
-        return requestDate;
-    }
-
-    //TODO: Gehört das hier her?
-    public String incrementRequestCounter() {
-        counter ++;
-        controller.XMLFileReader.modifyCounter(counter);
-        return String.valueOf(counter);
-    }
 
 }
