@@ -15,6 +15,8 @@ import org.kohsuke.github.GHIssue;
 import communication.GitHubModel;
 import communication.GitModel;
 import org.xml.sax.SAXException;
+import requests.BranchNameCreator;
+import requests.NameGenerator;
 import requests.ScreenshotModel;
 import login.LoginManager;
 import requests.TaskNameReader;
@@ -24,12 +26,11 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 //zentrale Startklasse
 public class Controller {
@@ -52,6 +53,9 @@ public class Controller {
     public XMLFileCreator XMLFileCreator;
     public AnnotatedCodeModel annotatedCodeModel;
     public HashMap<String, String> loginData;
+
+    public BranchNameCreator branchNameCreator;
+    public NameGenerator nameGenerator;
     //TODO: Alle unbenutzen Variablen in allen Klassen raushauen und TODOS ein bisschen abarbeiten
     public File projectPath;
     //10.11. Test
@@ -61,7 +65,7 @@ public class Controller {
     public Controller(Project project) throws IOException, TransformerException, SAXException, ParserConfigurationException, BadLocationException {
         this.project = project;
         //this.xmlFilePath = project.getBasePath()  + "/.idea/personalConfig.xml";
-        loginManager = new LoginManager(this); //TODO: Das noch umschreiben, immer aus dem Controller aufrufen
+        loginManager = new LoginManager(this);
         loginMenu = new LoginMenu(this);
         //Create File: file wird nur einmal angelegt.
         XMLFileCreator = new XMLFileCreator(this);
@@ -78,7 +82,14 @@ public class Controller {
 
         hasChanges = false;
         gitHubModel = new GitHubModel(this);
+        //11.11. Ist das hier richtig?
+        branchNameCreator = new BranchNameCreator(this);
+        //
         gitModel = new GitModel(project, this);
+        //11.11. Ist das hier richtig?
+        nameGenerator = new NameGenerator(this);
+        //
+
         screenshotModel = new ScreenshotModel(this);
         mailModel = new MailModel(this);
         balloonPopup = new BalloonPopup();
@@ -113,11 +124,23 @@ public class Controller {
         return XMLFileReader.readMailFromXML();
     }
 
+    public String getBranchName() {
+        return branchNameCreator.createBranchName(getStudentName(), getCounterValue(), getCurrentDate());
+    }
+
+    public ArrayList<Long> getSavedRequest() {
+        return XMLFileReader.readRequestIdsFromXML();
+    }
+
+    private String getCounterValue() {
+        return String.valueOf(XMLFileReader.readCounterValueFromXML());
+    }
+
     public void onSelectFileButtonPressed() {
         screenshotModel.chooseFiles();
     }
 
-    private void showWelcomeMenu() {
+    private void showWelcomeMenu() throws UnsupportedEncodingException {
         System.out.println("Controller showWelcomeMenu");
         //Wenn da was bei <token> steht
         if(XMLFileReader.checkIfInitialized()) {
@@ -130,7 +153,8 @@ public class Controller {
     }
 
     public void onSubmitRequestButtonPressed() {
-        String requestCounter = gitModel.incrementRequestCounter();
+        //String requestCounter = gitModel.incrementRequestCounter();
+        String requestCounter = branchNameCreator.incrementRequestCounter();
         String requestDate = getCurrentDate();
         //TODO: Hier die Methode mit den imageStrings? Beides zusammenbauen und mit Zeilenumbrüchen trennen
         String requestMessage = getRequestMessage();
@@ -148,11 +172,14 @@ public class Controller {
                 String title = gitHubModel.createIssueTitle(studentName, requestDate);
                 String labelCategory = Constants.COMMON_LABEL_BEGIN + SendRequestScreen.problemCategory;
                 String labelTask = Constants.COMMON_LABEL_BEGIN + getTaskNameFromFile();
-                String labelBranchName = Constants.COMMON_LABEL_BEGIN + gitModel.createBranchName(studentName, requestCounter, requestDate);
+                //String labelBranchName = Constants.COMMON_LABEL_BEGIN + gitModel.createBranchName(studentName, requestCounter, requestDate);
+                String labelBranchName = Constants.COMMON_LABEL_BEGIN + getBranchName();
                 //String labelScreenshot = screenshotModel.getScreenshotLabel();
                 //TODO: Das nicht hardcoden und Bedingung einbauen !
                 String labelScreenshot = "screenshot";
-                gitModel.createAndPushBranch(gitModel.createBranchName(studentName, requestCounter, requestDate));
+                //gitModel.createAndPushBranch(gitModel.createBranchName(studentName, requestCounter, requestDate));
+                //TODO: Das geht irgendwie nicht
+                gitModel.createAndPushBranch(getBranchName());
                 gitHubModel.createIssue(title, requestMessage, labelCategory, labelTask, labelBranchName);
                 //9.11. auskommentiert zu Testzwecken
                 //mailModel.sendMailToTutors();
@@ -168,15 +195,13 @@ public class Controller {
     }
 
     public void onRegistrationButtonPressed() throws IOException {
-        String password = loginMenu.getPasswordValidateInput().toString();
+        String password = getPasswordValidateInput();
         String encryptedPassword = loginManager.encryptPassword(password);
-        //String encryptedPassword = getEncryptedPassword();
         String token = getToken();
         //Hier wird das Passwort validiert
-        //TODO: Hier vielleicht auch noch die getter Methoden in den Controller schreiben
         //TODO: Das noch ein bisschen auslagern
-        if(loginMenu.getPasswordValidateInput().length() >= Constants.MINIMUM_PASSWORD_LENGTH && loginMenu.getPasswordFirstInput().length() >= Constants.MINIMUM_PASSWORD_LENGTH) {
-            if(loginMenu.getPasswordValidateInput().equals(loginMenu.getPasswordFirstInput())) {
+        if(getPasswordValidateInput().length() >= Constants.MINIMUM_PASSWORD_LENGTH && getPasswordFirstInput().length() >= Constants.MINIMUM_PASSWORD_LENGTH) {
+            if(getPasswordValidateInput().equals(getPasswordFirstInput())) {
             //if (Arrays.equals(loginMenu.getPasswordFirstInput(), loginMenu.getPasswordValidateInput())) {
                 loginManager.createToken();
                 loginManager.encryptPassword(password);
@@ -194,6 +219,16 @@ public class Controller {
         } else {
             loginMenu.showPasswordTooShortError();
         }
+    }
+
+    //Erstes Feld
+    private String getPasswordFirstInput() {
+        return Arrays.toString(loginMenu.passwordFieldFirstInput.getPassword());
+    }
+
+    //Zweites Feld
+    private String getPasswordValidateInput() {
+        return Arrays.toString(loginMenu.passwordFieldValidateInput.getPassword());
     }
 
     public void onLoginButtonPressed() {
@@ -221,7 +256,6 @@ public class Controller {
     }
 
     public void sendFeedbackForFeedback() {
-        //TODO: Hier muss das gemacht werden mit dem Label!
         gitHubModel.matchFeedbackAndRequest(gitHubModel.answerNumber);
         //Switch geht leider nicht mit Objekten
        if(answerDetailScreen.selectedHelpfulness == 1) {

@@ -1,6 +1,7 @@
 package gui;
 
 import actions.BalloonPopup;
+import com.google.common.primitives.Chars;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.openapi.ui.popup.Balloon;
 import config.Constants;
@@ -9,18 +10,21 @@ import controller.Controller;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 
-//TODO: Das am besten noch über zwei verschiedene Klassen laufen lassen - package "login" - eine Klasse für die View und eine für die Funktionalitäten
 //-- siehe "safety/LoginManager"
 //TODO: Überlegen, ob ich das lieber über ein JFrame lösen soll -> JOptionPane hat zu viele Funktionalitäten eingebaut
 public class LoginMenu implements ActionListener {
     private BalloonPopup balloonPopup;
     private Controller controller;
     public JPasswordField passwordFieldLogin;
-    private JPasswordField passwordFieldFirstInput;
-    private JPasswordField passwordFieldValidateInput;
+    public JPasswordField passwordFieldFirstInput;
+    public JPasswordField passwordFieldValidateInput;
     private String welcomeText;
     private JLabel introduction;
     private JButton registrationButton;
@@ -63,11 +67,12 @@ public class LoginMenu implements ActionListener {
         registrationDialog.setVisible(true);
     }
 
-    public void showLoginMenu() {
+    public void showLoginMenu() throws UnsupportedEncodingException {
         String studentName = controller.getStudentNameInXML();
-        welcomeText = "Willkommen " + studentName + "!";
-        introduction.setText("Gib hier dein Passwort ein, um wieder Zugriff auf deine persönlichen Antworten zu haben");
-        Object[] message = {welcomeText, introduction, passwordFieldLogin, loginButton};
+        welcomeText = "Willkommen " + studentName + "!" + "\n" + "Gib hier dein Passwort ein, um wieder Zugriff auf deine persönlichen Antworten zu haben";
+        InputStream inputStream = new ByteArrayInputStream(welcomeText.getBytes("UTF-8"));
+        introduction.setText(welcomeText);
+        Object[] message = {introduction, passwordFieldLogin, loginButton};
         loginOptionPane = new JOptionPane(message);
 
         loginDialog = loginOptionPane.createDialog(null, "Willkommen zurück!");
@@ -82,20 +87,9 @@ public class LoginMenu implements ActionListener {
         loginDialog.dispose();
     }
 
-    //TODO: Wieso wird das nicht aufgerufen?? Vielleicht ist das das Problem, dass das n Char array ist
     public String getPasswordLogin() {
         System.out.println("getPasswordLogin" + Arrays.toString(passwordFieldLogin.getPassword()));
         return Arrays.toString(passwordFieldLogin.getPassword());
-    }
-
-    //Erstes Feld
-    public String getPasswordFirstInput() {
-        return Arrays.toString(passwordFieldFirstInput.getPassword());
-    }
-
-    //Zweites Feld --> Diese beiden müssen miteinander verglichen werden
-    public String getPasswordValidateInput() {
-        return Arrays.toString(passwordFieldValidateInput.getPassword());
     }
 
     public void showValidPasswordInfo() {
@@ -127,11 +121,9 @@ public class LoginMenu implements ActionListener {
         Object clickedButton = getClickedButton(e);
         if (clickedButton == loginButton) {
             controller.onLoginButtonPressed();
-            System.out.println("loginButtonPressed");
         } else if (clickedButton == registrationButton) {
             try {
                 controller.onRegistrationButtonPressed();
-                System.out.println("registrationButtonPressed");
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
