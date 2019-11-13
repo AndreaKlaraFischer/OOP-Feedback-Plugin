@@ -10,48 +10,31 @@ import org.fife.ui.rsyntaxtextarea.*;
 
 //https://github.com/bobbylight/RSyntaxTextArea
 public class TextEditorDemo extends JFrame {
-    private JFrame frame;
-    private JPanel cp;
-    RSyntaxTextArea textArea;
-    Controller controller;
+    private JPanel panel;
+    private RSyntaxTextArea textArea;
+    private Controller controller;
+    private RSyntaxDocument document;
 
     public TextEditorDemo(Controller controller) throws BadLocationException {
-        //frame = new JFrame();
-        cp = new JPanel(new BorderLayout());
         this.controller = controller;
+    }
 
-        textArea = new RSyntaxTextArea(20, 60);
+
+    public RSyntaxTextArea createCodeWindow(String code) throws BadLocationException {
+        JPanel panel = new JPanel(new BorderLayout());
+        RSyntaxTextArea textArea = new RSyntaxTextArea(20, 60);
         textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
         textArea.setCodeFoldingEnabled(true);
-        // Anschauen
+        // TODO Anschauen
         RSyntaxDocument document = new RSyntaxDocument(SyntaxConstants.SYNTAX_STYLE_JAVA);
-        //TODO: Wie bekomme ich dann den Code hier rein?
-        //9.11., das ist ein Test und funktioniert
-        document.insertString(0, controller.XMLFileReader.getDocString(), null);
+        document.insertString(0, code, null);
         textArea.setDocument(document);
-        //Das hier ist wichtig!
         textArea.setEditable(false);
-        RTextScrollPane sp = new RTextScrollPane(textArea);
-        //Das tut auch nicht das, was ich will
-        sp.setLineNumbersEnabled(true);
-        cp.add(sp);
-        //frame.add(cp);
-        setContentPane(cp);
-        //setTitle("Text Editor Demo");
-        //setDefaultCloseOperation(EXIT_ON_CLOSE);
+        RTextScrollPane textScrollPane = new RTextScrollPane(textArea);
+        panel.add(textScrollPane);
+        setContentPane(panel);
         pack();
         setLocationRelativeTo(null);
-    }
-
-    public RSyntaxTextArea showTextEditor() {
-        /*SwingUtilities.invokeLater(() -> {
-            try {
-                new TextEditorDemo().setVisible(true);
-            } catch (BadLocationException e) {
-                e.printStackTrace();
-            }
-        });*/
         return textArea;
     }
-
 }
