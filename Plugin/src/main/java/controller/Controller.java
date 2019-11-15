@@ -25,6 +25,7 @@ import javax.swing.text.BadLocationException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
@@ -100,7 +101,7 @@ public class Controller {
 
         annotatedCodeModel = new AnnotatedCodeModel(this);
         gitModel.gitInit();
-        showWelcomeMenu();
+        //showWelcomeMenu();
 
     }
 
@@ -126,6 +127,10 @@ public class Controller {
 
     public String getBranchName() {
         return branchNameCreator.createBranchName(getStudentName(), getCounterValue(), getCurrentDate());
+    }
+
+    public String getProblemCategory() {
+        return sendRequestScreen.saveSelectedCategoryAsString();
     }
 
     public ArrayList<Long> getSavedRequest() {
@@ -170,17 +175,16 @@ public class Controller {
         } else {
             try {
                 String title = gitHubModel.createIssueTitle(studentName, requestDate);
-                String labelCategory = Constants.COMMON_LABEL_BEGIN + SendRequestScreen.problemCategory;
+                String labelCategory = Constants.COMMON_LABEL_BEGIN + getProblemCategory();
                 String labelTask = Constants.COMMON_LABEL_BEGIN + getTaskNameFromFile();
                 //String labelBranchName = Constants.COMMON_LABEL_BEGIN + gitModel.createBranchName(studentName, requestCounter, requestDate);
                 String labelBranchName = Constants.COMMON_LABEL_BEGIN + getBranchName();
                 //String labelScreenshot = screenshotModel.getScreenshotLabel();
                 //TODO: Das nicht hardcoden und Bedingung einbauen !
-                String labelScreenshot = "screenshot";
-                //gitModel.createAndPushBranch(gitModel.createBranchName(studentName, requestCounter, requestDate));
-                //TODO: Das geht irgendwie nicht
+                String labelScreenshot = getScreenShotLabel();
                 gitModel.createAndPushBranch(getBranchName());
-                gitHubModel.createIssue(title, requestMessage, labelCategory, labelTask, labelBranchName);
+                gitHubModel.createIssue(title, requestMessage, labelCategory, labelTask, labelBranchName, labelScreenshot);
+                //gitHubModel.createIssue(title, requestMessage, labelCategory, labelBranchName, labelScreenshot);
                 //9.11. auskommentiert zu Testzwecken
                 //mailModel.sendMailToTutors();
 
@@ -192,6 +196,14 @@ public class Controller {
             }
             sendRequestScreen.showSentRequestInfo();
         }
+    }
+
+    private String getScreenShotLabel() {
+        String screenShotLabel = Constants.COMMON_LABEL_BEGIN + "Ohne Screenshot";
+        if(screenshotModel.hasScreenShotAttached()) {
+            screenShotLabel = Constants.COMMON_LABEL_BEGIN + "Mit Screenshot";
+        }
+        return screenShotLabel;
     }
 
     public void onRegistrationButtonPressed() throws IOException {
@@ -287,7 +299,7 @@ public class Controller {
         return loginManager.createToken();
     }
 
-    private String getTaskNameFromFile() {
+    private String getTaskNameFromFile() throws FileNotFoundException {
         return taskNameReader.readNameOfTaskFromNameFile();
     }
 

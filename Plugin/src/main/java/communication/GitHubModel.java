@@ -21,8 +21,10 @@ public class GitHubModel {
     private GHIssue issue;
     private GHIssueComment feedbackComment;
     private GHIssueToAnswerAdapter adapter;
-    public static GHRepository repo;
+    public GHRepository repo;
+    //11.11. Versuch
     private static List<GHIssue> issueList;
+    private List<Long> issueIDList;
     private static List<GHIssue> allClosedIssueList;
     public static ArrayList<GHIssue> closedIssueList;
     public AnswerList answerList;
@@ -30,12 +32,14 @@ public class GitHubModel {
 
     public int answerId;
     public int answerNumber;
-    private String requestDate;
 
     public GitHubModel(Controller controller) {
         this.controller = controller;
         issueList = new ArrayList<>();
+        //11.11.
+        issueIDList = controller.getSavedRequest();
         allClosedIssueList = new ArrayList<>();
+        //TODO: Controller
         answerList = new AnswerList();
         this.adapter = new GHIssueToAnswerAdapter();
 
@@ -63,16 +67,20 @@ public class GitHubModel {
                 requestDate;
     }
 
-    public void createIssue(String title, String body, String labelCategory, String labelTask, String labelBranchName) {
+    public void createIssue(String title, String body, String labelCategory, String labelTask, String labelBranchName, String labelScreenshot) {
+    //public void createIssue(String title, String body, String labelCategory, String labelBranchName, String labelScreenshot) {
         try {
             issue = repo.createIssue(title).create();
             issue.setBody(body);
             //09.11. Das geht nicht mehr! TODO: Beheben!!!!!!!!!
-            //issue.addLabels(labelCategory, labelTask, labelBranchName);
+            //Das geht
+           // issue.addLabels("A", "B");
+            //Das wird ausgegeben
+            System.out.println(labelCategory + labelTask + labelBranchName);
+            issue.addLabels(labelCategory, labelTask, labelBranchName, labelScreenshot);
+            //issue.addLabels(labelCategory, labelBranchName, labelScreenshot);
             //31.10. Test --> Das geht nicht! Überschreibt die anderen
             //issue.addLabels("testiiiii");
-            issue.getId();
-            //TODO: Hier dann die XML File überschreiben mit den issues
             controller.XMLFileReader.modifyXMLRequests(issue.getId());
             System.out.println("issue-getId(): " + issue.getId());
             issueList.add(issue);
@@ -104,6 +112,8 @@ public class GitHubModel {
         System.out.println(issueList);
         for (GHIssue ghIssue : allClosedIssueList) {
             for (GHIssue value : issueList) {
+            //11.11. Versuch, das mit der Liste zu ersetzen, damit es gespeichert und weiterhin angezeigt wird
+            //for (Long aLong : issueIDList) {
                 long idxClosed = ghIssue.getId();
                 long idxIssueList = value.getId();
                 if (idxClosed == idxIssueList) {
@@ -113,6 +123,10 @@ public class GitHubModel {
         }
         closedIssueList = temp;
         System.out.println("My closed issues " + closedIssueList);
+    }
+
+    public void showOwnAnswersOnProgramStart() {
+
     }
 
     public void matchRequestAndAnswer() {
@@ -135,6 +149,7 @@ public class GitHubModel {
                         //18.10. Wichtig! Im Repo kann man nach einem Issue nur nur mit der Nummer, also dem fortlaufendem Index suchen
                         answerNumber = answer.getAnswerNumber();
                         controller.onNewAnswerData();
+                        controller.answerDetailScreen.activateOpenCodeButton();
                     }
                 }
             }
@@ -177,9 +192,6 @@ public class GitHubModel {
         }
     }
 
-
-
-    //18.10. Versuch, das mit Parameter zu lösen. --> Funktioniert soweit.
     public void setFeedbackText(String prefix, String feedbackMessage) {
         try {
             feedbackComment = issue.comment(prefix + Constants.SEPARATOR + feedbackMessage);
@@ -191,12 +203,15 @@ public class GitHubModel {
     //TODO: Wenn das beim Screenshot funktioniert, also nur bei Bedarf gelabelt wird, dann sich daran orientieren!
     public void setProblemSolvedLabel() {
         //TODO: Das hier holen! Also irgendwie übergeben oder so.
-        String problemSolvedLabel = "schwurbel";
+        //Aber das funktioniert soweit schon mal, dass es an die bestehenden Labels noch mitangehängt wird.
+        String problemSolvedLabel = "Problem erfolgreich gelöst!";
         try {
             issue.addLabels(problemSolvedLabel);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
 
 }

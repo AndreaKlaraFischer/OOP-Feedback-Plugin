@@ -3,9 +3,8 @@ package requests;
 import com.intellij.openapi.project.Project;
 import controller.Controller;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.util.Scanner;
 
 public class TaskNameReader {
     public Controller controller;
@@ -19,17 +18,11 @@ public class TaskNameReader {
 
     //https://howtodoinjava.com/java/io/java-read-file-to-string-examples/
     //Hier hole ich den Namen der Studienleistung
-    public String readNameOfTaskFromNameFile() {
-        StringBuilder taskNameBuilder = new StringBuilder();
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(nameFilePath))) {
-            String currentLine;
-            while ((currentLine = bufferedReader.readLine()) != null) {
-                taskNameBuilder.append(currentLine).append("\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println(taskNameBuilder.toString());
-        return taskNameBuilder.toString();
+    public String readNameOfTaskFromNameFile() throws FileNotFoundException {
+        Scanner taskNameScanner = new Scanner(new File(nameFilePath)).useDelimiter("\n");
+        String taskName;
+        taskName = taskNameScanner.nextLine().trim();
+        taskNameScanner.close();
+        return taskName;
     }
 }
