@@ -1,22 +1,29 @@
 package gui;
 
 import actions.BalloonPopup;
+import answers.ImagePanel;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.openapi.ui.popup.Balloon;
 import com.intellij.ui.components.JBScrollPane;
 import config.Constants;
 import controller.Controller;
+import org.apache.batik.ext.awt.image.spi.ImageWriterParams;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
+import javax.imageio.stream.ImageOutputStream;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URL;
+import java.util.Iterator;
 import java.util.List;
 
 //TODO: Das wird wahrscheinlich auch nur so lang funktionieren, bis die .form files wieder gehen
@@ -32,20 +39,19 @@ public class AnswerDetailScreen  implements ActionListener {
 
     private Controller controller;
 
-    JPanel answerDetailPanel;
+    private JPanel answerDetailPanel;
     public JTextField detailedAnswerField;
     public JLabel answerTitleLabel;
     public JTextArea feedbackInputField;
     private JButton sendFeedbackButton;
     private JCheckBox solvedCheckbox;
-    public String feedbackMessage;
 
     public int selectedHelpfulness;
     public String taskSuccessfullySolved;
 
-    public ImageIcon icon;
-    public BufferedImage img;
-    private JLabel imageLabel;
+    //private JButton imageButton;
+
+    private JFrame highResolutionFrame;
 
 
     public AnswerDetailScreen(MailBoxScreen mailBoxScreen, Controller controller) {
@@ -53,23 +59,24 @@ public class AnswerDetailScreen  implements ActionListener {
         this.mailBoxScreen = mailBoxScreen;
         controller.answerDetailScreen = this;
 
-
         GridLayout testLayout = new GridLayout(3,2);
         detailedAnswerField = new JTextField();
         detailedAnswerField.setEditable(false);
 
         answerTitleLabel = new JLabel();
 
-        solvedCheckbox.addActionListener(this::actionPerformed);
+        solvedCheckbox.addActionListener(this);
+
         JButton openCodeButton = new JButton();
         openCodeButton.setText("zum Code");
         openCodeButton.addActionListener(this::openCodeInNewWindow);
-        sendFeedbackButton.addActionListener(this::actionPerformed);
+        openCodeButton.setVisible(false);
+        sendFeedbackButton.addActionListener(this);
         JButton backButton = new JButton();
         //backButton.setText("Zurück zur Übersicht");
         //backButton.addActionListener(this::backToTable);
 
-        imageLabel = new JLabel();
+       // imageLabel = new JLabel();
 
         helpfulButton.addActionListener(this);
         semiHelpfulButton.addActionListener(this);
@@ -96,49 +103,76 @@ public class AnswerDetailScreen  implements ActionListener {
         //24.10. Test
        // answerDetailPanel.add(imageLabel);
 
+
+
+
         answerDetailScrollPane = new JBScrollPane(answerDetailPanel);
     }
 
     //TODO: Bilder komprimieren
-    public  void createImageFromAttachedImageFile(List<String> imageUrls) {
+    public  Image createImageFromAttachedImageFile(List<String> imageUrls) {
         //24.10. Test mit hardgecodeter URL, funktioniert
+        Image image = null;
         try {
+
             for(int i = 0; i < imageUrls.size(); i++) {
-                img = ImageIO.read(new URL(
+                //TODO: Das muss ich übergeben
+                BufferedImage img = ImageIO.read(new URL(
                         //TODO: Hier den Link, den ich aus dem Bildkommentar geholt habe
                         imageUrls.get(i)));
                 //"http://www.java2s.com/style/download.png"));
-                icon = new ImageIcon(img);
-                //compressImages(img);
-                imageLabel.setIcon(icon);
-                answerDetailPanel.add(imageLabel);
+                ImageIcon icon = new ImageIcon(img);
+                //Bild transformieren
+                image = icon.getImage();
+                Image scaledImage = image.getScaledInstance(120,120, Image.SCALE_SMOOTH);
+                icon = new ImageIcon(scaledImage);
+                //Bild dem Button hinzufügen
+                JButton imageButton = new JButton(icon);
+                imageButton.addActionListener(this::openImageHighResolution);
+                answerDetailPanel.add(imageButton);
+
+                //Versuch
+                addImageToFrame(image);
+
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-    }
-
-    //public void compressImages(BufferedImage img) {
-    public void compressImages() {
-        System.out.println("Das hat jetzt funktioniert, das Aufrufen");
+        return image;
     }
 
 
-    //TODO: Das brauche ich nicht mehr in dieser Art und Weise.
+    private void addImageToFrame(Image image) {
+        highResolutionFrame = new JFrame();
+        highResolutionFrame.setContentPane(new ImagePanel(image));
+    }
+    //TODO: Bild übergeben. Das geht noch nicht so.
+    private void openImageHighResolution(ActionEvent e) {
+      System.out.println("Wird aufgerufen und ich weiß noch nicht so genau, wie ich den Frame erzeugen lassen soll");
+      highResolutionFrame.setSize(560,500);
+      highResolutionFrame.pack();
+      highResolutionFrame.setVisible(true);
+    }
+
+
+    //TODO: Hier dann das Fenster öffnen, was aktuell noch im Tutorialscreen aufgerufen wird
     private void openCodeInNewWindow(ActionEvent e) {
-        activateOpenCodeButton();
         controller.onOpenCodeButtonPressed();
         System.out.println("Open annotated Code");
     }
 
+    //TODO: Das geht nicht! Das funktioniert nicht mit dem TutorialScreen
     //TODO: Wenn keine Änderungen im Code vom Tutor vorgenommen wurden, soll der Button gar nicht erst sichtbar sein
     //--> Sorgt sonst nur für Verwirrung
-    private void activateOpenCodeButton() {
-        if(controller.gitHubModel.checkIfChangesInCode()) {
+    //10.11. Ausgabe wird aufgerufen, aber der Button wird nicht manipuliert. Vielleicht sollte ich das umgekehrt machen
+    //--> Standardmäßig nicht zeigen, aber wenn Änderungen da sind, enablen
+    public void activateOpenCodeButton() {
+        System.out.println(controller.hasChanges);
+        if(controller.hasChanges) {
             openCodeButton.setVisible(true);
             openCodeButton.setEnabled(true);
         } else {
+            System.out.println("keine Änderungen!");
             openCodeButton.setVisible(false);
             openCodeButton.setEnabled(false);
         }
@@ -149,11 +183,10 @@ public class AnswerDetailScreen  implements ActionListener {
     }
 
 
-    public Object getClickedButton(ActionEvent e) {
+    private Object getClickedButton(ActionEvent e) {
         return e.getSource();
     }
 
-    //TODO: Das refactoren über den Controller. Auch wiedeer falsch
     @Override
     public void actionPerformed(ActionEvent e) {
         //TODO: Hier überlegen, ob dort stehen soll: wurde nicht erfolgreich gelöst?
@@ -173,6 +206,7 @@ public class AnswerDetailScreen  implements ActionListener {
             controller.sendProblemSolved();
         }
     }
+
 
 
     public void createFeedbackText() {

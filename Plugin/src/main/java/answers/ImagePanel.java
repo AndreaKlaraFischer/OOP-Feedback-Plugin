@@ -2,6 +2,7 @@ package answers;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
@@ -10,21 +11,18 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CommentImages {
-    public ImageIcon icon;
-    public BufferedImage img;
+//https://stackoverflow.com/questions/1064977/setting-background-images-in-jframe
+public class ImagePanel extends Container {
+    //15.11. Das zu Testzwecken.
+  private Image image;
+  public ImagePanel(Image image) {
+      this.image = image;
+  }
 
-    //TODO: Hier die geholte URL übergeben und unten einfügen
-    public  void createImageFromAttachedImageFile() {
-        try {
-            img = ImageIO.read(new URL(
-                    //TODO: Hier den Link, den ich aus dem Bildkommentar geholt habe
-                    "http://www.java2s.com/style/download.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //TODO: Das dann im AnswerDetailScreen auf ein Label setzen!
-        icon = new ImageIcon(img);
-    }
+  protected void paintComponent() {
+
+  }
+
+
 
 }
