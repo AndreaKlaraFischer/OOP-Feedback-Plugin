@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="tutorialScreenContent" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="75" y="20" width="3318" height="400"/>
+      <xy x="75" y="20" width="3318" height="404"/>
     </constraints>
     <properties/>
     <border type="line" title="Hier bekommst du Hilfestellung">
@@ -19,16 +19,6 @@
           </grid>
         </constraints>
       </vspacer>
-      <component id="c14b1" class="javax.swing.JTextField" binding="wasMussHierAllesTextField" default-binding="true">
-        <constraints>
-          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="-1"/>
-          </grid>
-        </constraints>
-        <properties>
-          <text value="Was muss hier alles rein? - Wie man Bookmarks setzt! - Wie man mit Fehlermeldungen umgeht  - Wie das Tool zu bedienen ist - Wie man Screenshots machen kann"/>
-        </properties>
-      </component>
       <component id="1836" class="javax.swing.JTextPane" binding="platzhalterText">
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false">
@@ -39,7 +29,7 @@
           <contentType value="text/plain"/>
           <editable value="false"/>
           <selectionColor color="-8585156"/>
-          <text value="- Wenn eine neue Datei angelegt wird, und der Dialog erscheint &quot;Add to Git&quot; - Es kann beides gedrückt werden, darüber keine Gedanken machen. &#10;- Gesetzte Bookmarks reagieren nicht auf Mausklick. Möchte man eine Bookmark entfernen, den Cursor in die entprechende Zeile setzen und &quot;F11&quot; drücken"/>
+          <text value="- Wenn eine neue Datei angelegt wird, und der Dialog erscheint &quot;Add to Git&quot; - Es kann beides gedrückt werden, darüber keine Gedanken machen. &#10;- Gesetzte Bookmarks reagieren nicht auf Mausklick. Möchte man eine Bookmark entfernen, den Cursor in die entprechende Zeile setzen und &quot;F11&quot; drücken&#10;- Wie setzt man Bookmarks?&#10;- Wie ist das Tool zu bedienen?&#10;- Wie geht man mit Fehlermeldungen um?&#10;- Top 3 Fehlermeldungen plus Anleitungen &#10;- Wie macht man am besten Screenshots?&#10;- Kann ich auch anonym fragen stellen?&#10;- Wie wird es dann nicht mehr anonym?&#10;- Was passiert mit meinen Daten?&#10;- Kann ich das Plugin auch rechnerübergreifend benutzen?&#10;"/>
         </properties>
         <clientProperties>
           <charset class="java.lang.String" value="UTF-8"/>
@@ -47,11 +37,19 @@
       </component>
       <component id="4cdf9" class="javax.swing.JButton" binding="testi" default-binding="true">
         <constraints>
-          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value="Testbutton für registration menü"/>
         </properties>
+      </component>
+      <component id="2fca7" class="javax.swing.JList" binding="list1" default-binding="true">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="50"/>
+          </grid>
+        </constraints>
+        <properties/>
       </component>
     </children>
   </grid>
