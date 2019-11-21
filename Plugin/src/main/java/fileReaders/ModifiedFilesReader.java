@@ -6,9 +6,7 @@ import controller.Controller;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
 import javax.swing.text.BadLocationException;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -100,28 +98,45 @@ public class ModifiedFilesReader {
                 resultList.remove(resultList.get(i));
             }
         }
-
-        /*for (int i = 0; i < resultList.size(); i++) {
-            String fileName = resultList.get(i).getName();
-            System.out.println("fileName: " + fileName);
-            if (!fileName.contains(".")) {
-                System.out.println("resultListEntry: " + resultList.get(i));
-                resultList.remove(resultList.get(i));
-            }
-        }*/
         System.out.println("FINAL resultlist: " + resultList);
         return resultList;
     }
 
     //Ich erstelle den Tab aus der Liste mit den modifiedFiles.
     //Durch eine Schleife. Der Titel ist das File and der Stelle i getName() und der Panel Inhalt ist das hier. Also dort aufrufen.
-    //TODO: Wie bekomme ich dann den Dateipfad?
-
+    //TODO: Das ist jetzt erstmal beiseite gelegt, weil es entweder nur die erste oder die letze Zeile ausgibt.
+//https://stackoverflow.com/questions/13185727/reading-a-txt-file-using-scanner-class-in-java
     public String readCodeFromModifiedFile(String filePath) throws FileNotFoundException {
         Scanner codeScanner = new Scanner(new File(filePath));
-        String modifiedCode = codeScanner.nextLine();
+        String modifiedCode = "";
+        while(codeScanner.hasNextLine()) {
+            modifiedCode = codeScanner.nextLine();
+        }
+
         codeScanner.close();
         return modifiedCode;
     }
+
+
+//https://stackoverflow.com/questions/326390/how-do-i-create-a-java-string-from-the-contents-of-a-file
+    public String readCode(String file) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        String         line = null;
+        StringBuilder  stringBuilder = new StringBuilder();
+        String         ls = System.getProperty("line.separator");
+
+        try {
+            while((line = reader.readLine()) != null) {
+                stringBuilder.append(line);
+                stringBuilder.append(ls);
+            }
+
+            return stringBuilder.toString();
+        } finally {
+            reader.close();
+        }
+    }
+
+
 
 }
