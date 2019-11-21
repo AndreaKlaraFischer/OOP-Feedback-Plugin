@@ -1,5 +1,6 @@
 package gui;
 
+import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.components.JBTabbedPane;
 import controller.Controller;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -47,23 +48,23 @@ public class AnnotatedCodeWindow extends JFrame {
     private void createTab(JBTabbedPane tabbedPane, String title, String code) throws BadLocationException {
         JPanel panel = new JPanel(false);
         RSyntaxTextArea filler = createCodeWindow(code);
-        filler.setAutoscrolls(true);
+        filler.setAutoscrolls(true); 
         JLabel viewInfoLabel = new JLabel();
         viewInfoLabel.setText("Du befindest dich in der Ansicht des vom Tutor bearbeiteten Code.");
         panel.setLayout((new GridLayout(2, 1)));
         panel.add(filler);
-        panel.add(viewInfoLabel);
-        tabbedPane.addTab(title, null, panel);
+        panel.add(viewInfoLabel); //TODO: Da noch rausfinden, wie ich das als ganz niedriges Label machen kann!
+        JBScrollPane scrollPane = new JBScrollPane(panel);
+        scrollPane.setViewportView(panel);
+        tabbedPane.addTab(title, null, scrollPane);
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
     }
 
-    //TODO Scrollbar
     private RSyntaxTextArea createCodeWindow(String code) throws BadLocationException {
         JPanel panel = new JPanel(new BorderLayout());
         RSyntaxTextArea textArea = new RSyntaxTextArea(20, 60);
         textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
         textArea.setCodeFoldingEnabled(true);
-        // TODO Anschauen
         RSyntaxDocument document = new RSyntaxDocument(SyntaxConstants.SYNTAX_STYLE_JAVA);
         document.insertString(0, code, null);
         textArea.setDocument(document);
@@ -75,5 +76,4 @@ public class AnnotatedCodeWindow extends JFrame {
         setLocationRelativeTo(null);
         return textArea;
     }
-
 }
