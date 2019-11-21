@@ -61,10 +61,10 @@ public class Log {
             return;
         }
         Timestamp now = new Timestamp(System.currentTimeMillis());
-        String hardwareAddress = getHardwareAddress();
+        //String hardwareAddress = getHardwareAddress();
         Properties properties = new Properties();
         properties.setProperty("Created At", String.valueOf(now));
-        properties.setProperty("Hardware Identifier", hardwareAddress);
+       // properties.setProperty("Hardware Identifier", hardwareAddress);
         properties.setProperty("Identifier", id);
         try {
             dataFile.createNewFile();

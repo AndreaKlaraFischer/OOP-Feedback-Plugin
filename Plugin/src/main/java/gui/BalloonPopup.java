@@ -1,4 +1,4 @@
-package actions;
+package gui;
 
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.openapi.ui.popup.Balloon;
@@ -11,7 +11,6 @@ import javax.swing.event.HyperlinkListener;
 
 
 public class BalloonPopup {
-    private HyperlinkListener hyperlinkListener;
 
     public BalloonPopup() {
 
@@ -19,10 +18,9 @@ public class BalloonPopup {
 
     public void createBalloonPopup(JComponent component, Balloon.Position position, String balloonText, MessageType type) {
         JBPopupFactory.getInstance()
-                .createHtmlTextBalloonBuilder(balloonText, type, hyperlinkListener)
+                .createHtmlTextBalloonBuilder(balloonText, type, null)
                 .setFadeoutTime(3000)
                 .createBalloon()
                 .show(RelativePoint.getCenterOf(component), position);
     }
-
 }

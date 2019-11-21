@@ -1,4 +1,4 @@
-package actions;
+package communication;
 
 import android.os.SystemPropertiesProto;
 import config.Constants;
@@ -23,7 +23,6 @@ public class MailModel {
         authenticate();
     }
 
-    //TODO: Hier vielleicht ein Interface daraus bauen, braucht man ja für Studenten und Tutoren
     public void sendMailToTutors() {
         String toEmail = "andrea.fischer@stud.uni-regensburg.de";
         //Test Mail an mich, später soll es natürlich an den Mailverteiler der Tutoren gehen
@@ -34,13 +33,9 @@ public class MailModel {
         sendEmail(session, fromEmail, toEmail, Constants.EMAIL_SUBJECT, body);
     }
 
-    //TODO: Wo wird das aufgerufen? Das muss ja gemacht werden, wenn der Tutor eine Anfrage beantwortet. Also vielleicht nach dem Match?
     public void sendMailToStudent(String answerMessage) {
         Session session = Session.getInstance(props, auth);
-        //Das funktioniert
         String toMail = controller.getStudentMail();
-        //TODO: Hier die methode aus der Answer klasse aufrufen! answerMessage
-       // String body = controller.getRequestMessage();
         System.out.println("sendMailToStudent wurde aufgerufen");
         sendEmail(session, fromEmail, toMail, Constants.EMAIL_SUBJECT_ANSWER, answerMessage);
     }
@@ -66,7 +61,8 @@ public class MailModel {
         };
     }
 
-    public static void sendEmail(Session session, String fromMail, String toEmail, String subject, String body) {
+    //TODO: rausfinden, ob ich direkten Link zum Issue einfügen kann in den body!
+    private static void sendEmail(Session session, String fromMail, String toEmail, String subject, String body) {
         try {
             MimeMessage message = new MimeMessage(session);
             //set message headers

@@ -1,4 +1,4 @@
-package login;
+package fileReaders;
 
 import com.intellij.openapi.project.Project;
 import config.Constants;
@@ -10,16 +10,16 @@ import org.jsoup.parser.Parser;
 
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class XMLFileReader {
     public Controller controller;
-    private Project project;
     private Document doc;
     private String xmlFilePath;
-    String docString;
+    private String docString;
 
     public XMLFileReader(Controller controller) throws IOException {
-        project = controller.project;
+        Project project = controller.project;
         this.controller = controller;
         xmlFilePath = project.getBasePath() + Constants.CONFIG_FILE_PATH;
         FileInputStream fileInputStream = new FileInputStream(xmlFilePath);
@@ -27,7 +27,7 @@ public class XMLFileReader {
         docString = doc.toString();
     }
 
-    //Das ist ein Test, 9.11.
+    //Das ist ein Test, 9.11. für die RSyntaxEditorTabs
     public String getDocString() {
         return docString;
     }
@@ -65,20 +65,12 @@ public class XMLFileReader {
         return isInitialized;
     }
 
-    //TODO: Getter Methode schreiben und so den counter dem branchnamen dem counter mitgeben
+
     //TODO: Warum ist das so einfach? Geht das bei den anderen Sachen auch so leicht?
     public void modifyCounter(int counter) {
         for (Element e : doc.getElementsByTag("counter")) {
             e.text(String.valueOf(counter));
         }
-    }
-
-    public int readCounterValueFromXML() {
-        String counterValue = "";
-        for (Element e : doc.getElementsByTag("counter")) {
-            counterValue = e.text();
-        }
-        return Integer.parseInt(counterValue);
     }
 
     public void modifyXMLNameAndMail(String name, String mail) throws IOException {
@@ -119,14 +111,11 @@ public class XMLFileReader {
 
     //TODO: Das noch weniger duplicate Code machen?
     public String readEncryptedPasswordFromXML() {
-        //StringBuilder encryptedPasswordXML = new StringBuilder();
         String encryptedPasswordXML = "";
         for (Element e : doc.getElementsByTag("password")) {
-            //encryptedPasswordXML.append(e.text());
             encryptedPasswordXML = e.text();
         }
         return encryptedPasswordXML;
-        //return encryptedPasswordXML.toString();
     }
 
     public String readNameFromXML() {
@@ -144,5 +133,21 @@ public class XMLFileReader {
             studentMailInXML = e.text();
         }
         return studentMailInXML;
+    }
+
+    public int readCounterValueFromXML() {
+        String counterValue = "";
+        for (Element e : doc.getElementsByTag("counter")) {
+            counterValue = e.text();
+        }
+        return Integer.parseInt(counterValue);
+    }
+
+    public ArrayList<Long> readRequestIdsFromXML() {
+        ArrayList <Long> requestIdsFromXYMl = new ArrayList<>();
+        for (Element e : doc.getElementsByTag("request")) {
+            requestIdsFromXYMl.add(Long.valueOf(e.text()));
+        }
+        return requestIdsFromXYMl;
     }
 }
