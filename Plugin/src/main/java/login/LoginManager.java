@@ -17,8 +17,6 @@ public class LoginManager {
     private Controller controller;
     public Project project;
 
-    //TODO: hier die komplette Funktionalität
-
     public LoginManager(Controller controller) {
         this.controller = controller;
         project = controller.project;

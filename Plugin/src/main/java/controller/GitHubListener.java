@@ -1,11 +1,11 @@
 package controller;
-// Hier die "rückwärtige" Github Kommunikation rein: Polling,...
-
-//TODO: Code schicken, wenn Issue geschlossen
-//TODO: Im Plugin Branch pullen
 
 import config.Constants;
 import communication.GitHubModel;
+import org.eclipse.jgit.api.errors.GitAPIException;
+
+import javax.swing.text.BadLocationException;
+import java.io.IOException;
 
 public class GitHubListener extends Thread {
     public Controller controller;
@@ -19,6 +19,12 @@ public class GitHubListener extends Thread {
                 Thread.sleep(Constants.THREAD_MILLISECONDS);
             }
         } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (GitAPIException e) {
             e.printStackTrace();
         }
     }

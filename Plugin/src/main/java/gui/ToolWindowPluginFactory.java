@@ -1,5 +1,7 @@
 package gui;
 
+import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
@@ -20,19 +22,26 @@ import java.io.IOException;
 public class ToolWindowPluginFactory implements ToolWindowFactory {
     // Tool window content gets created
     //https://github.com/JetBrains/intellij-sdk-docs/blob/master/code_samples/tool_window/src/myToolWindow/MyToolWindowFactory.java
+
+    //public ToolWindow toolWindow;
     @Override
     public void createToolWindowContent(Project project, ToolWindow toolWindow) {
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         Controller controller = null;
+        //15.11.
+        //this.toolWindow = toolWindow;
         try {
             controller = new Controller(project);
-        } catch (IOException | TransformerException | SAXException | ParserConfigurationException e) {
+        } catch (IOException | TransformerException | SAXException | ParserConfigurationException | BadLocationException e) {
             e.printStackTrace();
         }
 
         //Hier wird geswitcht!
         //Entweder: Methoden ändern oder hier:
-        //TODO: Neuen Reiter machen mit Einstellungen --> Namen eingeben / ändern / anonymen Namen generieren
+
+    //}
+
+
 
         TutorialScreen tutorialScreen = null;
         try {
@@ -88,6 +97,4 @@ public class ToolWindowPluginFactory implements ToolWindowFactory {
         });
 
     }
-
-
 }

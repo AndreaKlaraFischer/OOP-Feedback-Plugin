@@ -24,9 +24,6 @@ public class AnnotatedCodeWindow extends JFrame {
         this.controller = controller;
     }
 
-
-    //TODO: Wird bei jedem Buttonklick wieder ausgeführt! --> Fixen, vielleicht dann einfach wieder die Tabs killen? und neu schreiben.
-
     // https://www.tutorialspoint.com/swingexamples/example_of_tabbed_pane.htm
     public void createWindow(List<File> modifiedFiles) throws BadLocationException, GitAPIException, IOException {
         JFrame codeFrame = new JFrame("Annotierter Code");
@@ -48,7 +45,7 @@ public class AnnotatedCodeWindow extends JFrame {
     private void createTab(JBTabbedPane tabbedPane, String title, String code) throws BadLocationException {
         JPanel panel = new JPanel(false);
         RSyntaxTextArea filler = createCodeWindow(code);
-        filler.setAutoscrolls(true); 
+        filler.setAutoscrolls(true);
         JLabel viewInfoLabel = new JLabel();
         viewInfoLabel.setText("Du befindest dich in der Ansicht des vom Tutor bearbeiteten Code.");
         panel.setLayout((new GridLayout(2, 1)));

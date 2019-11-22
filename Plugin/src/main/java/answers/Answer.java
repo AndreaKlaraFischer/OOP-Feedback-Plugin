@@ -19,6 +19,7 @@ public class Answer {
     private Date answerDate;
     private List<String> imageUrls;
 
+    //TODO: Überlegen, wie ich den Tutornamen setze.
     public Answer(int number, long id, String message, String tutor, Date date) {
         answerNumber = number;
         answerId = id;
@@ -85,12 +86,6 @@ public class Answer {
 
     public int getAnswerNumber() {
         return answerNumber;
-    }
-
-    //TODO: Das wird noch ein riesiges Todo! --> Wird dann im AnnotatedCodeModel geregelt
-    //TODO: Hier noch den Branchnamen übergeben von der Anfrage! branchName
-    public GHCommit.File getAnswerCode() {
-        return null;
     }
 
     @Override

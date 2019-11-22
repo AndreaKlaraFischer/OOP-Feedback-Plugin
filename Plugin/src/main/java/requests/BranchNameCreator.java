@@ -5,7 +5,6 @@ import controller.Controller;
 
 public class BranchNameCreator {
 
-    //TODO: Das geht noch nicht, wird leer gelassen, warum auch immer --> FIX
     private Controller controller;
     private int counter;
 
@@ -36,7 +35,7 @@ public class BranchNameCreator {
     }
 
     //Hier werden alle Satzzeichen entfernt und nur die ersten vier Ziffern rausgeholt und dann noch die letzten 4.
-    public String formatDateForBranchName(String requestDate) {
+    private String formatDateForBranchName(String requestDate) {
         for (int i = 0; i < requestDate.length(); i++) {
             requestDate = requestDate.replaceAll("\\p{Punct}", "");
         }
