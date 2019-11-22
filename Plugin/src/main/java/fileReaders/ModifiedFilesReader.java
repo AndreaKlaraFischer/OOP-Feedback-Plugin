@@ -1,16 +1,15 @@
 package fileReaders;
 
 import android.os.SystemPropertiesProto;
+import com.google.common.base.Predicates;
+import com.google.common.collect.Collections2;
 import com.intellij.openapi.project.Project;
 import controller.Controller;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
 import javax.swing.text.BadLocationException;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class ModifiedFilesReader {
     public Controller controller;
@@ -19,9 +18,7 @@ public class ModifiedFilesReader {
     public ModifiedFilesReader(Controller controller) {
         this.controller = controller;
         project = controller.project;
-
     }
-
 
     //https://stackoverflow.com/questions/14676407/list-all-files-in-the-folder-and-also-sub-folders
     //Use ArrayList instead of array as return value
@@ -47,28 +44,29 @@ public class ModifiedFilesReader {
         return allFilesList;
     }
 
+
     public List<File> matchFiles(List<File> resultList, List<String> modifiedFilesNames) {
-        System.out.println("Methodenaufruf von matchFiles hat funktioniert");
         List<File> modifiedFiles = new ArrayList<>();
+        List<String> allFileNamesWithoutPath = new ArrayList<>();
         removeAllFoldersFromFileList(resultList);
-        System.out.println("resultList hofftl ohne package" + resultList);
+
         for (int i = 0; i < resultList.size(); i++) {
             System.out.println("resultList: " + resultList);
-            for (int j = 0; j < modifiedFilesNames.size(); j++) {
-                //Es steht auf jeden Fall was drin. Aber wieso kann ich es nicht anhängen?
-                System.out.println("modifiedFilesNames: " + modifiedFilesNames);
-
+            for (String modifiedFilesName : modifiedFilesNames) {
                 //Hier bekomme ich den String ohne Pfad, nur den Dateinamen mit Endung
-                String modifiedFileName = getFileNameWithoutPath(modifiedFilesNames.get(j));
+                String modifiedFileName = getFileNameWithoutPath(modifiedFilesName);
+                String resultFileName = getFileNameWithoutPath(resultList.get(i).getName());
 
-                //20.11. 1515 Test, um eine file da reinzuspeichern
-                modifiedFiles.add(resultList.get(i));
+                allFileNamesWithoutPath.add(resultFileName);
+                System.out.println(allFileNamesWithoutPath);
+                allFileNamesWithoutPath.add("testTest"); //Das steht hier nur zu Testzwecken
 
-                if (resultList.get(i).getName().equals(modifiedFileName)) {
-                    //TODO: Das geht nicht. Es wird nichts angehängt, aber macht auch Sinn soweit.
-                    //TODO: Das irgendwie faken!
+                if (resultFileName.equals(modifiedFileName)) {
+                    System.out.println("Hier bin ich reingekommen.");
                     modifiedFiles.add(resultList.get(i));
-
+                }
+                if(allFileNamesWithoutPath.contains(modifiedFileName)) {
+                    System.out.println("Änderungen vorhanden!");
                 }
             }
         }
@@ -76,20 +74,22 @@ public class ModifiedFilesReader {
         return modifiedFiles;
     }
 
-    public String getFileNameWithoutPath(String modifiedFileName) {
-        modifiedFileName = modifiedFileName.substring(modifiedFileName.lastIndexOf('/'));
+    //TODO: Überlegen, was passiert, wenn ein Dateiname gar keinen File.seperator drin hat.
+    private String getFileNameWithoutPath(String modifiedFileName) {
+        System.out.println("File.separator" + File.separator);
+        System.out.println("File.seperatorChar" + File.separatorChar);
+        System.out.println("modifiedFileName: " + modifiedFileName);
+        modifiedFileName = modifiedFileName.replace('/', File.separatorChar);
+        modifiedFileName = modifiedFileName.replace('\\', File.separatorChar);
+        modifiedFileName = modifiedFileName.substring(modifiedFileName.lastIndexOf(File.separatorChar ) + 1); //TODO: Backslash escape , Pfad library
         return modifiedFileName;
     }
 
-    //TODO: Umkehren und nur bestimmte Datentypen akzeptieren (oder Substring machen)
-    private List<File> removeAllFoldersFromFileList(List<File> resultList) {
-        //TODO: Schauen, ob eine Datei eine Endung hat. und wenn nicht, dann raushauen.
-        //TODO: Das funktioniert noch nicht!
+    private void removeAllFoldersFromFileList(List<File> resultList) {
         System.out.println("removeAllFoldersFromFileList");
         System.out.println("START resultlist: " + resultList);
         //Sonst wird was übersprungen! (Danke Jürgen!)
-        for(int i = resultList.size() - 1; i > -1; --i)
-        {
+        for(int i = resultList.size() - 1; i > -1; --i) {
             // your conditional here
             String fileName = resultList.get(i).getName();
             System.out.println("fileName: " + fileName);
@@ -99,44 +99,21 @@ public class ModifiedFilesReader {
             }
         }
         System.out.println("FINAL resultlist: " + resultList);
-        return resultList;
-    }
-
-    //Ich erstelle den Tab aus der Liste mit den modifiedFiles.
-    //Durch eine Schleife. Der Titel ist das File and der Stelle i getName() und der Panel Inhalt ist das hier. Also dort aufrufen.
-    //TODO: Das ist jetzt erstmal beiseite gelegt, weil es entweder nur die erste oder die letze Zeile ausgibt.
-//https://stackoverflow.com/questions/13185727/reading-a-txt-file-using-scanner-class-in-java
-    public String readCodeFromModifiedFile(String filePath) throws FileNotFoundException {
-        Scanner codeScanner = new Scanner(new File(filePath));
-        String modifiedCode = "";
-        while(codeScanner.hasNextLine()) {
-            modifiedCode = codeScanner.nextLine();
-        }
-
-        codeScanner.close();
-        return modifiedCode;
     }
 
 
 //https://stackoverflow.com/questions/326390/how-do-i-create-a-java-string-from-the-contents-of-a-file
     public String readCode(String file) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(file));
-        String         line = null;
-        StringBuilder  stringBuilder = new StringBuilder();
-        String         ls = System.getProperty("line.separator");
-
-        try {
-            while((line = reader.readLine()) != null) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line = null;
+            StringBuilder stringBuilder = new StringBuilder();
+            String ls = System.getProperty("line.separator");
+            while ((line = reader.readLine()) != null) {
                 stringBuilder.append(line);
                 stringBuilder.append(ls);
             }
-
-            return stringBuilder.toString();
-        } finally {
             reader.close();
+            return stringBuilder.toString();
         }
     }
-
-
-
 }
