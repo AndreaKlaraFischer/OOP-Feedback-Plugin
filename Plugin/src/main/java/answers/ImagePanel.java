@@ -12,17 +12,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 //https://stackoverflow.com/questions/1064977/setting-background-images-in-jframe
-public class ImagePanel extends Container {
-    //15.11. Das zu Testzwecken.
-  private Image image;
-  public ImagePanel(Image image) {
-      this.image = image;
-  }
-
-  protected void paintComponent() {
-
-  }
-
-
-
+public class ImagePanel extends JComponent {
+    private Image image;
+    public ImagePanel(Image image) {
+        this.image = image;
+    }
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(image, 0, 0, this);
+    }
 }
