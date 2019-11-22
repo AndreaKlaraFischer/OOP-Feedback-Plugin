@@ -5,9 +5,13 @@ public class Constants {
     public static final String REPO_URL = "https://github.com/OOP-Feedback-Test/OOP-Feedback-2.0.git";
    // public static final String REPO_NAME = "OOP-Feedback/OOP-Feedback";
     public static final String REPO_NAME = "OOP-Feedback-Test/OOP-Feedback-2.0";
-    public static final String SCREENSHOT_FOLDER = "/screenshots";
     public static final String REPO_LOGIN = "OOP-Feedback-Test";
     public static final String REPO_PASSWORD = "FredFeedback1920";
+    //directories
+    public static final String SCREENSHOT_FOLDER = "/screenshots";
+    public static final String TUTOR_COMMENTS_FOLDER = "/tutor_comments";
+    public static final String CLONED_REPO_FOLDER = "/clonedBranch";
+    public static final String CLONED_SRC_FOLDER = TUTOR_COMMENTS_FOLDER + CLONED_REPO_FOLDER + "/src";
     //Textelemente für UI
     public static final String ISSUE_TITLE_BEGINNING = "Anfrage von";
     public static final String ISSUE_TITLE_DATE = "vom";
