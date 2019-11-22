@@ -1,9 +1,6 @@
 package gui;
 
 
-import actions.BalloonPopup;
-import android.os.SystemPropertiesProto;
-import com.github.javafaker.Faker;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.openapi.ui.popup.Balloon;
 import controller.Controller;
@@ -12,11 +9,6 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
@@ -63,8 +55,7 @@ public class SettingScreen implements ActionListener {
             if (inputNameField.getText().length() == 0) {
                 showNoNameError();
             } else if (inputMailAddressField.getText().length() == 0) {
-                //TODO: Das muss noch irgendwie wegklickbar sein oder so, dass man es auch nach der Warnung noch abschicken kann.
-                showNoMailWarning();
+                showNoMailError();
             } else {
                 if (controller.loginManager.validateMail(inputMailAddressField.getText())) {
                     try {
@@ -88,8 +79,8 @@ public class SettingScreen implements ActionListener {
         balloonPopup.createBalloonPopup(settingScreenContent, Balloon.Position.above, "Ungültige Email-Adresse!", MessageType.ERROR);
     }
 
-    private void showNoMailWarning() {
-        balloonPopup.createBalloonPopup(settingScreenContent, Balloon.Position.above, "Wenn du keine Mailadresse angibst, bekommst du die Antwort des Tutors nicht zusätzlich per Mail zugeschickt.", MessageType.WARNING);
+    private void showNoMailError() {
+        balloonPopup.createBalloonPopup(settingScreenContent, Balloon.Position.above, "Bitte eine gültige Mailadresse angeben!", MessageType.ERROR);
     }
 
     private void showNoNameError() {
