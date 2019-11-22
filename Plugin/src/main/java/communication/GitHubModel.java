@@ -1,17 +1,14 @@
 package communication;
 
-import actions.BalloonPopup;
 import adapters.GHIssueToAnswerAdapter;
 import answers.Answer;
 import answers.AnswerList;
-import com.intellij.openapi.ui.MessageType;
-import com.intellij.openapi.ui.popup.Balloon;
 import config.Constants;
 import controller.Controller;
-import gui.SendRequestScreen;
-import gui.SettingScreen;
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.kohsuke.github.*;
 
+import javax.swing.text.BadLocationException;
 import java.io.IOException;
 import java.util.*;
 
@@ -39,8 +36,8 @@ public class GitHubModel {
         //11.11.
         issueIDList = controller.getSavedRequest();
         allClosedIssueList = new ArrayList<>();
-        //TODO: Controller
-        answerList = new AnswerList();
+        //15.11.
+        answerList = controller.answerList;
         this.adapter = new GHIssueToAnswerAdapter();
 
         connectWithRepo();
@@ -68,24 +65,16 @@ public class GitHubModel {
     }
 
     public void createIssue(String title, String body, String labelCategory, String labelTask, String labelBranchName, String labelScreenshot) {
-    //public void createIssue(String title, String body, String labelCategory, String labelBranchName, String labelScreenshot) {
         try {
             issue = repo.createIssue(title).create();
             issue.setBody(body);
-            //09.11. Das geht nicht mehr! TODO: Beheben!!!!!!!!!
-            //Das geht
-           // issue.addLabels("A", "B");
-            //Das wird ausgegeben
             System.out.println(labelCategory + labelTask + labelBranchName);
             issue.addLabels(labelCategory, labelTask, labelBranchName, labelScreenshot);
-            //issue.addLabels(labelCategory, labelBranchName, labelScreenshot);
-            //31.10. Test --> Das geht nicht! Überschreibt die anderen
-            //issue.addLabels("testiiiii");
             controller.XMLFileReader.modifyXMLRequests(issue.getId());
             System.out.println("issue-getId(): " + issue.getId());
             issueList.add(issue);
 
-            System.out.println("issueList" + issueList);
+            //System.out.println("issueList" + issueList);
         } catch (IOException e) {
             System.out.println("excepti + " + e.toString());
         }
@@ -104,10 +93,11 @@ public class GitHubModel {
 
     //TODO: Noch asynchron und persistent machen!
     //TODO: Notiz: Funktioniert erst, wenn man mit dem Repo verbunden ist. Also vllt woanders hinpacken?
+    //TODO: Wenn die Anfrage geschickt wurde und erst beantwortet wird, wenn das Plugin neu gestartet wird, muss es trotzdem funktionieren!
     private void filterOwnClosedIssues() {
         ArrayList<GHIssue> temp = new ArrayList<>();
         System.out.println("allClosedIssueList");
-        System.out.println(allClosedIssueList);
+        //System.out.println(allClosedIssueList);
         System.out.println("issueList");
         System.out.println(issueList);
         for (GHIssue ghIssue : allClosedIssueList) {
@@ -122,14 +112,16 @@ public class GitHubModel {
             }
         }
         closedIssueList = temp;
-        System.out.println("My closed issues " + closedIssueList);
+        //System.out.println("My closed issues " + closedIssueList);
+        //19.11. Versuch - Die Liste wird dann kleiner
+        controller.openRequestCounter--;
     }
 
     public void showOwnAnswersOnProgramStart() {
 
     }
 
-    public void matchRequestAndAnswer() {
+    public void matchRequestAndAnswer() throws IOException, GitAPIException, BadLocationException {
         for (GHIssue ghIssue : issueList) {
             for (GHIssue closedIssue : closedIssueList) {
                 long idxSent = ghIssue.getId();
@@ -200,7 +192,6 @@ public class GitHubModel {
         }
     }
 
-    //TODO: Wenn das beim Screenshot funktioniert, also nur bei Bedarf gelabelt wird, dann sich daran orientieren!
     public void setProblemSolvedLabel() {
         //TODO: Das hier holen! Also irgendwie übergeben oder so.
         //Aber das funktioniert soweit schon mal, dass es an die bestehenden Labels noch mitangehängt wird.
@@ -211,7 +202,4 @@ public class GitHubModel {
             e.printStackTrace();
         }
     }
-
-
-
 }
