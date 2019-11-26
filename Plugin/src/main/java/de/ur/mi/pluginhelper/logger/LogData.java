@@ -1,3 +1,4 @@
+
 package de.ur.mi.pluginhelper.logger;
 
 import java.sql.Timestamp;

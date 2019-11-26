@@ -48,9 +48,6 @@ public class User {
         return new User(userFile);
     }
 
-    public static void removeLocalUser() {
-    }
-
     private static File getUserFile() {
         File dataPath = getDataPath();
         File userFile = new File(dataPath, DEFAULT_USER_FILE_NAME);

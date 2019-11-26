@@ -1,4 +1,8 @@
 package de.ur.mi.pluginhelper.logger;
 
-public class SyncProgressListener {
+public interface SyncProgressListener {
+
+    public void onFinished();
+    public void onFailed();
+
 }
