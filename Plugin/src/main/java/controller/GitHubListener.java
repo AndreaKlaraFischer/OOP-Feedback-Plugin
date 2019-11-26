@@ -9,22 +9,16 @@ import java.io.IOException;
 
 public class GitHubListener extends Thread {
     public Controller controller;
-    public GitHubModel gitHubModel;
+    private GitHubModel gitHubModel;
 
     public void run() {
         try {
             while (true) {
                 gitHubModel.getClosedIssueList();
-                gitHubModel.matchRequestAndAnswer();
+                gitHubModel.matchRequestAndAnswer(controller.getOwnClosedIssues());
                 Thread.sleep(Constants.THREAD_MILLISECONDS);
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (BadLocationException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (GitAPIException e) {
+        } catch (InterruptedException | BadLocationException | IOException | GitAPIException e) {
             e.printStackTrace();
         }
     }
