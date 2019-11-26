@@ -1,8 +1,10 @@
 package fileReaders;
 
+import android.util.BinaryLogEntry;
 import com.intellij.openapi.project.Project;
 import config.Constants;
 import controller.Controller;
+import gherkin.lexer.El;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -25,11 +27,6 @@ public class XMLFileReader {
         FileInputStream fileInputStream = new FileInputStream(xmlFilePath);
         doc = Jsoup.parse(fileInputStream, null, "", Parser.xmlParser());
         docString = doc.toString();
-    }
-
-    //Das ist ein Test, 9.11. für die RSyntaxEditorTabs
-    public String getDocString() {
-        return docString;
     }
 
     public void modifyXMLTokenAndPassword(String token, String password) throws IOException {
@@ -73,6 +70,21 @@ public class XMLFileReader {
         }
     }
 
+    public void modifyOpenRequestsCounter(int counter) throws IOException {
+        for (Element e : doc.getElementsByTag("openRequestsNumber")) {
+            e.text(String.valueOf(counter));
+        }
+
+        File file = new File(xmlFilePath);
+        String content = doc.toString();
+
+        FileWriter fw = new FileWriter(file.getAbsoluteFile());
+        BufferedWriter bw = new BufferedWriter(fw);
+        // Write in file, overwrites file
+        bw.write(content);
+        bw.close();
+    }
+
     public void modifyXMLNameAndMail(String name, String mail) throws IOException {
         for (Element e : doc.getElementsByTag("name")) {
             e.text(name);
@@ -98,6 +110,24 @@ public class XMLFileReader {
             System.out.println(newElement);
         }
         System.out.println(doc);
+
+        File file = new File(xmlFilePath);
+        String content = doc.toString();
+
+        FileWriter fw = new FileWriter(file.getAbsoluteFile());
+        BufferedWriter bw = new BufferedWriter(fw);
+        // Write in file, overwrites file
+        bw.write(content);
+        bw.close();
+    }
+
+    public void modifyAnswerList(int id) throws IOException {
+        System.out.println("modifyAnswerList, wurde aufgerufen");
+        for (Element e : doc.getElementsByTag("answers")) {
+            Element newElement = e.appendElement("answer");
+            newElement.text(String.valueOf(id));
+        }
+        System.out.println("Nach modify: " + doc);
 
         File file = new File(xmlFilePath);
         String content = doc.toString();
@@ -143,11 +173,29 @@ public class XMLFileReader {
         return Integer.parseInt(counterValue);
     }
 
-    public ArrayList<Long> readRequestIdsFromXML() {
-        ArrayList <Long> requestIdsFromXYMl = new ArrayList<>();
+    //23.11. Versuch, dort die number reinzuspeichern statt die id.
+    public ArrayList<Integer> readRequestIdsFromXML() {
+        ArrayList<Integer> requestIdsFromXYMl = new ArrayList<>();
         for (Element e : doc.getElementsByTag("request")) {
-            requestIdsFromXYMl.add(Long.valueOf(e.text()));
+            requestIdsFromXYMl.add(Integer.valueOf(e.text()));
         }
         return requestIdsFromXYMl;
+    }
+
+    public ArrayList<Integer> readAnswerIdsFromXML() {
+        ArrayList<Integer> answerIdsFromXML = new ArrayList<>();
+        for (Element e : doc.getElementsByTag("answer")) {
+            answerIdsFromXML.add(Integer.valueOf(e.text()));
+        }
+        return answerIdsFromXML;
+    }
+
+    //22.11. Test. Ob ich so die Anfragen zählen kann
+    public int readOpenRequestsValueFromXML() {
+        String openRequestsValue = "";
+        for (Element e : doc.getElementsByTag("openRequestsNumber")) {
+            openRequestsValue = e.text();
+        }
+        return Integer.parseInt(openRequestsValue);
     }
 }
