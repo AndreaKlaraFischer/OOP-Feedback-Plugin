@@ -1,4 +1,9 @@
 package de.ur.mi.pluginhelper.com;
 
-public class UploadClientListener {
+public interface UploadClientListener {
+
+    public void onUploadFinished();
+    public void onUploadFailed();
+
+
 }

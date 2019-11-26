@@ -100,7 +100,7 @@ public class AnswerDetailScreen  implements ActionListener {
         //24.10. Test
        // answerDetailPanel.add(imageLabel);
 
-        //TODO: Wenn Anfragen abgeschickt wurden und noch nicht beantwortet sind, dann anzeigen! Liste mit offenen Anfragen (Visability of system state)
+        //TODO: Wenn Anfragen abgeschickt wurden und noch nicht beantwortet sind, dann anzeigen! Liste mit offenen Anfragen (Visability of system state) --> Ganzes Feature, nicht unterschätzen
 
 
         answerDetailScrollPane = new JBScrollPane(answerDetailPanel);
@@ -122,6 +122,7 @@ public class AnswerDetailScreen  implements ActionListener {
                 imageButtonList.add(imageButton);
                 imageButton.addActionListener(e -> {
                     openImageHighResolution(img);
+                    controller.logData("Screenshot geöffnet");
                 });
                 answerDetailPanel.add(imageButton);
 
@@ -150,6 +151,7 @@ public class AnswerDetailScreen  implements ActionListener {
     //TODO: Controller
     private void openCodeInNewWindow() {
         System.out.println("Open annotated Code");
+        controller.logData("Codefenster geöffnet");
         try {
 
         } catch (Exception e) {

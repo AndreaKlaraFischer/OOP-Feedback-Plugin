@@ -1,7 +1,5 @@
 package gui;
 
-import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
@@ -50,10 +48,9 @@ public class ToolWindowPluginFactory implements ToolWindowFactory {
             e.printStackTrace();
         }
         SendRequestScreen sendRequestScreen = new SendRequestScreen(controller, toolWindow, tutorialScreen);
-        //14.10. Versuch, das darüber zu regeln
-        JPanel answerDetailScreen = new JPanel();
         MailBoxScreen mailBoxScreen = new MailBoxScreen(controller, toolWindow);
         SettingScreen settingScreen = new SettingScreen(controller);
+        AssistanceScreen assistanceScreen = new AssistanceScreen(controller);
 
         Content contentMailBox = contentFactory.createContent(mailBoxScreen.getContent(), "Antworten", false);
         //Content contentAnswerDetail = contentFactory.createContent(answerScreen.getContent(),"Antwort des Tutors", false);
@@ -61,7 +58,8 @@ public class ToolWindowPluginFactory implements ToolWindowFactory {
         Content contentTutorial = contentFactory.createContent(tutorialScreen.getContent(),"Tutorial", false);
         Content contentRequest = contentFactory.createContent(sendRequestScreen.getContent(), "Tutor fragen", false);
         Content contentSettings = contentFactory.createContent(settingScreen.getContent(), "Einstellungen", false);
-
+        //24.11.
+        Content contentAssistance = contentFactory.createContent(assistanceScreen.getContent(), "Hilfestellung", false);
 
         toolWindow.getContentManager().addContent(contentRequest);
         toolWindow.getContentManager().addContent(contentTutorial);
@@ -73,7 +71,12 @@ public class ToolWindowPluginFactory implements ToolWindowFactory {
         toolWindow.getContentManager().addContent(contentMailBox);
         toolWindow.getContentManager().addContent(contentSettings);
 
+        toolWindow.getContentManager().addContent(contentAssistance);
 
+        //22.11.
+        //Versuch, die tabs zu switchen
+       //
+        Controller finalController = controller;
         toolWindow.getContentManager().addContentManagerListener(new ContentManagerListener() {
             @Override
             public void contentAdded(@NotNull ContentManagerEvent event) {
@@ -92,7 +95,10 @@ public class ToolWindowPluginFactory implements ToolWindowFactory {
 
             @Override
             public void selectionChanged(@NotNull ContentManagerEvent event) {
-                //System.out.println("Content selection changed");
+                //TODO: Loggen
+                finalController.logData("Tab gewechselt");
+                toolWindow.getContentManager().getSelectedContent();
+                finalController.logData("Aktueller Tab: " + toolWindow.getContentManager().getSelectedContent());
             }
         });
 
