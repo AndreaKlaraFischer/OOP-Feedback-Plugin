@@ -17,6 +17,11 @@ public class LoginScreen implements ActionListener {
     public LoginScreen(Controller controller) {
         this.controller = controller;
         loginButton.addActionListener(this);
+        if(controller.isInitialized) {
+            loginButton.setText("Login");
+        } else {
+            loginButton.setText("Registrieren");
+        }
     }
 
     public JPanel getContent() {
