@@ -24,7 +24,6 @@ public class LoginManager {
 
 
     //TODO: Hier vielleicht noch eine andere Library einbinden, damit das nicht mehr "unstable" gemeckert wird
-    //TODO: vielleicht noch als Interface?
     public String encryptPassword(String password) {
        String sha256hex = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
        System.out.println("SHA-256: " + sha256hex);
@@ -42,5 +41,18 @@ public class LoginManager {
         return emailMatcher.find();
     }
 
+    public boolean checkPassword() {
+        boolean passwordIsCorrect = false;
+        String password = controller.getPasswordLogin();
+        System.out.println("password");
+        String encryptedPasswordLogin = encryptPassword(password);
+        System.out.println("encryptedPasswordLogin: " + encryptedPasswordLogin);
+        String encryptedPasswordXML = controller.XMLFileReader.readEncryptedPasswordFromXML();
+        System.out.println("encryptedPasswordXML" + encryptedPasswordXML);
 
+        if (encryptedPasswordLogin.equals(encryptedPasswordXML)) {
+            passwordIsCorrect = true;
+        }
+        return passwordIsCorrect;
+    }
 }
