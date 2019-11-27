@@ -15,8 +15,7 @@ public class SendRequestScreen implements ActionListener{
     private JButton submitRequestButton;
     private JPanel sendRequestScreenContent;
     public JComboBox selectCategory;
-    private JTextArea inputMessageArea;
-    private JTextField introductionText;
+    public JTextArea inputMessageArea;
     private JButton selectFileButton;
     private JLabel bookmarkHyperlink;
     private JLabel screenshotHyperlink;
@@ -35,6 +34,10 @@ public class SendRequestScreen implements ActionListener{
         submitRequestButton.addActionListener(this);
         selectFileButton.addActionListener(this::openFileSelector);
         attachedScreenshotsLabel.setVisible(false);
+
+        if(controller.isLoggedIn) {
+            showWelcomeBackInfo();
+        }
         screenshotHyperlink.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -104,10 +107,8 @@ public class SendRequestScreen implements ActionListener{
         controller.onSubmitRequestButtonPressed();
     }
 
-    //TODO: Noch abfangen, dass wenn Screenshots angehängt wurden, ist der Input nicht mehr 0!
-    //Idee: Gettermethode schreiben für die Bilderstrings und dann Länge minus die Bilder, wenn das größer 0 ist
-    public String getInputMessage() {
-        return inputMessageArea.getText().trim();
+    public void showWelcomeBackInfo() {
+        balloonPopup.createBalloonPopup(sendRequestScreenContent, Balloon.Position.above, "Willkommen zurück!" + controller.getStudentNameInXML(), MessageType.INFO);
     }
 
     public void showEmptyMessageError() {
@@ -126,19 +127,15 @@ public class SendRequestScreen implements ActionListener{
         balloonPopup.createBalloonPopup(sendRequestScreenContent, Balloon.Position.above, message, MessageType.ERROR);
     }
 
-    public void showWelcomeBackInfo() {
-        balloonPopup.createBalloonPopup(sendRequestScreenContent, Balloon.Position.above, "Willkommen zurück", MessageType.INFO);
-    }
-
-    public void showWelcomeInfo() {
-        balloonPopup.createBalloonPopup(sendRequestScreenContent, Balloon.Position.above, "Willkommen zum Plugin", MessageType.INFO);
-    }
-
     public void showScreenshotAttachedInfo() {
         balloonPopup.createBalloonPopup(sendRequestScreenContent, Balloon.Position.above, "Screenshot angehängt", MessageType.INFO);
     }
 
     public String saveSelectedCategoryAsString() {
         return Objects.requireNonNull(selectCategory.getSelectedItem()).toString();
+    }
+
+    public void showNoInternetWarning() {
+        balloonPopup.createBalloonPopup(sendRequestScreenContent, Balloon.Position.above, "Keine Internetverbindung! Um Anfragen zu stellen, musst du mit dem Internet verbunden sein", MessageType.WARNING);
     }
 }

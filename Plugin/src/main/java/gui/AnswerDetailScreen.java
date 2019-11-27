@@ -27,7 +27,6 @@ public class AnswerDetailScreen  implements ActionListener {
     private JButton openCodeButton;
     private JButton backToTableButton;
     public JButton notHelpfulButton;
-    public JButton semiHelpfulButton;
     public JButton helpfulButton;
 
     private Controller controller;
@@ -38,6 +37,7 @@ public class AnswerDetailScreen  implements ActionListener {
     public JTextArea feedbackInputField;
     private JButton sendFeedbackButton;
     private JCheckBox solvedCheckbox;
+    private JTextPane textPane1;
 
     public int selectedHelpfulness;
     public String taskSuccessfullySolved;
@@ -76,7 +76,6 @@ public class AnswerDetailScreen  implements ActionListener {
        // imageLabel = new JLabel();
 
         helpfulButton.addActionListener(this);
-        semiHelpfulButton.addActionListener(this);
         notHelpfulButton.addActionListener(this);
         backToTableButton.addActionListener(this::backToTable);
         //Test
@@ -91,7 +90,6 @@ public class AnswerDetailScreen  implements ActionListener {
         answerDetailPanel.add(answerTitleLabel);
         //answerDetailPanel.add(backButton);
         answerDetailPanel.add(backToTableButton);
-        answerDetailPanel.add(semiHelpfulButton);
         answerDetailPanel.add(notHelpfulButton);
         answerDetailPanel.add(helpfulButton);
         answerDetailPanel.add(feedbackInputField);
@@ -101,8 +99,6 @@ public class AnswerDetailScreen  implements ActionListener {
        // answerDetailPanel.add(imageLabel);
 
         //TODO: Wenn Anfragen abgeschickt wurden und noch nicht beantwortet sind, dann anzeigen! Liste mit offenen Anfragen (Visability of system state) --> Ganzes Feature, nicht unterschätzen
-
-
         answerDetailScrollPane = new JBScrollPane(answerDetailPanel);
     }
 
@@ -148,16 +144,6 @@ public class AnswerDetailScreen  implements ActionListener {
     }
 
     //TODO: Hier dann das Fenster öffnen, was aktuell noch im Tutorialscreen aufgerufen wird
-    //TODO: Controller
-    private void openCodeInNewWindow() {
-        System.out.println("Open annotated Code");
-        controller.logData("Codefenster geöffnet");
-        try {
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     //TODO: Das geht nicht! Das funktioniert nicht mit dem TutorialScreen
     //TODO: Wenn keine Änderungen im Code vom Tutor vorgenommen wurden, soll der Button gar nicht erst sichtbar sein
@@ -194,17 +180,15 @@ public class AnswerDetailScreen  implements ActionListener {
         Object clickedButton = getClickedButton(e);
         if(clickedButton == helpfulButton) {
             selectedHelpfulness = 1;
-        } else if (clickedButton == semiHelpfulButton) {
-            selectedHelpfulness = 2;
         } else if (clickedButton == notHelpfulButton) {
-            selectedHelpfulness = 3;
+            selectedHelpfulness = 2;
         } else if (clickedButton == sendFeedbackButton) {
             controller.sendFeedbackForFeedback();
         } else if(clickedButton == solvedCheckbox) {
             taskSuccessfullySolved = Constants.PROBLEM_SOLVED_SUCCESSFULLY;
             controller.sendProblemSolved();
         } else if(clickedButton == openCodeButton) {
-            openCodeInNewWindow();
+            controller.onOpenCodeButtonPressed();
         }
     }
 

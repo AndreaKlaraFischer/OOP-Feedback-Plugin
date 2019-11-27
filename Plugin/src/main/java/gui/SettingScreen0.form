@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="gui.SettingScreen">
+  <grid id="27dc6" binding="settingScreenContent" layout-manager="GridLayoutManager" row-count="9" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="3174" height="400"/>
+    </constraints>
+    <properties>
+      <font name="Monospaced" size="18" style="1"/>
+      <maximumSize width="600" height="2147483647"/>
+      <minimumSize width="600" height="295"/>
+      <preferredSize width="600" height="295"/>
+    </properties>
+    <border type="line" title="Einstellungen">
+      <font name="Monospaced" size="18" style="1"/>
+      <title-color color="-4473925"/>
+      <color color="-8585156"/>
+    </border>
+    <children>
+      <component id="f6d17" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Gib hier bitte eine gültige Email-Adresse ein, damit dir die Antwort des Tutors zusätzlich per Mail geschickt wird als Sicherheit. Wenn du die Frage anonym stellen möchtest und dich für einen anonymen Namen entscheidest, kannst du die Adresse trotzdem stehen lassen, die Tutoren sehen diese nicht."/>
+        </properties>
+      </component>
+      <component id="3b615" class="javax.swing.JButton" binding="saveSettingsButton">
+        <constraints>
+          <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="200" height="30"/>
+          </grid>
+        </constraints>
+        <properties>
+          <icon value="runConfigurations/saveTempConfig.png"/>
+          <text value="Speichern"/>
+        </properties>
+      </component>
+      <component id="9fe3" class="javax.swing.JTextField" binding="inputMailAddressField">
+        <constraints>
+          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="500" height="30"/>
+            <maximum-size width="300" height="-1"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="e8929" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font size="16" style="1"/>
+          <icon value="icons/user.png"/>
+          <text value="Name"/>
+        </properties>
+      </component>
+      <component id="de181" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font size="16" style="1"/>
+          <icon value="icons/envelope.png"/>
+          <text value="Emailadresse"/>
+        </properties>
+      </component>
+      <component id="11c4" class="javax.swing.JButton" binding="generateAnonymousNameButton">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="200" height="30"/>
+          </grid>
+        </constraints>
+        <properties>
+          <icon value="icons/shuffle.png"/>
+          <text value="Anonymen Namen generieren"/>
+        </properties>
+      </component>
+      <component id="daf5b" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Hier kannst du den Namen eingeben, mit dem deine Anfrage abgeschickt wird.&#10;&#10;&#10; Ist verpflichtend auszufüllen, kann aber auch ein anonymer Name sein."/>
+        </properties>
+      </component>
+      <component id="14693" class="javax.swing.JTextField" binding="inputNameField">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="300" height="30"/>
+            <maximum-size width="300" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <enabled value="true"/>
+          <horizontalAlignment value="0"/>
+          <selectionColor color="-8585156"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>

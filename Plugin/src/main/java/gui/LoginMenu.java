@@ -1,7 +1,5 @@
 package gui;
 
-import actions.BalloonPopup;
-import com.google.common.primitives.Chars;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.openapi.ui.popup.Balloon;
 import config.Constants;
@@ -10,11 +8,8 @@ import controller.Controller;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.util.Arrays;
 
 //-- siehe "safety/LoginManager"
@@ -28,13 +23,11 @@ public class LoginMenu implements ActionListener {
     private String welcomeText;
     private JLabel introduction;
     private JButton registrationButton;
-    public JOptionPane registrationOptionPane;
-    public JDialog loginDialog;
-    public JDialog registrationDialog;
-    public JOptionPane loginOptionPane;
-    private JFrame test;
+    private JOptionPane registrationOptionPane;
+    private JDialog loginDialog;
+    private JDialog registrationDialog;
+    private JOptionPane loginOptionPane;
     private JButton loginButton;
-    private JButton goToLoginButton;
 
     public LoginMenu(Controller controller) {
         this.controller = controller;
@@ -45,7 +38,7 @@ public class LoginMenu implements ActionListener {
         passwordFieldValidateInput = new JPasswordField();
         registrationButton = new JButton();
         registrationButton.setText("Abschicken");
-        registrationButton.addActionListener(this::actionPerformed);
+        registrationButton.addActionListener(this);
         balloonPopup = new BalloonPopup();
         loginOptionPane = new JOptionPane();
         loginButton = new JButton();
@@ -67,16 +60,26 @@ public class LoginMenu implements ActionListener {
         registrationDialog.setVisible(true);
     }
 
+    //https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/uiswing/examples/components/DialogDemoProject/src/components/CustomDialog.java
     public void showLoginMenu() throws UnsupportedEncodingException {
         String studentName = controller.getStudentNameInXML();
         welcomeText = "Willkommen " + studentName + "!" + "\n" + "Gib hier dein Passwort ein, um wieder Zugriff auf deine persönlichen Antworten zu haben";
-        InputStream inputStream = new ByteArrayInputStream(welcomeText.getBytes("UTF-8"));
+
+        //TODO: UTF-8
         introduction.setText(welcomeText);
         Object[] message = {introduction, passwordFieldLogin, loginButton};
-        loginOptionPane = new JOptionPane(message);
+        JOptionPane loginOptionPane = new JOptionPane(message, JOptionPane.PLAIN_MESSAGE);
 
         loginDialog = loginOptionPane.createDialog(null, "Willkommen zurück!");
         loginDialog.setVisible(true);
+
+       /* JPanel panel = new JPanel();
+        panel.add(introduction);
+        panel.add(passwordFieldLogin);
+        panel.add(loginButton);
+        loginDialog.add(panel);
+        loginDialog.setVisible(true);*/
+
     }
 
     public void hideRegistrationMenu() {
@@ -87,17 +90,12 @@ public class LoginMenu implements ActionListener {
         loginDialog.dispose();
     }
 
-    public String getPasswordLogin() {
-        System.out.println("getPasswordLogin" + Arrays.toString(passwordFieldLogin.getPassword()));
-        return Arrays.toString(passwordFieldLogin.getPassword());
-    }
-
     public void showValidPasswordInfo() {
-        balloonPopup.createBalloonPopup(loginOptionPane, Balloon.Position.above, "Passwort erfolgreich gespeichert", MessageType.INFO);
+        balloonPopup.createBalloonPopup(registrationOptionPane, Balloon.Position.above, "Passwort erfolgreich gespeichert, Willkommen!", MessageType.INFO);
     }
 
     public void showLoginSuccessfulInfo() {
-        balloonPopup.createBalloonPopup(loginOptionPane, Balloon.Position.above, "Passwort akzeptiert, Login erfolgreich", MessageType.ERROR);
+        balloonPopup.createBalloonPopup(loginOptionPane, Balloon.Position.above, "Login erfolgreich, Willkommen zurück", MessageType.ERROR);
     }
 
     public void showPasswordTooShortError() {
@@ -120,7 +118,11 @@ public class LoginMenu implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object clickedButton = getClickedButton(e);
         if (clickedButton == loginButton) {
-            controller.onLoginButtonPressed();
+            try {
+                controller.onLoginButtonPressed();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         } else if (clickedButton == registrationButton) {
             try {
                 controller.onRegistrationButtonPressed();

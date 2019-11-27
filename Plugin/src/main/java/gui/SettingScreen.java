@@ -14,6 +14,10 @@ import static javax.swing.JOptionPane.showMessageDialog;
 
 public class SettingScreen implements ActionListener {
     private JPanel settingScreenContent;
+    private JLabel subtitleName;
+    private JTextField textField1;
+    private JButton einstellungenSpeichernButton;
+    private JTextField textField2;
     public JTextField inputNameField;
     private JButton generateAnonymousNameButton;
     private JButton saveSettingsButton;
@@ -21,10 +25,6 @@ public class SettingScreen implements ActionListener {
     public static String studentNameInput;
     private Controller controller;
     private BalloonPopup balloonPopup;
-
-
-    //07.10. --> Anmelden. Beim Start des Plugins StartScreen: Neuer Benutzer / Bestehender Benutzer
-    // Kann man daheim wieder eingeben, wenn man es rechnerübergreifend benutzen möchte
 
     public SettingScreen(Controller controller) {
         controller.settingScreen = this;
@@ -35,6 +35,10 @@ public class SettingScreen implements ActionListener {
         balloonPopup = new BalloonPopup();
         inputNameField.setText(controller.getStudentNameInXML());
         inputMailAddressField.setText(controller.getStudentMailInXML());
+
+        if(controller.isNewRegistered) {
+            showWelcomeInfo();
+        }
     }
 
 
@@ -70,6 +74,9 @@ public class SettingScreen implements ActionListener {
             }
         }
     }
+    public void showWelcomeInfo() {
+        balloonPopup.createBalloonPopup(settingScreenContent, Balloon.Position.above, "Willkommen!", MessageType.INFO);
+    }
 
     private void showSuccessfullySavedInfo() {
         balloonPopup.createBalloonPopup(settingScreenContent, Balloon.Position.above, "Erfolgreich gespeichert.", MessageType.INFO);
@@ -86,4 +93,5 @@ public class SettingScreen implements ActionListener {
     private void showNoNameError() {
         balloonPopup.createBalloonPopup(settingScreenContent, Balloon.Position.above, "Bitte einen Namen eingeben!.", MessageType.ERROR);
     }
+
 }

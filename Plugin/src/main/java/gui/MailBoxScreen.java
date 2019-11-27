@@ -1,6 +1,5 @@
 package gui;
 
-import actions.BalloonPopup;
 import answers.Answer;
 import answers.AnswerList;
 import answers.AnswerTableModel;
@@ -8,25 +7,21 @@ import com.intellij.openapi.ui.MessageType;
 import com.intellij.openapi.ui.popup.Balloon;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.ui.components.JBScrollPane;
-import com.intellij.ui.content.Content;
 import com.intellij.ui.table.JBTable;
 import config.Constants;
 import controller.Controller;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.URL;
-import java.util.List;
+import java.io.UnsupportedEncodingException;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
-public class MailBoxScreen implements ActionListener {
+public class MailBoxScreen {
 
     private AnswerTableModel answerTableModel;
     private JBTable answerOverviewTable;
@@ -35,28 +30,44 @@ public class MailBoxScreen implements ActionListener {
     private JPanel mailBoxScreenContent;
 
     public JTextField noAnswersTextfield;
+    private JLabel openRequestsLabel;
+    //26.11.
+    private JLabel title;
+
     private Controller controller;
     public JBScrollPane answerScrollPane;
     private JBScrollPane detailScrollPane;
 
     private AnswerDetailScreen answerDetailScreen;
 
-    public MailBoxScreen(Controller controller, ToolWindow toolWindow) {
+    private ToolWindow toolWindow;
+    private BalloonPopup balloonPopup;
+
+    public MailBoxScreen(Controller controller, ToolWindow toolWindow) throws IOException {
         this.controller = controller;
+        this.toolWindow = toolWindow;
         controller.mailBoxScreen = this;
+
+        balloonPopup = new BalloonPopup();
         //14.10.
         answerDetailScreen = new AnswerDetailScreen(controller.mailBoxScreen, controller);
 
-       //TODO: kapseln (nicht den Umweg über s GitHubModel, zB controller.getAnswers)
         rowList = controller.gitHubModel.answerList;
 
         //TODO: Das noch fixen
         mailBoxScreenContent = new JPanel();
         noAnswersTextfield = new JTextField();
+        //19.11.
+        openRequestsLabel = new JLabel();
+        //26.11. TODO
+        title = new JLabel("Alle Antworten");
+
+
         noAnswersTextfield.setText("Noch keine Antworten vorhanden.");
         noAnswersTextfield.setEditable(false);
         answerOverviewTable = new JBTable();
         answerOverviewTable.setDragEnabled(false);
+        answerOverviewTable.setSelectionBackground(Constants.HEIDENELKENROT);
 
         //controller!
         answerTableModel = new AnswerTableModel(controller.gitHubModel.answerList);
@@ -71,7 +82,12 @@ public class MailBoxScreen implements ActionListener {
         answerScrollPane = new JBScrollPane(answerOverviewTable);
         answerScrollPane.setViewportView(answerOverviewTable);
         //scrollPane.setSize(400,400);
+        //19.11.
+        openRequestsLabel.setText(Constants.DEFAULT_OPEN_REQUEST_LABEL);
+        //23.11.
+        mailBoxScreenContent.add(openRequestsLabel);
         mailBoxScreenContent.add(noAnswersTextfield);
+        //
         mailBoxScreenContent.add(answerScrollPane);
 
         detailScrollPane = answerDetailScreen.answerDetailScrollPane;
@@ -86,23 +102,26 @@ public class MailBoxScreen implements ActionListener {
                     int row = target.rowAtPoint(e.getPoint());
                     if(row >= 0) {
                         controller.onAnswerSelected(answerTableModel.getAnswerAt(row));
+                        controller.logData("Antwort geöffnet");
                     }
                 }
             }
         });
-
-        //toolWindow.getContentManager().setSelectedContent((Content) getContent());
     }
+
 
     public void showAnswerDetailContent(Answer answer) {
         mailBoxScreenContent.remove(answerScrollPane);
         mailBoxScreenContent.remove(noAnswersTextfield);
+        mailBoxScreenContent.remove(openRequestsLabel);
         mailBoxScreenContent.add(detailScrollPane);
         detailScrollPane.setVisible(true);
 
         //setCorrectContents();
         answerDetailScreen.detailedAnswerField.setText(answer.getAnswerMessage());
-        answerDetailScreen.createImageFromAttachedImageFile(answer.getImageUrls());
+        if(answerDetailScreen.imageButtonList.size() == 0) {
+            answerDetailScreen.createImageFromAttachedImageFile(answer.getImageUrls());
+        }
 
         //createAnswerDetailTitle();
         String answerTitle = "";
@@ -121,9 +140,10 @@ public class MailBoxScreen implements ActionListener {
 
     public void navigateBackToTable() {
         mailBoxScreenContent.remove(detailScrollPane);
-        //TODO: Hier wird ein ganz seltsamwer Fehler geworfen - das beheben --> Wie: Siehe unten!
         mailBoxScreenContent.add(answerScrollPane);
+        mailBoxScreenContent.add(openRequestsLabel);
         mailBoxScreenContent.revalidate();
+        controller.logData("Antwortansicht verlassen");
     }
 
 
@@ -131,7 +151,8 @@ public class MailBoxScreen implements ActionListener {
         answerTableModel.fireTableDataChanged();
         answerScrollPane.setVisible(true);
         noAnswersTextfield.setVisible(false);
-        showNotification();
+        //TODO: Fixen
+        //toolWindow.getContentManager().setSelectedContent(toolWindow.getContentManager().getContent(mailBoxScreenContent));
     }
 
     //TODO: Das noch resistenter machen. wird ja dann im Endeffekt bei refreshTable wieder aufgerufen --> dublicate code
@@ -153,17 +174,26 @@ public class MailBoxScreen implements ActionListener {
         return mailBoxScreenContent;
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
 
+    public void showWelcomeBackInfo() {
+        balloonPopup.createBalloonPopup(mailBoxScreenContent, Balloon.Position.above, "Willkommen zurück! Du hast jetzt wieder Zugriff auf deine Antworten.", MessageType.INFO);
     }
 
-    private void showNotification() {
+    public void showNotification() {
         showMessageDialog(null, "Neue Antwort von Tutor!");
         //TODO: Set selected content auf mailboxscreen setzen
-        //TODO: Hier nur zurück navigieren, wenn man sich im AnswerDetailScreen befindet! Ansonsten wirft es eine Fehlermeldung
+        //26.11. Versuch - TODO noch ausprobieren daheim  jetzt keinen Bock mehr!
+       // toolWindow.getContentManager().setSelectedContent(controller.toolWindowFactory.getContentMailBox());
         if(!mailBoxScreenContent.isVisible()) {
             navigateBackToTable();
+        }
+    }
+
+    public void updateOpenRequest() {
+        if(controller.XMLFileReader.readOpenRequestsValueFromXML() == 0) {
+            openRequestsLabel.setText("Keine offenen Anfragen.");
+        } else {
+            openRequestsLabel.setText("Offene Anfragen: " + String.valueOf(controller.XMLFileReader.readOpenRequestsValueFromXML()));
         }
     }
 }

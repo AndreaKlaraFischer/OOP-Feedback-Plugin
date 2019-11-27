@@ -1,51 +1,241 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="gui.TutorialScreen">
-  <grid id="27dc6" binding="tutorialScreenContent" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+  <grid id="27dc6" binding="tutorialScreenContent" layout-manager="GridLayoutManager" row-count="23" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="75" y="20" width="3318" height="404"/>
+      <xy x="75" y="20" width="2485" height="1011"/>
     </constraints>
-    <properties/>
-    <border type="line" title="Hier bekommst du Hilfestellung">
-      <font/>
-      <title-color color="-16777216"/>
+    <properties>
+      <autoscrolls value="true"/>
+    </properties>
+    <border type="line" title="Anleitung zum Plugin">
+      <font name="Monospaced" size="18" style="1"/>
+      <title-color color="-4473925"/>
       <color color="-8585156"/>
     </border>
     <children>
-      <vspacer id="b3aa3">
-        <constraints>
-          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
-            <preferred-size width="11" height="287"/>
-          </grid>
-        </constraints>
-      </vspacer>
-      <component id="1836" class="javax.swing.JTextPane" binding="platzhalterText">
-        <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="287"/>
-          </grid>
-        </constraints>
-        <properties>
-          <contentType value="text/plain"/>
-          <editable value="false"/>
-          <selectionColor color="-8585156"/>
-          <text value="- Wenn eine neue Datei angelegt wird, und der Dialog erscheint &quot;Add to Git&quot; - Es kann beides gedrückt werden, darüber keine Gedanken machen. &#10;- Gesetzte Bookmarks reagieren nicht auf Mausklick. Möchte man eine Bookmark entfernen, den Cursor in die entprechende Zeile setzen und &quot;F11&quot; drücken&#10;- Wie setzt man Bookmarks?&#10;- Wie ist das Tool zu bedienen?&#10;- Wie geht man mit Fehlermeldungen um?&#10;- Top 3 Fehlermeldungen plus Anleitungen &#10;- Wie macht man am besten Screenshots?&#10;- Kann ich auch anonym fragen stellen?&#10;- Wie wird es dann nicht mehr anonym?&#10;- Was passiert mit meinen Daten?&#10;- Kann ich das Plugin auch rechnerübergreifend benutzen?&#10;"/>
-        </properties>
-        <clientProperties>
-          <charset class="java.lang.String" value="UTF-8"/>
-        </clientProperties>
-      </component>
       <component id="4cdf9" class="javax.swing.JButton" binding="testi" default-binding="true">
         <constraints>
-          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="22" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="2471" height="30"/>
+          </grid>
         </constraints>
         <properties>
           <text value="Testbutton für registration menü"/>
         </properties>
       </component>
-      <component id="2fca7" class="javax.swing.JList" binding="list1" default-binding="true">
+      <component id="6b0e1" class="javax.swing.JLabel">
         <constraints>
-          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false">
+          <grid row="16" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="2471" height="20"/>
+          </grid>
+        </constraints>
+        <properties>
+          <font size="16" style="1"/>
+          <text value="Was passiert mit meinen Daten?"/>
+        </properties>
+      </component>
+      <component id="7e346" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="18" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="2471" height="20"/>
+          </grid>
+        </constraints>
+        <properties>
+          <font size="16" style="1"/>
+          <text value="Plugin rechnerübergreifend benutzen"/>
+        </properties>
+      </component>
+      <component id="11148" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="14" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="2471" height="20"/>
+          </grid>
+        </constraints>
+        <properties>
+          <font size="16" style="1"/>
+          <text value="Bookmarks setzen"/>
+        </properties>
+      </component>
+      <component id="32a29" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="12" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="2471" height="20"/>
+          </grid>
+        </constraints>
+        <properties>
+          <font size="16" style="1"/>
+          <text value="Anonym Fragen stellen"/>
+        </properties>
+      </component>
+      <component id="ce93e" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="2471" height="20"/>
+          </grid>
+        </constraints>
+        <properties>
+          <font size="16" style="1"/>
+          <text value="Screenshots machen"/>
+        </properties>
+      </component>
+      <component id="6d6a1" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="2471" height="20"/>
+          </grid>
+        </constraints>
+        <properties>
+          <font size="16" style="1"/>
+          <text value="Namen ändern"/>
+        </properties>
+      </component>
+      <component id="bfc45" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="2471" height="20"/>
+          </grid>
+        </constraints>
+        <properties>
+          <font size="16" style="1"/>
+          <text value="Benutzen, ohne sich einzuloggen"/>
+        </properties>
+      </component>
+      <component id="6644a" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="2471" height="20"/>
+          </grid>
+        </constraints>
+        <properties>
+          <font size="16" style="1"/>
+          <text value="Feedback für Feedback geben"/>
+        </properties>
+      </component>
+      <component id="6219c" class="javax.swing.JTextPane" binding="loremIpsumDolorSitTextPane1" default-binding="true">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="2471" height="50"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."/>
+        </properties>
+      </component>
+      <component id="d956f" class="javax.swing.JTextPane" binding="loremIpsumDolorSitTextPane2" default-binding="true">
+        <constraints>
+          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="2471" height="50"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."/>
+        </properties>
+      </component>
+      <component id="2cce" class="javax.swing.JTextPane" binding="textPane1" default-binding="true">
+        <constraints>
+          <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="2471" height="50"/>
+          </grid>
+        </constraints>
+        <properties>
+          <toolTipText value="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."/>
+        </properties>
+      </component>
+      <component id="eed45" class="javax.swing.JTextPane" binding="textPane2" default-binding="true">
+        <constraints>
+          <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="2471" height="50"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="3db96" class="javax.swing.JTextPane" binding="textPane3" default-binding="true">
+        <constraints>
+          <grid row="11" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="2471" height="50"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="bbd91" class="javax.swing.JTextPane" binding="textPane4" default-binding="true">
+        <constraints>
+          <grid row="13" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="2471" height="50"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="67013" class="javax.swing.JTextPane" binding="bookmarksReagierenNichtAufTextPane" default-binding="true">
+        <constraints>
+          <grid row="15" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="2471" height="50"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Bookmarks reagieren nicht auf Mausklicks, um sie zu entfernen, nochmal F11 drücken!"/>
+        </properties>
+      </component>
+      <component id="c02f9" class="javax.swing.JTextPane" binding="textPane6" default-binding="true">
+        <constraints>
+          <grid row="17" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="2471" height="50"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="1c40d" class="javax.swing.JTextPane" binding="textPane7" default-binding="true">
+        <constraints>
+          <grid row="19" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="2471" height="50"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="5bd65" class="javax.swing.JTextPane" binding="loremIpsumDolorSitTextPane" default-binding="true">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="2471" height="20"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."/>
+        </properties>
+      </component>
+      <component id="63ad" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="2471" height="20"/>
+          </grid>
+        </constraints>
+        <properties>
+          <font size="16" style="1"/>
+          <text value="Antworten anschauen und finden"/>
+        </properties>
+      </component>
+      <component id="fe839" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="2471" height="20"/>
+          </grid>
+        </constraints>
+        <properties>
+          <font size="14" style="1"/>
+          <text value="Anfrage stellen"/>
+        </properties>
+      </component>
+      <component id="c2a60" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="20" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font size="16" style="1"/>
+          <text value="Was mache ich, wenn ich mein Passwort vergessen habe?"/>
+        </properties>
+      </component>
+      <component id="a6ba4" class="javax.swing.JTextPane" binding="textPane5" default-binding="true">
+        <constraints>
+          <grid row="21" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="50"/>
           </grid>
         </constraints>
