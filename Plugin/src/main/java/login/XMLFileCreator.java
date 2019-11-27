@@ -54,7 +54,7 @@ public class XMLFileCreator {
                 "\t" + "\t" + "<password>" + "</password>" + "\n" +
                 "\t" + "</component>" + "\n" +
                 "\t" + "<requests>" + "\n" +
-                "\t" + "\t" + "<counter>" + "</counter>" + "\n" +
+                "\t" + "\t" + "<counter>" + "0" + "</counter>" + "\n" +
                 "\t" + "\t" + "<openRequestsNumber>" + "0" +"</openRequestsNumber>" + "\n" +
                 "\t" + "</requests>" + "\n" +
                "\t" + "<answers>" + "</answers>" + "\n" +
