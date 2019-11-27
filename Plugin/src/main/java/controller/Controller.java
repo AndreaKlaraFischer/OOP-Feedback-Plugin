@@ -1,5 +1,6 @@
 package controller;
 
+import com.intellij.openapi.wm.ToolWindow;
 import de.ur.mi.pluginhelper.logger.Log;
 import de.ur.mi.pluginhelper.logger.LogDataType;
 import de.ur.mi.pluginhelper.logger.LogManager;
@@ -25,7 +26,6 @@ import requests.OpenRequestsModel;
 import requests.ScreenshotModel;
 import login.LoginManager;
 import fileReaders.TaskNameReader;
-
 import javax.swing.text.BadLocationException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -40,9 +40,13 @@ import java.util.*;
 
 //zentrale Startklasse
 public class Controller {
+    //26.11.
+    private final ToolWindow toolWindow;
+    public ToolWindowPluginFactory toolWindowFactory;
+    //
     private List<GHIssue> issueList;
     public Project project;
-    public GitModel gitModel;
+    private GitModel gitModel;
     public GitHubModel gitHubModel;
     private GitHubListener gitHubListener;
     public MailBoxScreen mailBoxScreen;
@@ -52,7 +56,7 @@ public class Controller {
     public ScreenshotModel screenshotModel;
     public MailModel mailModel;
     public LoginManager loginManager;
-    public LoginMenu loginMenu;
+    private LoginMenu loginMenu;
     //24.11.
     public LoginMenu1 loginMenu1;
     public RegistrationMenu registrationMenu;
@@ -66,23 +70,26 @@ public class Controller {
     //20.11.
     public ModifiedFilesReader modifiedFilesReader;
     public OpenRequestsModel openRequestsModel;
-
     //19.11.
     //public ArrayList<String> openRequests;
-    //public int openRequestCounter;
 
     public BranchNameCreator branchNameCreator;
     public NameGenerator nameGenerator;
     //10.11. Test
     public boolean hasChanges;
     //
+    //26.11. Test
+    public boolean isLoggedIn;
+    public boolean isNewRegistered;
+    //
     public de.ur.mi.pluginhelper.User.User user;
     public Log log;
 
     //Hier ist die Reihenfolge wichtig!
-    public Controller(Project project) throws IOException, TransformerException, SAXException, ParserConfigurationException, BadLocationException {
+    public Controller(Project project, ToolWindow toolWindow) throws IOException, TransformerException, SAXException, ParserConfigurationException, BadLocationException {
         this.project = project;
-        //this.xmlFilePath = project.getBasePath()  + "/.idea/personalConfig.xml";
+        //26.11.
+        this.toolWindow = toolWindow;
         loginManager = new LoginManager(this);
         loginMenu = new LoginMenu(this);
         //loginMenu1 = new LoginMenu1(this);
@@ -91,17 +98,9 @@ public class Controller {
         //Create File: file wird nur einmal angelegt.
         XMLFileCreator = new XMLFileCreator(this);
         XMLFileReader = new XMLFileReader(this);
-        //Bin ich initialisiert?
         XMLFileReader.checkIfInitialized();
-        //22.11. Test ob richtige Stelle
         openRequestsModel= new OpenRequestsModel(this);
-        //
-        //9.11. Steht das an der richtigen Stelle?
         taskNameReader = new TaskNameReader(this);
-        //6.11.
-        loginData = new HashMap<>();
-        // createXMLFile = new CreateXMLFile(this);
-        //readFiles = new ReadFiles(this);
         //21.11.
         user = de.ur.mi.pluginhelper.User.User.getLocalUser();
         Log log = LogManager.openLog(user.getID(), "MA-Fischer");
@@ -123,10 +122,8 @@ public class Controller {
         modifiedFilesReader = new ModifiedFilesReader(this);
         //15.11.
         answerList = new AnswerList();
-        //hasChanges = false;
         //19.11.
         //openRequests = new ArrayList<>();
-        //openRequestCounter = 0; //TODO: Übergeben und dann getterMethode oder so? vielleicht wieder mit XML File, siehe Requestcounter?
         //
         gitHubModel = new GitHubModel(this);
         branchNameCreator = new BranchNameCreator(this);
@@ -136,13 +133,71 @@ public class Controller {
         mailModel = new MailModel(this);
         annotatedCodeWindow = new AnnotatedCodeWindow(this);
         gitModel.gitInit();
-        //24.11. Neu gemacht.
         showWelcomeMenu();
-        //24.11 auskommentiert und in LoginButton gepackt.
-        //createTutorCommentsFolder();
-        //showAnswersOnProgramStart();
-        //24.11. - Der Thread soll erst gestartet werden, nachdem die Antworten gesetzt sind.
-        //Hier wird der Thread aufgerufen
+    }
+
+    public void showWelcomeMenu() throws UnsupportedEncodingException {
+        System.out.println("Controller showWelcomeMenu");
+        //Wenn da was bei <token> steht
+        if (XMLFileReader.checkIfInitialized()) {
+            System.out.println("initailisiert? Sollte true sein" + XMLFileReader.checkIfInitialized());
+            loginMenu.showLoginMenu();
+            //loginMenu1.showLoginMenu();
+        } else {
+            System.out.println("initailisiert? Sollte false sein" + XMLFileReader.checkIfInitialized());
+            loginMenu.showRegistrationMenu();
+            //registrationMenu.showRegistrationMenu();
+        }
+    }
+
+    public void onRegistrationButtonPressed() throws IOException {
+        String password = getPasswordValidateInput();
+        String encryptedPassword = loginManager.encryptPassword(password);
+        String token = getToken();
+        //Hier wird das Passwort validiert
+        if (getPasswordValidateInput().length() >= Constants.MINIMUM_PASSWORD_LENGTH && getPasswordFirstInput().length() >= Constants.MINIMUM_PASSWORD_LENGTH) {
+            if (getPasswordValidateInput().equals(getPasswordFirstInput())) {
+                loginManager.createToken();
+                loginManager.encryptPassword(password);
+                XMLFileReader.modifyXMLTokenAndPassword(token, encryptedPassword);
+                System.out.println("HashMap: " + loginData);
+                loginMenu.showValidPasswordInfo();
+                //registrationMenu.showValidPasswordInfo();
+                loginMenu.hideRegistrationMenu();
+                //registrationMenu.hideRegistrationMenu();
+                //sendRequestScreen.showWelcomeInfo(); //NPE
+                isNewRegistered = true;
+                isLoggedIn = true;
+            } else {
+                loginMenu.showPasswordsNotEqualError();
+                //registrationMenu.showPasswordsNotEqualError();
+            }
+        } else {
+            loginMenu.showPasswordTooShortError();
+            //registrationMenu.showPasswordTooShortError();
+        }
+    }
+
+    public void onLoginButtonPressed() throws IOException {
+        if (loginManager.checkPassword()) {
+            loginMenu.hideLoginMenu();
+            createTutorCommentsFolder();
+            showAnswersOnProgramStart();
+            isLoggedIn = true;
+            //26.11. Thread starten
+            startLookForAnswersThread();
+        } else {
+            loginMenu.showWrongPasswordError();
+            //loginMenu.showWrongPasswordError();
+        }
+    }
+
+    public void updateToolWindow() {
+        toolWindowFactory.addDefaultContents();
+        toolWindow.getContentManager().setSelectedContent(toolWindow.getContentManager().getContent(sendRequestScreen.getContent()));
+    }
+
+    private void startLookForAnswersThread() {
         gitHubListener = new GitHubListener(this);
         gitHubListener.start();
     }
@@ -168,17 +223,11 @@ public class Controller {
         for (Answer answer : alreadyAnsweredRequests) {
             System.out.println("Die ConcurrentModificationException passiert hier.");
             answerList.add(answer);
+
+            if(answerList.getAnswerList().size() > 0) {
+                mailBoxScreen.refreshTable();
+            }
         }
-        System.out.println("answerlist: " + answerList);
-
-    }
-
-    public List<GHIssue> getOwnClosedIssues() {
-        return gitHubModel.filterOwnClosedIssues(gitHubModel.allClosedIssueList);
-    }
-
-    public List<Answer> getAlreadyAnsweredRequests() throws IOException {
-        return gitHubModel.getAlreadyAnsweredRequestsOnProgramStart(getSavedAnswers(), gitHubModel.issueList);
     }
 
     private void createTutorCommentsFolder() {
@@ -187,86 +236,18 @@ public class Controller {
     }
 
     public void onNewAnswerData() throws IOException {
-        XMLFileReader.modifyOpenRequestsCounter(Integer.parseInt(openRequestsModel.decrementOpenRequestsNumber()));
+        //TODO: Das noch richtig machen
+        if(XMLFileReader.readOpenRequestsValueFromXML() > 0) {
+            XMLFileReader.modifyOpenRequestsCounter(Integer.parseInt(openRequestsModel.decrementOpenRequestsNumber()));
+        }
         mailBoxScreen.updateOpenRequest();
         mailBoxScreen.refreshTable();
         mailBoxScreen.showNotification();
         System.out.println("Nach Decrement: " + getOpenRequestsValue());
     }
 
-    public List<GHIssue> getOpenRequestsList() {
-        return openRequestsModel.openRequestList;
-    }
-
-    private String getStudentName() {
-        return settingScreen.inputNameField.getText();
-    }
-
-    public String getStudentNameInXML() {
-        return XMLFileReader.readNameFromXML();
-    }
-
-    public String getStudentMail() {
-        return settingScreen.inputMailAddressField.getText();
-    }
-
-    public String getStudentMailInXML() {
-        return XMLFileReader.readMailFromXML();
-    }
-
-    //TODO: Das funktioniert so nicht wegen des Datums, das sich dauernd ändert
-    public String getBranchName() {
-        return branchNameCreator.createBranchName(getStudentName(), getCounterValue(), getCurrentDate());
-    }
-
-    private String getProblemCategory() {
-        return sendRequestScreen.saveSelectedCategoryAsString();
-    }
-
-    public ArrayList<Integer> getSavedRequests() {
-        return XMLFileReader.readRequestIdsFromXML();
-    }
-
-
-    private ArrayList<Integer> getSavedAnswers() {
-        return XMLFileReader.readAnswerIdsFromXML();
-    }
-
-    private String getCounterValue() {
-        return String.valueOf(XMLFileReader.readCounterValueFromXML());
-    }
-
-    //22.11. Test --> Offene Anfragen anzeigen mit Zahl. Da kann ich das benutzen. Und dann addieren?
-    //TODO: wo verwenden??
-   public String getOpenRequestsValue() {
-        return String.valueOf(XMLFileReader.readOpenRequestsValueFromXML());
-    }
-
-  /* public String getOpenRequestsValue() {
-       return String.valueOf(XMLFileReader.readOpenRequestsValueFromXML());
-   }
-*/
-
     public void onSelectFileButtonPressed() {
         screenshotModel.chooseFiles();
-    }
-
-    private void showWelcomeMenu() throws UnsupportedEncodingException {
-        System.out.println("Controller showWelcomeMenu");
-        //Wenn da was bei <token> steht
-        if (XMLFileReader.checkIfInitialized()) {
-            System.out.println("initailisiert? Sollte true sein" + XMLFileReader.checkIfInitialized());
-            loginMenu.showLoginMenu();
-            //loginMenu1.showLoginMenu();
-        } else {
-            System.out.println("initailisiert? Sollte false sein" + XMLFileReader.checkIfInitialized());
-            loginMenu.showRegistrationMenu();
-            //registrationMenu.showRegistrationMenu();
-        }
-    }
-
-    private String getAllImageStrings() {
-        return screenshotModel.addScreenshotsToIssue(screenshotModel.chooseFiles());
     }
 
     public void onSubmitRequestButtonPressed() {
@@ -316,79 +297,6 @@ public class Controller {
         }
     }
 
-    private String getScreenShotLabel() {
-        String screenShotLabel = Constants.COMMON_LABEL_BEGIN + "Ohne Screenshot";
-        if (screenshotModel.hasScreenShotAttached()) {
-            screenShotLabel = Constants.COMMON_LABEL_BEGIN + "Mit Screenshot";
-        }
-        return screenShotLabel;
-    }
-
-    public void onRegistrationButtonPressed() throws IOException {
-        String password = getPasswordValidateInput();
-        String encryptedPassword = loginManager.encryptPassword(password);
-        String token = getToken();
-        //Hier wird das Passwort validiert
-        if (getPasswordValidateInput().length() >= Constants.MINIMUM_PASSWORD_LENGTH && getPasswordFirstInput().length() >= Constants.MINIMUM_PASSWORD_LENGTH) {
-            if (getPasswordValidateInput().equals(getPasswordFirstInput())) {
-                //if (Arrays.equals(loginMenu.getPasswordFirstInput(), loginMenu.getPasswordValidateInput())) {
-                loginManager.createToken();
-                loginManager.encryptPassword(password);
-                XMLFileReader.modifyXMLTokenAndPassword(token, encryptedPassword);
-                System.out.println("HashMap: " + loginData);
-                loginMenu.showValidPasswordInfo();
-                //registrationMenu.showValidPasswordInfo();
-                loginMenu.hideRegistrationMenu();
-                //registrationMenu.hideRegistrationMenu();
-                //sendRequestScreen.showWelcomeInfo(); //NPE
-            } else {
-                loginMenu.showPasswordsNotEqualError();
-                //registrationMenu.showPasswordsNotEqualError();
-            }
-        } else {
-            loginMenu.showPasswordTooShortError();
-            //registrationMenu.showPasswordTooShortError();
-        }
-    }
-
-    //Erstes Feld
-    private String getPasswordFirstInput() {
-        return Arrays.toString(loginMenu.passwordFieldFirstInput.getPassword());
-        //return Arrays.toString(loginMenu.passwordFieldFirstInput.getPassword());
-    }
-
-    //Zweites Feld
-    private String getPasswordValidateInput() {
-        return Arrays.toString(loginMenu.passwordFieldValidateInput.getPassword());
-        //return Arrays.toString(registrationMenu.passwordFieldValidateInput.getPassword());
-    }
-
-    private String getPasswordLogin() {
-        //return Arrays.toString(loginMenu1.passwordFieldLogin.getPassword());
-        return Arrays.toString(loginMenu.passwordFieldLogin.getPassword());
-    }
-
-    public void onLoginButtonPressed() throws IOException {
-        //TODO: Daten holen, Liste erstellen oder so und Listen vergleichen
-        //String password = loginMenu.getPasswordLogin();
-        String password = getPasswordLogin();
-        System.out.println("password");
-        String encryptedPasswordLogin = loginManager.encryptPassword(password);
-        System.out.println("encryptedPasswordLogin: " + encryptedPasswordLogin);
-        String encryptedPasswordXML = XMLFileReader.readEncryptedPasswordFromXML();
-        System.out.println("encryptedPasswordXML" + encryptedPasswordXML);
-        if (encryptedPasswordLogin.equals(encryptedPasswordXML)) {
-            loginMenu.hideLoginMenu();
-            //24.11. Test
-            createTutorCommentsFolder();
-            showAnswersOnProgramStart();
-            //mailBoxScreen.hideNotLoggedInLabel(); //TODO NPE beheben!
-        } else {
-           loginMenu.showWrongPasswordError();
-            //loginMenu.showWrongPasswordError();
-        }
-    }
-
     public void onSaveSettingsButtonPressed() throws IOException {
         String studentName = getStudentName();
         String studentMail = getStudentMail();
@@ -397,6 +305,7 @@ public class Controller {
 
     public void onOpenCodeButtonPressed() {
         System.out.println("openCodeButton Methodenaufruf aus Controller");
+        logData("Codefenster geöffnet");
     }
 
     public void sendFeedbackForFeedback() {
@@ -405,8 +314,6 @@ public class Controller {
         if (answerDetailScreen.selectedHelpfulness == 1) {
             gitHubModel.setHelpfulFeedbackLabel();
         } else if (answerDetailScreen.selectedHelpfulness == 2) {
-            gitHubModel.setNeutralLabel();
-        } else if (answerDetailScreen.selectedHelpfulness == 3) {
             gitHubModel.setNotHelpfulFeedbackLabel();
         }
         answerDetailScreen.createFeedbackText();
@@ -423,8 +330,70 @@ public class Controller {
         mailBoxScreen.showAnswerDetailContent(answer);
     }
 
+//Getter-Methoden
+    public List<GHIssue> getOpenRequestsList() {
+        return openRequestsModel.openRequestList;
+    }
+
+    private String getScreenShotLabel() {
+        String screenShotLabel = Constants.COMMON_LABEL_BEGIN + "Ohne Screenshot";
+        if (screenshotModel.hasScreenShotAttached()) {
+            screenShotLabel = Constants.COMMON_LABEL_BEGIN + "Mit Screenshot";
+        }
+        return screenShotLabel;
+    }
+
+    private String getStudentName() {
+        return settingScreen.inputNameField.getText();
+    }
+
+    public String getStudentNameInXML() {
+        return XMLFileReader.readNameFromXML();
+    }
+
+    public String getStudentMail() {
+        return settingScreen.inputMailAddressField.getText();
+    }
+
+    public String getStudentMailInXML() {
+        return XMLFileReader.readMailFromXML();
+    }
+
+    //TODO: Das funktioniert so nicht wegen des Datums, das sich dauernd ändert
+    public String getBranchName() {
+        return branchNameCreator.createBranchName(getStudentName(), getCounterValue(), getCurrentDate());
+    }
+
+    private String getProblemCategory() {
+        return sendRequestScreen.saveSelectedCategoryAsString();
+    }
+
+    public ArrayList<Integer> getSavedRequests() {
+        return XMLFileReader.readRequestIdsFromXML();
+    }
+
+    private ArrayList<Integer> getSavedAnswers() {
+        return XMLFileReader.readAnswerIdsFromXML();
+    }
+
+    private String getCounterValue() {
+        return String.valueOf(XMLFileReader.readCounterValueFromXML());
+    }
+
+    private String getOpenRequestsValue() {
+        return String.valueOf(XMLFileReader.readOpenRequestsValueFromXML());
+    }
+
     public List<String> getDiffEntries() throws IOException, GitAPIException, BadLocationException {
         return gitModel.compareBranchesForCodeChanges();
+    }
+
+    public List<GHIssue> getOwnClosedIssues() {
+        return gitHubModel.filterOwnClosedIssues(gitHubModel.allClosedIssueList);
+    }
+
+    private List<Answer> getAlreadyAnsweredRequests() throws IOException {
+        return gitHubModel.getAlreadyAnsweredRequestsOnProgramStart(getSavedAnswers(), gitHubModel.issueList);
     }
 
     //TODO: Noch abfangen, dass wenn Screenshots angehängt wurden, ist der Input nicht mehr 0!
@@ -445,6 +414,27 @@ public class Controller {
         DateFormat dateFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
         Date currentTime = new Date();
         return dateFormat.format(currentTime);
+    }
+
+    //Erstes Feld
+    private String getPasswordFirstInput() {
+        return Arrays.toString(loginMenu.passwordFieldFirstInput.getPassword());
+        //return Arrays.toString(loginMenu.passwordFieldFirstInput.getPassword());
+    }
+
+    //Zweites Feld
+    private String getPasswordValidateInput() {
+        return Arrays.toString(loginMenu.passwordFieldValidateInput.getPassword());
+        //return Arrays.toString(registrationMenu.passwordFieldValidateInput.getPassword());
+    }
+
+    public String getPasswordLogin() {
+        //return Arrays.toString(loginMenu1.passwordFieldLogin.getPassword());
+        return Arrays.toString(loginMenu.passwordFieldLogin.getPassword());
+    }
+
+    private String getAllImageStrings() {
+        return screenshotModel.addScreenshotsToIssue(screenshotModel.chooseFiles());
     }
 
     //Der Einfachheit halber

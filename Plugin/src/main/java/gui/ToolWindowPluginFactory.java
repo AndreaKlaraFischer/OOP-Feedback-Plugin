@@ -20,26 +20,26 @@ import java.io.IOException;
 public class ToolWindowPluginFactory implements ToolWindowFactory {
     // Tool window content gets created
     //https://github.com/JetBrains/intellij-sdk-docs/blob/master/code_samples/tool_window/src/myToolWindow/MyToolWindowFactory.java
+    private Content contentRequest;
+    private Content contentTutorial;
+    private Content contentSettings;
+    private Content contentAssistance;
+    private Content contentLogin;
+    private Content contentMailBox;
 
-    //public ToolWindow toolWindow;
+    public ToolWindow toolWindow;
     @Override
     public void createToolWindowContent(Project project, ToolWindow toolWindow) {
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         Controller controller = null;
         //15.11.
-        //this.toolWindow = toolWindow;
+        this.toolWindow = toolWindow;
         try {
-            controller = new Controller(project);
+            controller = new Controller(project, toolWindow);
+            controller.toolWindowFactory = this;
         } catch (IOException | TransformerException | SAXException | ParserConfigurationException | BadLocationException e) {
             e.printStackTrace();
         }
-
-        //Hier wird geswitcht!
-        //Entweder: Methoden ändern oder hier:
-
-    //}
-
-
 
         TutorialScreen tutorialScreen = null;
         try {
@@ -48,30 +48,41 @@ public class ToolWindowPluginFactory implements ToolWindowFactory {
             e.printStackTrace();
         }
         SendRequestScreen sendRequestScreen = new SendRequestScreen(controller, toolWindow, tutorialScreen);
-        MailBoxScreen mailBoxScreen = new MailBoxScreen(controller, toolWindow);
+        MailBoxScreen mailBoxScreen = null;
+        try {
+            mailBoxScreen = new MailBoxScreen(controller, toolWindow);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         SettingScreen settingScreen = new SettingScreen(controller);
         AssistanceScreen assistanceScreen = new AssistanceScreen(controller);
+        LoginScreen loginScreen = new LoginScreen(controller);
 
-        Content contentMailBox = contentFactory.createContent(mailBoxScreen.getContent(), "Antworten", false);
+        contentMailBox = contentFactory.createContent(mailBoxScreen.getContent(), "Antworten", false);
         //Content contentAnswerDetail = contentFactory.createContent(answerScreen.getContent(),"Antwort des Tutors", false);
        // assert tutorialScreen != null;
-        Content contentTutorial = contentFactory.createContent(tutorialScreen.getContent(),"Tutorial", false);
-        Content contentRequest = contentFactory.createContent(sendRequestScreen.getContent(), "Tutor fragen", false);
-        Content contentSettings = contentFactory.createContent(settingScreen.getContent(), "Einstellungen", false);
+        contentTutorial = contentFactory.createContent(tutorialScreen.getContent(),"Tutorial", false);
+        contentRequest = contentFactory.createContent(sendRequestScreen.getContent(), "Tutor fragen", false);
+        System.out.println("Toolwindowpluginfactory, content Request wurde erstellt:  " + contentRequest);
+        contentSettings = contentFactory.createContent(settingScreen.getContent(), "Einstellungen", false);
         //24.11.
-        Content contentAssistance = contentFactory.createContent(assistanceScreen.getContent(), "Hilfestellung", false);
+        contentAssistance = contentFactory.createContent(assistanceScreen.getContent(), "Hilfestellung", false);
+        //26.11.
+        contentLogin = contentFactory.createContent(loginScreen.getContent(), "Login", false);
 
-        toolWindow.getContentManager().addContent(contentRequest);
-        toolWindow.getContentManager().addContent(contentTutorial);
-
-        //26.10. - Das wird dann beim Start angezeigt
-        toolWindow.getContentManager().setSelectedContent(contentRequest);
-        //
-
-        toolWindow.getContentManager().addContent(contentMailBox);
-        toolWindow.getContentManager().addContent(contentSettings);
-
-        toolWindow.getContentManager().addContent(contentAssistance);
+        //26.11. Neuer Test
+        if(controller.isLoggedIn) {
+            addDefaultContents();
+            if(controller.isNewRegistered) {
+                toolWindow.getContentManager().setSelectedContent(contentSettings);
+                settingScreen.showWelcomeInfo(); //TODO: Das geht leider nicht
+            }
+        } else {
+            //26.11. Plugin soll nicht benutzbar sein, wenn man nicht eingeloggt ist.
+            toolWindow.getContentManager().addContent(contentLogin);
+            toolWindow.getContentManager().addContent(contentTutorial);
+            toolWindow.getContentManager().setSelectedContent(contentLogin);
+        }
 
         //22.11.
         //Versuch, die tabs zu switchen
@@ -103,4 +114,37 @@ public class ToolWindowPluginFactory implements ToolWindowFactory {
         });
 
     }
+
+    public void addDefaultContents() {
+        toolWindow.getContentManager().addContent(contentRequest, 0);
+        toolWindow.getContentManager().addContent(contentMailBox, 1);
+        toolWindow.getContentManager().addContent(contentSettings, 2);
+        toolWindow.getContentManager().addContent(contentAssistance, 3);
+        toolWindow.getContentManager().addContent(contentTutorial, 4);
+    }
+
+    public Content getContentRequest() {
+        return contentRequest;
+    }
+
+    public Content getContentTutorial() {
+        return contentTutorial;
+    }
+
+    public Content getContentSettings() {
+        return contentSettings;
+    }
+
+    public Content getContentAssistance() {
+        return contentAssistance;
+    }
+
+    public Content getContentMailBox() {
+        return contentMailBox;
+    }
+
+    public Content getContentLogin() {
+        return contentLogin;
+    }
+
 }
