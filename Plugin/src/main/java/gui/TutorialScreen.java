@@ -14,17 +14,17 @@ import java.io.IOException;
 public class TutorialScreen implements ActionListener{
     private JPanel tutorialScreenContent;
     private JButton testi;
-    private JTextPane loremIpsumDolorSitTextPane;
-    private JTextPane loremIpsumDolorSitTextPane1;
-    private JTextPane loremIpsumDolorSitTextPane2;
-    private JTextPane textPane1;
-    private JTextPane textPane2;
-    private JTextPane textPane3;
-    private JTextPane textPane4;
-    private JTextPane bookmarksReagierenNichtAufTextPane;
+    private JTextPane umEineAnfrageZuTextPane;
+    private JTextPane dieAntwortenBefindenSichTextPane;
+    private JTextPane namenUndEmailadresseKönnenTextPane;
+    private JTextPane dieStudienleistungKannAuchTextPane;
+    private JTextPane nachdemDuEineAntwortTextPane;
+    private JTextPane screenshotsKannManEntwederTextPane;
+    private JTextPane möchtestDuAnonymFragenTextPane;
+    private JTextPane umDieStellenImTextPane;
     private JTextPane textPane6;
-    private JTextPane textPane7;
-    private JTextPane textPane5;
+    private JTextPane dasPluginKannAuchTextPane;
+    private JTextPane sollteDasPasswortVergessenTextPane;
     private Controller controller;
     //Testi
     private LoginMenu loginMenu;
@@ -58,6 +58,7 @@ public class TutorialScreen implements ActionListener{
         try {
             //20.11. Zu Testzwecken
             controller.modifiedFilesReader.listAllFiles(clonedRepoFolderPath);
+            //TODO: Das hier noch in eine Getter-Methode schreiben, damit ich auf Änderungen lauschen kanN!
            // controller.modifiedFilesReader.matchFiles( controller.modifiedFilesReader.listAllFiles(srcFolderPath), controller.gitModel.gitStatus());
         } catch (IOException ex) {
             ex.printStackTrace();
