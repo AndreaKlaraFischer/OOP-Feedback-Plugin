@@ -41,7 +41,7 @@ public class GitModel {
 
         this.controller = controller;
         //19.11. Das steht hier, damit ich beim löschen auch darauf zugreifen kann? Oder in den Controller packen sonst.
-        clonedRepo = new File(projectPath + Constants.TUTOR_COMMENTS_FOLDER + Constants.CLONED_REPO_FOLDER);
+        //clonedRepo = new File(projectPath + Constants.TUTOR_COMMENTS_FOLDER + Constants.CLONED_REPO_FOLDER);
 
     }
 
@@ -60,6 +60,8 @@ public class GitModel {
     }
     //TODO: Das muss mit Parametern funktionieren, da diese Methode nicht das komplette Repo klonen soll, sondern nur den jeweiligen Branch
     public void cloneBranch(String branchName)  {
+        //Für jeden Branch, der geklont wird, soll ein eigener Ordner erstellt werden.
+        clonedRepo = new File(controller.project.getBasePath() + Constants.TUTOR_COMMENTS_FOLDER + "/" + branchName);
         if(!clonedRepo.exists()) {
             try {
                CloneCommand cloneCommand =  Git.cloneRepository();
@@ -77,17 +79,6 @@ public class GitModel {
             }
         } else {
             System.out.println("clone Repo: Ordner existiert bereits");
-        }
-    }
-
-    //TODO: Das gehört hier vermutlich nicht rein in s GitModel
-    public void deleteClonedBranchFolder() {
-        try {
-            //FileUtils.cleanDirectory(clonedRepo);
-            FileUtils.deleteDirectory(clonedRepo);
-            System.out.println("deleteClonedRepoBranchFolder, hat geklappt.");
-        } catch (Exception e) {
-            System.out.println("Ordner löschen " + e.toString());
         }
     }
 

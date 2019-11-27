@@ -19,7 +19,6 @@ public class Answer {
     private Date answerDate;
     private List<String> imageUrls;
 
-    //TODO: Überlegen, wie ich den Tutornamen setze.
     public Answer(int number, long id, String message, String tutor, Date date) {
         answerNumber = number;
         answerId = id;
@@ -35,8 +34,6 @@ public class Answer {
     public List getImageUrls() {
         return imageUrls;
     }
-
-
 
     public String extractImagesFromMessage(String answerMessage) {
         System.out.println("Ganze Nachricht: " + answerMessage);
@@ -68,11 +65,12 @@ public class Answer {
     }
 
     public String  getTutorName() {
-        if(tutorName == null) {
-            return "";
-        } else {
+        //26.11. Auskommentiert, um den Test mit closedBy und so zu machen.
+        //if(tutorName == null) {
+            //return "Anonymer Tutor";
+       // } else {
             return tutorName;
-        }
+        //}
     }
 
     public String getAnswerDate() {

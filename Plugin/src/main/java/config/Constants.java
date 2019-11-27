@@ -1,5 +1,7 @@
 package config;
 
+import java.awt.*;
+
 public class Constants {
     //Repozugang
     public static final String REPO_URL = "https://github.com/OOP-Feedback-Test/OOP-Feedback-2.0.git";
@@ -12,13 +14,17 @@ public class Constants {
     public static final String TUTOR_COMMENTS_FOLDER = "/tutor_comments";
     public static final String CLONED_REPO_FOLDER = "/clonedBranch";
     public static final String CLONED_SRC_FOLDER = TUTOR_COMMENTS_FOLDER + CLONED_REPO_FOLDER + "/src";
-    //Textelemente für UI
+//Seafile
+    public static final String SEAFILE_SERVER_URL = "http://regensburger-forscher.de:9999/upload/";
+    //UI
+ public static final Color HEIDENELKENROT = new Color(125,0,60);
+ //Textelemente für UI
     public static final String ISSUE_TITLE_BEGINNING = "Anfrage von";
     public static final String ISSUE_TITLE_DATE = "vom";
     public static final String SEPARATOR = " ";
     public static final String HYPHEN = "-";
     public static final String COMMON_LABEL_BEGIN = "_";
-    public static final String ANSWER_TITLE_BEGINNING = "Antwort von Tutor/in";
+    public static final String ANSWER_TITLE_BEGINNING = "Antwort von ";
     public static final String FEEDBACK_FOR_FEEDBACK = "Feedback zum Feedback:";
     public static final String FEEDBACK_LABEL_HELPFUL = "hilfreich";
     public static final String FEEDBACK_LABEL_NOT_HELPFUL = "nicht hilfreich";
@@ -28,6 +34,7 @@ public class Constants {
     public static final String PROBLEM_SOLVED_SUCCESSFULLY = "Problem gelöst";
 
     public static final String REGISTRATION_WELCOME_TEXT = "Wähle hier ein Passwort, um deine persönlichen Daten zu schützen. Es muss mindestens 8 Zeichen lang sein.";
+    public static final String DEFAULT_OPEN_REQUEST_LABEL = "Keine offenen Anfragen";
     //Email
     public static final String EMAIL_ADDRESS_LIST_TUTORS = "andrea.fischer@stud.uni-regensburg.de";
     public static final String EMAIL_SUBJECT = "Neue Anfrage im Repo";

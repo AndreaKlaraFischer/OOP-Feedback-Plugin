@@ -27,7 +27,7 @@ public class BranchNameCreator {
                 requestDate;
     }
 
-    public String removeWhitespacesFromStudentName(String studentName) {
+    private String removeWhitespacesFromStudentName(String studentName) {
         for(int i = 0; i < studentName.length(); i++ ){
             studentName = studentName.replaceAll("\\s+","");
         }

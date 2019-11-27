@@ -15,8 +15,6 @@ public class OpenRequestsModel {
     public OpenRequestsModel(Controller controller) throws IOException {
         this.controller = controller;
         openRequestList = new ArrayList<>();
-        //23.11. Analog zu BranchNameCreator
-        //openRequestCounter = 0;
         controller.XMLFileReader.modifyOpenRequestsCounter(openRequestCounter);
         openRequestCounter = controller.XMLFileReader.readOpenRequestsValueFromXML();
     }

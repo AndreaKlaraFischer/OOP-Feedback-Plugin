@@ -23,7 +23,7 @@ public class ModifiedFilesReader {
     //https://stackoverflow.com/questions/14676407/list-all-files-in-the-folder-and-also-sub-folders
     //Use ArrayList instead of array as return value
     public List<File> listAllFiles(String directoryName) throws IOException, GitAPIException, BadLocationException {
-        //TODO: Auch wenn ich den ganzen geclonten Repo-Ordner übergebe, wird nur der src folder angeschaut. Warum?
+        //TODO: Beim Übergeben directory Pfad anpassen!
         File srcFolder = new File(directoryName);
 
         List<File> allFilesList = new ArrayList<>();
@@ -81,7 +81,7 @@ public class ModifiedFilesReader {
         System.out.println("modifiedFileName: " + modifiedFileName);
         modifiedFileName = modifiedFileName.replace('/', File.separatorChar);
         modifiedFileName = modifiedFileName.replace('\\', File.separatorChar);
-        modifiedFileName = modifiedFileName.substring(modifiedFileName.lastIndexOf(File.separatorChar ) + 1); //TODO: Backslash escape , Pfad library
+        modifiedFileName = modifiedFileName.substring(modifiedFileName.lastIndexOf(File.separatorChar ) + 1);
         return modifiedFileName;
     }
 
