@@ -28,7 +28,13 @@ dependencies {
     compile group: 'org.jsoup', name: 'jsoup', version: '1.12.1'
 
     compile group: 'com.google.guava', name: 'guava', version: '20.0'
-    
+
+    compile group: 'com.github.javafaker', name: 'javafaker', version: '0.15'
+
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-text
+    compile group: 'org.apache.commons', name: 'commons-text', version: '1.8'
+
+
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
