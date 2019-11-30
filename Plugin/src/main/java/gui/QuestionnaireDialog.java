@@ -1,18 +1,40 @@
-public class QuestionnaireDialog extends javax.swing.JDialog {
-private javax.swing.JPanel contentPane;
-private javax.swing.JButton buttonOK;
-private javax.swing.JButton buttonCancel;
+package gui;
 
-public QuestionnaireDialog(){
-setContentPane(contentPane);
-setModal(true);
-getRootPane().setDefaultButton(buttonOK);
-}
+import controller.Controller;
 
-public static void main(String[] args){
-QuestionnaireDialog dialog = new QuestionnaireDialog();
-dialog.pack();
-dialog.setVisible(true);
-System.exit(0);
-}
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class QuestionnaireDialog implements ActionListener {
+    private JPanel contentPane;
+    private JLabel introductionLabel;
+    private JButton linkButton;
+    private JDialog questionnaireDialog;
+    private Controller controller;
+
+    public QuestionnaireDialog(Controller controller) {
+        this.controller = controller;
+        questionnaireDialog = new JDialog();
+        questionnaireDialog.setContentPane(contentPane);
+        questionnaireDialog.setModal(true);
+        linkButton.addActionListener(this);
+        linkButton.setText("<HTML><U>Zwischenfragebogen</U></HTML>");
+    }
+
+    public void showQuestionnaireDialog() {
+        questionnaireDialog.setSize(500,200);
+       questionnaireDialog.setVisible(true);
+    }
+
+    public void hideQuestionnaireDialog() {
+        questionnaireDialog.dispose();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        System.out.println("action performed!");
+        controller.onSubmitQuestionnaireButtonPressed();
+        hideQuestionnaireDialog();
+    }
 }
