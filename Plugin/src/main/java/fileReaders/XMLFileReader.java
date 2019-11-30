@@ -29,15 +29,10 @@ public class XMLFileReader {
         docString = doc.toString();
     }
 
-    public void modifyXMLTokenAndPassword(String token, String password) throws IOException {
+    public void modifyXMLTokenAndPassword(String password) throws IOException {
         for (Element e : doc.getElementsByTag("password")) {
             if (e.text().length() == 0) {
                 e.appendText(password);
-            }
-        }
-        for (Element e : doc.getElementsByTag("token")) {
-            if (e.text().length() == 0) {
-                e.appendText(token);
             }
         }
 
@@ -139,6 +134,35 @@ public class XMLFileReader {
         bw.close();
     }
 
+    public void modifyDate(String currentDate) {
+        String date = currentDate.substring(0,10);
+        for (Element e : doc.getElementsByTag("date")) {
+            e.text(date);
+        }
+    }
+
+    public void modifyUserID(String userID) {
+        for(Element e : doc.getElementsByTag("userID")) {
+            e.text(userID);
+        }
+    }
+
+    public String readUserIDFromXML() {
+        String userID = "";
+        for(Element e : doc.getElementsByTag("userID")) {
+            userID = e.text();
+        }
+        return userID;
+    }
+
+    public String readDateFromXML() {
+        String date = "";
+        for (Element e : doc.getElementsByTag("date")) {
+            date = e.text();
+        }
+        return date;
+    }
+
     //TODO: Das noch weniger duplicate Code machen?
     public String readEncryptedPasswordFromXML() {
         String encryptedPasswordXML = "";
@@ -197,5 +221,13 @@ public class XMLFileReader {
             openRequestsValue = e.text();
         }
         return Integer.parseInt(openRequestsValue);
+    }
+
+    public String readLinkFromXML() {
+        String link = "";
+        for(Element e : doc.getElementsByTag("link")) {
+            link = e.text();
+        }
+        return link;
     }
 }

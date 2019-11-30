@@ -26,17 +26,24 @@ import requests.OpenRequestsModel;
 import requests.ScreenshotModel;
 import login.LoginManager;
 import fileReaders.TaskNameReader;
+
+
 import javax.swing.text.BadLocationException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
+
+import static javax.swing.JOptionPane.showMessageDialog;
 
 //zentrale Startklasse
 public class Controller {
@@ -46,7 +53,7 @@ public class Controller {
     //
     private List<GHIssue> issueList;
     public Project project;
-    private GitModel gitModel;
+    public GitModel gitModel;
     public GitHubModel gitHubModel;
     private GitHubListener gitHubListener;
     public MailBoxScreen mailBoxScreen;
@@ -56,16 +63,18 @@ public class Controller {
     public ScreenshotModel screenshotModel;
     public MailModel mailModel;
     public LoginManager loginManager;
-    private LoginMenu loginMenu;
+    //private LoginMenu loginMenu;
+    //28.11.
+    private QuestionnaireDialog questionnaireDialog;
     //24.11.
-    public LoginMenu1 loginMenu1;
-    public RegistrationMenu registrationMenu;
+    //29.11.
+    public LoginDialog loginDialog;
+    public RegistrationDialog registrationDialog;
     //
     public XMLFileReader XMLFileReader;
     public TaskNameReader taskNameReader;
     public XMLFileCreator XMLFileCreator;
     public AnnotatedCodeWindow annotatedCodeWindow;
-    public HashMap<String, String> loginData;
     public AnswerList answerList;
     //20.11.
     public ModifiedFilesReader modifiedFilesReader;
@@ -78,11 +87,14 @@ public class Controller {
     //10.11. Test
     public boolean hasChanges;
     //
-    //26.11. Test
     public boolean isLoggedIn;
     public boolean isNewRegistered;
+    public boolean isInitialized;
     //
-    public de.ur.mi.pluginhelper.User.User user;
+    //27.11.
+    private String srcFolderPath;
+    //
+    private de.ur.mi.pluginhelper.User.User user;
     public Log log;
 
     //Hier ist die Reihenfolge wichtig!
@@ -91,19 +103,26 @@ public class Controller {
         //26.11.
         this.toolWindow = toolWindow;
         loginManager = new LoginManager(this);
-        loginMenu = new LoginMenu(this);
-        //loginMenu1 = new LoginMenu1(this);
-        //registrationMenu = new RegistrationMenu(this);
+        //loginMenu = new LoginMenu(this);
+        registrationDialog = new RegistrationDialog(this);
+        loginDialog = new LoginDialog(this);
+        questionnaireDialog = new QuestionnaireDialog(this);
         //
         //Create File: file wird nur einmal angelegt.
         XMLFileCreator = new XMLFileCreator(this);
         XMLFileReader = new XMLFileReader(this);
-        XMLFileReader.checkIfInitialized();
-        openRequestsModel= new OpenRequestsModel(this);
+        isInitialized = XMLFileReader.checkIfInitialized();
+        //
+        openRequestsModel = new OpenRequestsModel(this);
         taskNameReader = new TaskNameReader(this);
+        //27.11. Test
+        srcFolderPath = project.getBasePath() + Constants.CLONED_SRC_FOLDER;
         //21.11.
         user = de.ur.mi.pluginhelper.User.User.getLocalUser();
         Log log = LogManager.openLog(user.getID(), "MA-Fischer");
+        //28.11. saveToXMLFile
+        XMLFileReader.modifyUserID(user.getID());
+        //
         log.log(user.getSessionID(), LogDataType.USER, "log", "Plugin gestartet");
         String serverUrl = Constants.SEAFILE_SERVER_URL;
         // Log synchronisieren
@@ -125,74 +144,103 @@ public class Controller {
         //19.11.
         //openRequests = new ArrayList<>();
         //
-        gitHubModel = new GitHubModel(this);
+        gitHubModel = new GitHubModel(this, toolWindow);
         branchNameCreator = new BranchNameCreator(this);
         gitModel = new GitModel(project, this);
         nameGenerator = new NameGenerator(this);
         screenshotModel = new ScreenshotModel(this);
         mailModel = new MailModel(this);
         annotatedCodeWindow = new AnnotatedCodeWindow(this);
+        //27.11. Versuch
+        //if(isInitialized = false) {
         gitModel.gitInit();
+        //}
         showWelcomeMenu();
     }
 
-    public void showWelcomeMenu() throws UnsupportedEncodingException {
+    //TODO: Nur Datum ohne Uhrzeit reinspeichern!
+//https://stackoverflow.com/questions/12087419/adding-days-to-a-date-in-java
+    private void checkForQuestionnaire() {
+        //TODO: Das noch richtig machen!
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constants.SIMPLE_DATE_FORMAT);
+        //Das mache ich jetzt erstmal total gefaket
+        String currentDate = "28.11.2019 15:50";
+        String expectedQuestionnaireDate = "28.11.2019 15:50";
+
+        if (expectedQuestionnaireDate.equals(currentDate)) {
+            questionnaireDialog.showQuestionnaireDialog();
+        }
+        //TODO: Hier festen Zeitabstand und den dann irgendwie draufrechnen! (2Tage) --> Konstante, als Test 2 Minuten.
+    }
+
+    public void showWelcomeMenu() {
         System.out.println("Controller showWelcomeMenu");
         //Wenn da was bei <token> steht
         if (XMLFileReader.checkIfInitialized()) {
             System.out.println("initailisiert? Sollte true sein" + XMLFileReader.checkIfInitialized());
-            loginMenu.showLoginMenu();
-            //loginMenu1.showLoginMenu();
+            //loginMenu.showLoginMenu();
+            loginDialog.showLoginDialog();
+
         } else {
-            System.out.println("initailisiert? Sollte false sein" + XMLFileReader.checkIfInitialized());
-            loginMenu.showRegistrationMenu();
-            //registrationMenu.showRegistrationMenu();
+            System.out.println("initialisiert? Sollte false sein" + XMLFileReader.checkIfInitialized());
+            registrationDialog.showRegistrationMenu();
+            //loginMenu.showRegistrationMenu();
         }
     }
 
     public void onRegistrationButtonPressed() throws IOException {
         String password = getPasswordValidateInput();
         String encryptedPassword = loginManager.encryptPassword(password);
-        String token = getToken();
+        String date = getCurrentDate();
+        System.out.println("FirstInput: " + getPasswordFirstInput());
         //Hier wird das Passwort validiert
+        //30.11. auskommentiert, weil Inhalt leider nicht ausgelesen wird TODO: Fixen!
         if (getPasswordValidateInput().length() >= Constants.MINIMUM_PASSWORD_LENGTH && getPasswordFirstInput().length() >= Constants.MINIMUM_PASSWORD_LENGTH) {
             if (getPasswordValidateInput().equals(getPasswordFirstInput())) {
-                loginManager.createToken();
+                System.out.println("Nach erster Ifbedingung??!!!");
                 loginManager.encryptPassword(password);
-                XMLFileReader.modifyXMLTokenAndPassword(token, encryptedPassword);
-                System.out.println("HashMap: " + loginData);
-                loginMenu.showValidPasswordInfo();
-                //registrationMenu.showValidPasswordInfo();
-                loginMenu.hideRegistrationMenu();
-                //registrationMenu.hideRegistrationMenu();
+                XMLFileReader.modifyPassword(encryptedPassword);
+                //28.11. Test, ob das geht.
+                XMLFileReader.modifyDate(date);
+                //loginMenu.showValidPasswordInfo();
+                registrationDialog.showValidPasswordInfo();
+                //loginMenu.hideRegistrationMenu();
+                registrationDialog.hideRegistrationMenu();
                 //sendRequestScreen.showWelcomeInfo(); //NPE
                 isNewRegistered = true;
                 isLoggedIn = true;
+                createTutorCommentsFolder();
+                //Thread starten
+                startLookForAnswersThread();
             } else {
-                loginMenu.showPasswordsNotEqualError();
-                //registrationMenu.showPasswordsNotEqualError();
+                //loginMenu.showPasswordsNotEqualError();
+                registrationDialog.showPasswordsNotEqualError();
             }
         } else {
-            loginMenu.showPasswordTooShortError();
-            //registrationMenu.showPasswordTooShortError();
-        }
+            //loginMenu.showPasswordTooShortError();
+            registrationDialog.showPasswordTooShortError();
+       }
     }
 
     public void onLoginButtonPressed() throws IOException {
+        System.out.println("Bin hier rein gekommen!");
         if (loginManager.checkPassword()) {
-            loginMenu.hideLoginMenu();
-            createTutorCommentsFolder();
+            //loginMenu.hideLoginMenu();
+            loginDialog.hideLoginMenu();
             showAnswersOnProgramStart();
             isLoggedIn = true;
+            //28.11.
+            checkForQuestionnaire();
             //26.11. Thread starten
             startLookForAnswersThread();
         } else {
-            loginMenu.showWrongPasswordError();
             //loginMenu.showWrongPasswordError();
+            loginDialog.showWrongPasswordError();
         }
     }
 
     public void updateToolWindow() {
+        toolWindow.getContentManager().removeContent(toolWindowFactory.getContentLogin(), true);
         toolWindowFactory.addDefaultContents();
         toolWindow.getContentManager().setSelectedContent(toolWindow.getContentManager().getContent(sendRequestScreen.getContent()));
     }
@@ -203,29 +251,20 @@ public class Controller {
     }
 
     private void showAnswersOnProgramStart() throws IOException {
-       //GitHub "durchsuchen" nach IssueIDList, Diese Issues dann in einer Liste speichern und diese dann der IssueList gleichsetzen
+        //GitHub "durchsuchen" nach IssueIDList, Diese Issues dann in einer Liste speichern und diese dann der IssueList gleichsetzen
         System.out.println("Programmstart issueList: " + gitHubModel.issueList);
         System.out.println("Programstart Issue Liste geholt von den numbers: " + gitHubModel.getIssuesBySavedIds(getSavedRequests()));
-        //gitHubModel.issueList = gitHubModel.getIssuesBySavedIds(getSavedRequests());
-        //issueList = gitHubModel.issueList;
-        issueList = gitHubModel.updateIssueList();
-        //Hier gleich die AnswerList befüllen
-        //TODO: Das dann ein bisschen weniger duplicatre machen mit der matchAnswerAndRequest
+        issueList = getIssueList();
         System.out.println("Bei Programmstart: issueList (nach zuweisen mit den numbers aus configFile): " + issueList);
 
-        /*Mein Plan ist es, Bei Programmstart erstmal die Antwortnummern aus der XML auszulesen, analog reqeuest.
-        * Dann möchte ich diese vergleichen, also die Issues, die ich in der gespeicherten RequestsListe gespeichert habe,
-        * überprüfe ich auf die Antwort nummern.
-        * Wenn was gleich ist, dann wird dieser Issue in eine Antwort umgewandelt und zur Liste hinzugefügt.
-        * Dann möchte ich gleich die Tabelle zeigen mit diesen Antworten.*/
+
         List<Answer> alreadyAnsweredRequests = getAlreadyAnsweredRequests();
         System.out.println("listi: " + alreadyAnsweredRequests);
         for (Answer answer : alreadyAnsweredRequests) {
-            System.out.println("Die ConcurrentModificationException passiert hier.");
             answerList.add(answer);
-
-            if(answerList.getAnswerList().size() > 0) {
-                mailBoxScreen.refreshTable();
+            //TODO
+            if (answerList.getAnswerList().size() > 0) {
+                // mailBoxScreen.refreshTable();
             }
         }
     }
@@ -237,7 +276,7 @@ public class Controller {
 
     public void onNewAnswerData() throws IOException {
         //TODO: Das noch richtig machen
-        if(XMLFileReader.readOpenRequestsValueFromXML() > 0) {
+        if (XMLFileReader.readOpenRequestsValueFromXML() > 0) {
             XMLFileReader.modifyOpenRequestsCounter(Integer.parseInt(openRequestsModel.decrementOpenRequestsNumber()));
         }
         mailBoxScreen.updateOpenRequest();
@@ -251,11 +290,8 @@ public class Controller {
     }
 
     public void onSubmitRequestButtonPressed() {
-        //String requestCounter = gitModel.incrementRequestCounter();
         String requestCounter = branchNameCreator.incrementRequestCounter();
         String requestDate = getCurrentDate();
-        //TODO: Hier die Methode mit den imageStrings? Beides zusammenbauen und mit Zeilenumbrüchen trennen
-        //String requestMessage = getRequestMessage() + "\n" + "\n" + getAllImageStrings();
         String requestMessage = getRequestMessage();
         //String requestMessage = sendRequestScreen.getInputMessage() + "\n" + "\n" + screenshotModel.getAllImagesString();
         System.out.println("requestMessage: (Bildtest)" + requestMessage);
@@ -269,31 +305,33 @@ public class Controller {
         } else {
             try {
                 String title = gitHubModel.createIssueTitle(studentName, requestDate);
-                String labelCategory = Constants.COMMON_LABEL_BEGIN + getProblemCategory();
-                String labelTask = Constants.COMMON_LABEL_BEGIN + getTaskNameFromFile();
+                String labelCategory = getProblemCategory();
+                String labelTask = getTaskNameFromFile();
                 String labelBranchName = Constants.COMMON_LABEL_BEGIN + getBranchName();
                 String labelScreenshot = getScreenShotLabel();
+                //28.11. auskommentiert wegen Fehlermeldung.
                 gitModel.createAndPushBranch(getBranchName());
                 gitHubModel.createIssue(title, requestMessage, labelCategory, labelTask, labelBranchName, labelScreenshot);
-                //9.11. auskommentiert zu Testzwecken
-                //mailModel.sendMailToTutors();
+                mailModel.sendMailToTutors();
                 //23.11.
-               // openRequestsModel.openRequestList.add( gitHubModel.createIssue(title, requestMessage, labelCategory, labelTask, labelBranchName, labelScreenshot));
+                // openRequestsModel.openRequestList.add( gitHubModel.createIssue(title, requestMessage, labelCategory, labelTask, labelBranchName, labelScreenshot));
                 System.out.println("openRequestsModel.openRequestList: " + openRequestsModel.openRequestList);
                 //26.11. Versuch.
                 XMLFileReader.modifyOpenRequestsCounter(Integer.parseInt(openRequestsModel.incrementOpenRequestsNumber()));
                 mailBoxScreen.updateOpenRequest();
-                //
-            } catch (IOException | GitAPIException | URISyntaxException e) {
+                //29.11. Hierher verschoben.
+                sendRequestScreen.showSentRequestInfo();
+                screenshotModel.clearScreenshotFolder();
+                logData("Anfrage abgeschickt");
+            } catch (IOException e) {
                 //Fehlermeldung (sinnvoll)
                 e.printStackTrace();
                 sendRequestScreen.showErrorMessage(e.getMessage());
                 return;
+            } catch (GitAPIException | URISyntaxException e) {
+                e.printStackTrace();
             }
-            sendRequestScreen.showSentRequestInfo();
-            screenshotModel.clearScreenshotFolder();
 
-            logData("Anfrage abgeschickt");
         }
     }
 
@@ -303,9 +341,17 @@ public class Controller {
         XMLFileReader.modifyXMLNameAndMail(studentName, studentMail);
     }
 
+    //TODO: Hier die Tutorialscreen funktionalität reinhauen!
     public void onOpenCodeButtonPressed() {
         System.out.println("openCodeButton Methodenaufruf aus Controller");
         logData("Codefenster geöffnet");
+
+        try {
+            //TODO: Hier muss noch was anderes übergeben werden! gitStatus gibt modifiedFileNames zurück.
+            annotatedCodeWindow.createWindow(getModifiedFiles());
+        } catch (BadLocationException | GitAPIException | IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public void sendFeedbackForFeedback() {
@@ -314,6 +360,8 @@ public class Controller {
         if (answerDetailScreen.selectedHelpfulness == 1) {
             gitHubModel.setHelpfulFeedbackLabel();
         } else if (answerDetailScreen.selectedHelpfulness == 2) {
+           gitHubModel.setNeutralLabel(); //TODO: Button dafür noch machen
+        } else if(answerDetailScreen.selectedHelpfulness == 3) {
             gitHubModel.setNotHelpfulFeedbackLabel();
         }
         answerDetailScreen.createFeedbackText();
@@ -330,15 +378,15 @@ public class Controller {
         mailBoxScreen.showAnswerDetailContent(answer);
     }
 
-//Getter-Methoden
+    //Getter-Methoden
     public List<GHIssue> getOpenRequestsList() {
         return openRequestsModel.openRequestList;
     }
 
     private String getScreenShotLabel() {
-        String screenShotLabel = Constants.COMMON_LABEL_BEGIN + "Ohne Screenshot";
+        String screenShotLabel = "Ohne Screenshot";
         if (screenshotModel.hasScreenShotAttached()) {
-            screenShotLabel = Constants.COMMON_LABEL_BEGIN + "Mit Screenshot";
+            screenShotLabel = "Mit Screenshot";
         }
         return screenShotLabel;
     }
@@ -360,7 +408,7 @@ public class Controller {
     }
 
     //TODO: Das funktioniert so nicht wegen des Datums, das sich dauernd ändert
-    public String getBranchName() {
+    private String getBranchName() {
         return branchNameCreator.createBranchName(getStudentName(), getCounterValue(), getCurrentDate());
     }
 
@@ -388,28 +436,22 @@ public class Controller {
         return gitModel.compareBranchesForCodeChanges();
     }
 
-    public List<GHIssue> getOwnClosedIssues() {
-        return gitHubModel.filterOwnClosedIssues(gitHubModel.allClosedIssueList);
+    public List<GHIssue> getOwnClosedIssues() throws IOException {
+        return gitHubModel.filterOwnClosedIssues();
     }
 
     private List<Answer> getAlreadyAnsweredRequests() throws IOException {
         return gitHubModel.getAlreadyAnsweredRequestsOnProgramStart(getSavedAnswers(), gitHubModel.issueList);
     }
 
-    //TODO: Noch abfangen, dass wenn Screenshots angehängt wurden, ist der Input nicht mehr 0!
-    //Idee: Gettermethode schreiben für die Bilderstrings und dann Länge minus die Bilder, wenn das größer 0 ist
-    private String getRequestMessage() {
+    public String getRequestMessage() {
         return sendRequestScreen.inputMessageArea.getText().trim();
-    }
-
-    private String getToken() {
-        return loginManager.createToken();
     }
 
     private String getTaskNameFromFile() throws FileNotFoundException {
         return taskNameReader.readNameOfTaskFromNameFile();
     }
-
+//TODO: Hier vllt auch noch anpassen, welches DateFormat übergeebn werden soll
     private String getCurrentDate() {
         DateFormat dateFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
         Date currentTime = new Date();
@@ -418,28 +460,51 @@ public class Controller {
 
     //Erstes Feld
     private String getPasswordFirstInput() {
-        return Arrays.toString(loginMenu.passwordFieldFirstInput.getPassword());
+        System.out.println("1: " + Arrays.toString(registrationDialog.passwordFieldFirstInput.getPassword()));
         //return Arrays.toString(loginMenu.passwordFieldFirstInput.getPassword());
+        return Arrays.toString(registrationDialog.passwordFieldFirstInput.getPassword());
     }
 
     //Zweites Feld
     private String getPasswordValidateInput() {
-        return Arrays.toString(loginMenu.passwordFieldValidateInput.getPassword());
-        //return Arrays.toString(registrationMenu.passwordFieldValidateInput.getPassword());
+        System.out.println("2: " + Arrays.toString(registrationDialog.passwordFieldValidateInput.getPassword()));
+        //return Arrays.toString(loginMenu.passwordFieldValidateInput.getPassword());
+        return Arrays.toString(registrationDialog.passwordFieldValidateInput.getPassword());
     }
 
     public String getPasswordLogin() {
-        //return Arrays.toString(loginMenu1.passwordFieldLogin.getPassword());
-        return Arrays.toString(loginMenu.passwordFieldLogin.getPassword());
+        return Arrays.toString(loginDialog.passwordFieldLogin.getPassword());
+        //return Arrays.toString(loginMenu.passwordFieldLogin.getPassword());
     }
 
-    private String getAllImageStrings() {
-        return screenshotModel.addScreenshotsToIssue(screenshotModel.chooseFiles());
-    }
-
-    //Der Einfachheit halber
+    //LogMethode
     public void logData(String logMessage) {
         Log log = LogManager.openLog(user.getID(), "Ma-Fischer");
         log.log(user.getSessionID(), LogDataType.USER, "log", logMessage);
+    }
+
+
+    //27.11. testt
+    public List<File> getModifiedFiles() throws IOException, GitAPIException, BadLocationException {
+        return modifiedFilesReader.matchFiles(modifiedFilesReader.listAllFiles(srcFolderPath), gitModel.gitStatus());
+    }
+
+    public List<GHIssue> getIssueList() throws IOException {
+        return gitHubModel.updateIssueList();
+    }
+
+        public void onSubmitQuestionnaireButtonPressed() {
+        System.out.println("onSubmitQuestionnaireButtonPressed");
+        //Hier wird der Link zusammengebaut aus festem Link und der userID
+        String urlString = XMLFileReader.readLinkFromXML() + XMLFileReader.readUserIDFromXML();
+        //Datum wird angepasst, damit man wieder zwei Tage drauf rechnen kann
+        String date = getCurrentDate();
+        XMLFileReader.modifyDate(date);
+        try {
+            System.out.println("tryyyy");
+            Desktop.getDesktop().browse(new URL(urlString).toURI());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

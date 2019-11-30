@@ -47,10 +47,12 @@ public class XMLFileCreator {
     private void writeXMLStructure() throws IOException {
        bufferedWriter.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "\n" +
                "<configuration>" + "\n" +
+                "\t" + "<date>" + "</date>" + "\n" +
+                "\t" + "<userID>" + "</userID>" + "\n" +
+               "\t" + "<link>" + "https://docs.google.com/forms/d/e/1FAIpQLSeV816kMGtnzjW2SMgZU3WutDWw_tE2mc651geBHxJO3_Ixsg/viewform?entry.1462871672=" + "</link>" + "\n" +
                 "\t" + "<component name='config'>" + "\n" +
                 "\t" + "\t" + "<name>" + "</name>" + "\n" +
                 "\t" + "\t" + "<mail>" + "</mail>" + "\n" +
-                "\t" + "\t" + "<token>" + "</token>" + "\n" +
                 "\t" + "\t" + "<password>" + "</password>" + "\n" +
                 "\t" + "</component>" + "\n" +
                 "\t" + "<requests>" + "\n" +
