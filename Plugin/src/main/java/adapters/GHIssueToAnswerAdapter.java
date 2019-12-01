@@ -1,18 +1,16 @@
 package adapters;
 
-import android.os.SystemPropertiesProto;
 import answers.Answer;
 import org.kohsuke.github.GHIssue;
 import org.kohsuke.github.GHIssueComment;
-import org.kohsuke.github.GHLabel;
-import org.kohsuke.github.GHUser;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class GHIssueToAnswerAdapter implements BaseAdapter<GHIssue, Answer> {
+
+
     @Override
     public Answer transform(GHIssue issue) throws IOException {
         return new Answer(issue.getNumber(), issue.getId(), getAnswerText(issue), getTutorName(issue), issue.getClosedAt());
@@ -30,36 +28,40 @@ public class GHIssueToAnswerAdapter implements BaseAdapter<GHIssue, Answer> {
         StringBuilder result = new StringBuilder();
         for (GHIssueComment comment : comments) {
             //wenn mehr als ein Kommentar vorhanden, dann zusammen bauen, trennen mit Absatz
-            if (comments.indexOf(comment) > 0) {
-                result.append("\n");
-            }
-            result.append(comment.getBody());
+            //TODO: RegEx, damit Feedback für Feedback nicht geholt wird bei Programmstart
+            result.append(comments.get(0).getBody());
+            //27.11. auskommentiert. Es soll nur der erste Kommentar geholt werden, um dem ganzen Feedback für Feedback entgegen zu wirken
+            //if (comments.indexOf(comment) > 0) {
+               // result.append("\n");
+            //}
+           // result.append(comment.getBody());
+        }
+        //TODO: Images rauslöschen!! Das ist aber alles schon in der "Answer" Klasse gemacht worden...
+        if(result.length() == 0) {
+            result.append("Ohne Text");
         }
         answers.add(result.toString());
         return result.toString();
     }
 
     private String getTutorName(GHIssue issue) throws IOException {
-        System.out.println("Closed or not? - " + issue.getState());
-        String result = "";
-
+        String result;
         try {
             System.out.println("Assignes: " + issue.getAssignees());
-            //result = getAssignee(issue);
-            String assignee = getAssignee(issue);
+            //String assignee = getAssignee(issue);
+            String assignee = issue.getAssignee().getLogin();
             result = mapGitHubUsernameWithRealName(assignee);
-            System.out.println("closedBy: " + issue.getClosedBy().getLogin());
-        } catch (java.lang.NullPointerException npe) {
-            if (getAssignee(issue).length() != 0) {
-                result = getAssignee(issue);
-            } else {
+
+            if(issue.getAssignees().size() == 0) {
                 result = "Anonyme*r Tutor*in";
             }
+        } catch (Exception e) {
+            result = "Anonyme*r Tutor*in";
+
         }
         return result;
     }
 
-    //TODO: Das weniger hardcoden
     private String mapGitHubUsernameWithRealName(String assignee) {
         String result = "";
         switch (assignee) {
@@ -68,6 +70,27 @@ public class GHIssueToAnswerAdapter implements BaseAdapter<GHIssue, Answer> {
                 break;
             case "OOP-Feedback-Test":
                 result = "Default";
+                break;
+            case "eichingertim":
+                result = "Tim Eichinger";
+                break;
+            case "kappa4head":
+                result = "Lukas Jackermeier";
+                break;
+            case "realdegrees" :
+                result = "Fabian Schebera";
+                break;
+            case "msms":
+                result = "Martina Emmert";
+                break;
+            case "hfhhf":
+                result = "Erik Blank";
+                break;
+            case "hfehe":
+                result = "Florin Schwappach";
+                break;
+            case "hgwgw":
+                result = "Alexander Bazo";
                 break;
         }
         return result;
