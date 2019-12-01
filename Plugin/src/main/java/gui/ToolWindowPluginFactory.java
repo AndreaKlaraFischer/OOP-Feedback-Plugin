@@ -12,6 +12,8 @@ import org.jetbrains.annotations.NotNull;
 import org.xml.sax.SAXException;
 
 import javax.swing.*;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import javax.swing.text.BadLocationException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -26,8 +28,11 @@ public class ToolWindowPluginFactory implements ToolWindowFactory {
     private Content contentAssistance;
     private Content contentLogin;
     private Content contentMailBox;
+    //30.11.
+    private Content contentAnswerDetail;
 
     public ToolWindow toolWindow;
+
     @Override
     public void createToolWindowContent(Project project, ToolWindow toolWindow) {
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
@@ -41,53 +46,61 @@ public class ToolWindowPluginFactory implements ToolWindowFactory {
             e.printStackTrace();
         }
 
-        TutorialScreen tutorialScreen = null;
-        try {
-            tutorialScreen = new TutorialScreen(controller);
-        } catch (BadLocationException e) {
-            e.printStackTrace();
-        }
+        TutorialScreen tutorialScreen = new TutorialScreen();
+
+
         SendRequestScreen sendRequestScreen = new SendRequestScreen(controller, toolWindow, tutorialScreen);
-        MailBoxScreen mailBoxScreen = null;
-        try {
-            mailBoxScreen = new MailBoxScreen(controller, toolWindow);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        //MailBoxScreen mailBoxScreen = null;
+        //mailBoxScreen = new MailBoxScreen(controller, toolWindow);
+        MailBoxScreen mailBoxScreen = new MailBoxScreen(controller);
         SettingScreen settingScreen = new SettingScreen(controller);
         AssistanceScreen assistanceScreen = new AssistanceScreen(controller);
         LoginScreen loginScreen = new LoginScreen(controller);
+        //30.11.
+        AnswerDetailScreen1 answerDetailScreen1 = new AnswerDetailScreen1(controller);
 
+        //30.11.
+        contentRequest = contentFactory.createContent(sendRequestScreen.getContent(), "Hilfe anfragen", false);
         contentMailBox = contentFactory.createContent(mailBoxScreen.getContent(), "Antworten", false);
-        //Content contentAnswerDetail = contentFactory.createContent(answerScreen.getContent(),"Antwort des Tutors", false);
-       // assert tutorialScreen != null;
-        contentTutorial = contentFactory.createContent(tutorialScreen.getContent(),"Tutorial", false);
-        contentRequest = contentFactory.createContent(sendRequestScreen.getContent(), "Tutor fragen", false);
-        System.out.println("Toolwindowpluginfactory, content Request wurde erstellt:  " + contentRequest);
         contentSettings = contentFactory.createContent(settingScreen.getContent(), "Einstellungen", false);
-        //24.11.
         contentAssistance = contentFactory.createContent(assistanceScreen.getContent(), "Hilfestellung", false);
-        //26.11.
+        contentTutorial = contentFactory.createContent(tutorialScreen.getContent(), "Tutorial", false);
         contentLogin = contentFactory.createContent(loginScreen.getContent(), "Login", false);
+        //30.11.
+        contentAnswerDetail = contentFactory.createContent(answerDetailScreen1.getContent(), "Detailansicht", false);
 
-        //26.11. Neuer Test
-        if(controller.isLoggedIn) {
+        //Angezeigte Inhalte werden hier gemanaged
+        if (controller.isLoggedIn) {
             addDefaultContents();
-            if(controller.isNewRegistered) {
+            if (controller.isNewRegistered) {
                 toolWindow.getContentManager().setSelectedContent(contentSettings);
                 settingScreen.showWelcomeInfo(); //TODO: Das geht leider nicht
             }
         } else {
-            //26.11. Plugin soll nicht benutzbar sein, wenn man nicht eingeloggt ist.
-            toolWindow.getContentManager().addContent(contentLogin);
-            toolWindow.getContentManager().addContent(contentTutorial);
-            toolWindow.getContentManager().setSelectedContent(contentLogin);
+            //Plugin soll nicht benutzbar sein, wenn man nicht eingeloggt ist.
+            addNotLoggedInContents();
         }
 
-        //22.11.
-        //Versuch, die tabs zu switchen
-       //
         Controller finalController = controller;
+
+        Controller finalController1 = controller;
+        toolWindow.getComponent().addAncestorListener(new AncestorListener() {
+            @Override
+            public void ancestorAdded(AncestorEvent event) {
+                finalController1.logData("ToolWindow geöffnet");
+            }
+
+            @Override
+            public void ancestorRemoved(AncestorEvent event) {
+                finalController.logData("ToolWindow geschlossen");
+            }
+
+            @Override
+            public void ancestorMoved(AncestorEvent event) {
+                // finalController.logData("ToolWindow verschoben");
+            }
+        });
+
         toolWindow.getContentManager().addContentManagerListener(new ContentManagerListener() {
             @Override
             public void contentAdded(@NotNull ContentManagerEvent event) {
@@ -106,7 +119,6 @@ public class ToolWindowPluginFactory implements ToolWindowFactory {
 
             @Override
             public void selectionChanged(@NotNull ContentManagerEvent event) {
-                //TODO: Loggen
                 finalController.logData("Tab gewechselt");
                 toolWindow.getContentManager().getSelectedContent();
                 finalController.logData("Aktueller Tab: " + toolWindow.getContentManager().getSelectedContent());
@@ -115,12 +127,31 @@ public class ToolWindowPluginFactory implements ToolWindowFactory {
 
     }
 
+    private void addNotLoggedInContents() {
+        toolWindow.getContentManager().addContent(contentLogin, 0);
+        toolWindow.getContentManager().addContent(contentTutorial, 1);
+        toolWindow.getContentManager().setSelectedContent(contentLogin);
+    }
+
     public void addDefaultContents() {
         toolWindow.getContentManager().addContent(contentRequest, 0);
         toolWindow.getContentManager().addContent(contentMailBox, 1);
         toolWindow.getContentManager().addContent(contentSettings, 2);
         toolWindow.getContentManager().addContent(contentAssistance, 3);
         toolWindow.getContentManager().addContent(contentTutorial, 4);
+    }
+
+    public void addAnswerDetailContent() {
+        System.out.println("addAnswerDetailContent wird aufgerufen");
+        toolWindow.getContentManager().removeContent(contentMailBox, false);
+        toolWindow.getContentManager().addContent(contentAnswerDetail, 1);
+        toolWindow.getContentManager().setSelectedContent(contentAnswerDetail);
+    }
+
+    public void navigateBackToMailBoxScreen() {
+        toolWindow.getContentManager().removeContent(contentAnswerDetail, false);
+        toolWindow.getContentManager().addContent(contentMailBox, 1);
+        toolWindow.getContentManager().setSelectedContent(contentMailBox);
     }
 
     public Content getContentRequest() {

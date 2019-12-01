@@ -19,11 +19,11 @@ public class QuestionnaireDialog implements ActionListener {
         questionnaireDialog.setContentPane(contentPane);
         questionnaireDialog.setModal(true);
         linkButton.addActionListener(this);
-        linkButton.setText("<HTML><U>Zwischenfragebogen</U></HTML>");
+        linkButton.setText("<HTML><U>Hier geht es zum Zwischenfragebogen</U></HTML>");
     }
 
     public void showQuestionnaireDialog() {
-        questionnaireDialog.setSize(500,200);
+        questionnaireDialog.setSize(550,200);
        questionnaireDialog.setVisible(true);
     }
 

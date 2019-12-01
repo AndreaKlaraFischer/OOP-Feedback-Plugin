@@ -22,6 +22,7 @@ public class SettingScreen implements ActionListener {
     private JButton generateAnonymousNameButton;
     private JButton saveSettingsButton;
     public JTextField inputMailAddressField;
+    private JTextPane gibHierBitteEineTextPane;
     public static String studentNameInput;
     private Controller controller;
     private BalloonPopup balloonPopup;
