@@ -30,9 +30,6 @@ public class LoginManager {
        return sha256hex;
     }
 
-    public String createToken() {
-        return UUID.randomUUID().toString();
-    }
 
     public boolean validateMail(String mailAddressInput) {
         String emailRegex = "^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";

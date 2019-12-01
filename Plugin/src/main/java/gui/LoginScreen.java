@@ -30,13 +30,11 @@ public class LoginScreen implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        try {
-            controller.showWelcomeMenu();
-            controller.updateToolWindow();
-            //showWelcomeBackInfo();
-        } catch (UnsupportedEncodingException ex) {
-            ex.printStackTrace();
-        }
+        controller.showWelcomeMenu();
+        controller.updateToolWindow();
+        //30.11. auskommentiert UI
+       // controller.mailBoxScreen.refreshTable();
+        //showWelcomeBackInfo();
     }
 
 }
