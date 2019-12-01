@@ -1,6 +1,7 @@
 package communication;
 
 import adapters.GHIssueToAnswerAdapter;
+import android.os.SystemPropertiesProto;
 import answers.Answer;
 import answers.AnswerList;
 import config.Constants;
@@ -11,6 +12,7 @@ import org.kohsuke.github.*;
 import javax.swing.text.BadLocationException;
 import java.io.IOException;
 import java.util.*;
+import com.intellij.openapi.wm.ToolWindow;
 
 
 public class GitHubModel {
@@ -26,12 +28,14 @@ public class GitHubModel {
     public  ArrayList<GHIssue> closedIssueList;
     public AnswerList answerList;
     public Controller controller;
+    private ToolWindow toolWindow;
 
     public int answerId;
     public int answerNumber;
 
-    public GitHubModel(Controller controller) throws IOException {
+    public GitHubModel(Controller controller, ToolWindow toolWindow) throws IOException {
         this.controller = controller;
+        this.toolWindow = toolWindow;
         issueList = new ArrayList<>();
 
         //11.11. und 23.11.
@@ -39,7 +43,7 @@ public class GitHubModel {
         //15.11.
         answerList = controller.answerList;
         this.adapter = new GHIssueToAnswerAdapter();
-
+        //TODO: Steht dad da an der richtigen Stelle?
         connectWithRepo();
     }
 
@@ -59,8 +63,6 @@ public class GitHubModel {
             //TODO: Hier irgendwie noch einen sinnvollereren Catch, vielleicht einen Balloon mit "Bitte verbinde dich mit dem Internet"
         }
     }
-
-
 
     //23.11.
     public List<GHIssue> getIssuesBySavedIds(List<Integer> issueIDList) throws IOException {
@@ -83,7 +85,6 @@ public class GitHubModel {
                 requestDate;
     }
 
-    //23.11. Versuch, einen Issue zurück zu geben.
     public void createIssue(String title, String body, String labelCategory, String labelTask, String labelBranchName, String labelScreenshot) {
         try {
             issue = repo.createIssue(title).create();
@@ -93,45 +94,24 @@ public class GitHubModel {
             controller.XMLFileReader.modifyXMLRequests(issue.getNumber());
             System.out.println("issue-getId(): " + issue.getNumber());
             issueList.add(issue);
-
-            //System.out.println("issueList" + issueList);
         } catch (IOException e) {
             System.out.println("excepti + " + e.toString());
         }
     }
 
-    //TODO: Das noch versuchen, ob das anders geht! Ohne alle zu holen!
-    //TODO: Hier mit Parametern arbeiten statt mit static?
-    public void getClosedIssueList() {
-        try{
-            allClosedIssueList = repo.getIssues(GHIssueState.CLOSED);
-            filterOwnClosedIssues(allClosedIssueList);
-            //closedIssueList = new ArrayList<>();
-        } catch (Exception e) {
-            System.out.println("Das hat leider nicht funktioniert" + e.toString());
-        }
-    }
+   //(Sicherheitskopie ist in VSCode)
+   public List<GHIssue> filterOwnClosedIssues() throws IOException {
+       List<GHIssue> closedIssueList = new ArrayList<>();
+       issueList = updateIssueList();
+       for (GHIssue ghIssue : issueList) {
+           if(ghIssue.getState() == GHIssueState.CLOSED) {
+               closedIssueList.add(ghIssue);
+           }
+       }
+       return closedIssueList;
+   }
 
-    //TODO: Noch asynchron und persistent machen!
-    //TODO: Notiz: Funktioniert erst, wenn man mit dem Repo verbunden ist. Also vllt woanders hinpacken?
-    public ArrayList<GHIssue> filterOwnClosedIssues(List<GHIssue> allClosedIssueList) {
-        ArrayList<GHIssue> temp = new ArrayList<>();
-        System.out.println("allClosedIssueList");
-        //System.out.println(allClosedIssueList);
-        System.out.println("issueList");
-        System.out.println(issueList);
-        for (GHIssue ghIssue : allClosedIssueList) {
-            for (GHIssue value : issueList) {
-                long idxClosed = ghIssue.getId();
-                long idxIssueList = value.getId();
-                if (idxClosed == idxIssueList) {
-                    temp.add(ghIssue);
-                }
-            }
-        }
-        closedIssueList = temp;
-        return closedIssueList;
-    }
+
     //Das hier ist die abgespeckte Version von "matchRequestAndAnswer" --> Das soll bei Programmstart aufgerufen werden
     public List<Answer> getAlreadyAnsweredRequestsOnProgramStart(ArrayList<Integer> savedAnswers, List<GHIssue> sentIssues) throws IOException {
         List<Answer> answeredRequests = new ArrayList<>();
@@ -147,7 +127,7 @@ public class GitHubModel {
         return answeredRequests;
     }
 
-    public void matchRequestAndAnswer(List<GHIssue> closedIssueList) throws IOException, GitAPIException, BadLocationException {
+    public void matchRequestAndAnswer(List<GHIssue> issueList, List<GHIssue> closedIssueList) throws IOException, GitAPIException, BadLocationException {
         for (GHIssue ghIssue : issueList) {
             for (GHIssue closedIssue : closedIssueList) {
                 long idxSent = ghIssue.getId();
@@ -157,19 +137,20 @@ public class GitHubModel {
                     //Hier wird das Issue in eine Antwort verwandelt
                     //TODO: Falls ich die Liste anzeigen lasse mit den offenen Anfragen, muss an dieser Stelle die Liste verkleinert werden
                     Answer answer = adapter.transform(closedIssue);
-                    System.out.println(answer.getAnswerMessage());
 
                     if(!answerList.containsId(idxSent)) {
-                        //30.10.
                         controller.mailModel.sendMailToStudent(answer.getAnswerMessage());
-                        //
                         answerList.add(answer);
                         //18.10. Wichtig! Im Repo kann man nach einem Issue nur nur mit der Nummer, also dem fortlaufendem Index suchen
                         answerNumber = answer.getAnswerNumber();
                         controller.XMLFileReader.modifyAnswerList(answerNumber);
-                        //23.11. - Die Bedingung oben umschreiben
+
+                        //Get Branch über issueLabel
+                        matchIssueWithBranch(closedIssue);
+                        controller.gitModel.cloneBranch(matchIssueWithBranch(closedIssue));
                         controller.onNewAnswerData();
-                        controller.answerDetailScreen.activateOpenCodeButton();
+                        //28.11. auskommentiert wegen NullpointerException
+                        controller.answerDetailScreen1.activateOpenCodeButton();
                         //controller.openRequestsModel.decrementOpenRequestsNumber();
 
                         controller.logData("Anfrage beantwortet");
@@ -177,6 +158,25 @@ public class GitHubModel {
                 }
             }
         }
+    }
+
+    //27.11.
+    //getBranchName kann ich nicht verwenden, weil die Uhrzeit sich da immer ändert.
+    private String matchIssueWithBranch(GHIssue closedIssue) {
+        Collection<GHLabel> labels;
+        String branchName = "";
+        try {
+            labels = closedIssue.getLabels();
+            for(GHLabel label : labels) {
+                if(label.getName().charAt(0) == '_' ) {
+                //Remove first character
+                    branchName = "refs/heads/" + label.getName().substring(1);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return branchName;
     }
 
     public void matchFeedbackAndRequest(int answerNumber) {
@@ -188,7 +188,7 @@ public class GitHubModel {
     }
 
     public void setNotHelpfulFeedbackLabel() {
-        String notHelpfulLabel = Constants.COMMON_LABEL_BEGIN + Constants.FEEDBACK_LABEL_NOT_HELPFUL;
+        String notHelpfulLabel = Constants.FEEDBACK_LABEL_NOT_HELPFUL;
         try {
             issue.addLabels(notHelpfulLabel);
         } catch (IOException e) {
@@ -196,9 +196,8 @@ public class GitHubModel {
         }
     }
 
-    //TODO: Überlegen, ob ich das überhaupt brauche
     public void setNeutralLabel() {
-        String neutralLabel = Constants.COMMON_LABEL_BEGIN + Constants.FEEDBACK_LABEL_NEUTRAL;
+        String neutralLabel = Constants.FEEDBACK_LABEL_NEUTRAL;
         try {
             issue.addLabels(neutralLabel);
         } catch (IOException e) {
@@ -207,7 +206,7 @@ public class GitHubModel {
     }
 
     public void setHelpfulFeedbackLabel() {
-        String helpfulLabel = Constants.COMMON_LABEL_BEGIN + Constants.FEEDBACK_LABEL_HELPFUL;
+        String helpfulLabel = Constants.FEEDBACK_LABEL_HELPFUL;
         try {
             issue.addLabels(helpfulLabel);
         } catch (IOException e) {
@@ -223,6 +222,7 @@ public class GitHubModel {
         }
     }
 
+    //TODO verknüpfen
     public void setProblemSolvedLabel() {
         String problemSolvedLabel = "Problem erfolgreich gelöst!";
         try {

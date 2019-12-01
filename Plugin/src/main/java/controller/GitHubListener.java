@@ -14,8 +14,8 @@ public class GitHubListener extends Thread {
     public void run() {
         try {
             while (true) {
-                gitHubModel.getClosedIssueList();
-                gitHubModel.matchRequestAndAnswer(controller.getOwnClosedIssues());
+                //28.11. Test.
+                gitHubModel.matchRequestAndAnswer(controller.getIssueList(), controller.getOwnClosedIssues());
                 Thread.sleep(Constants.THREAD_MILLISECONDS);
             }
         } catch (InterruptedException | BadLocationException | IOException | GitAPIException e) {
