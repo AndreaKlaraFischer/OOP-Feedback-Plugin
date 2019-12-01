@@ -3,154 +3,77 @@ package gui;
 import answers.Answer;
 import answers.AnswerList;
 import answers.AnswerTableModel;
-import com.intellij.openapi.ui.MessageType;
-import com.intellij.openapi.ui.popup.Balloon;
-import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.table.JBTable;
 import config.Constants;
 import controller.Controller;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class MailBoxScreen {
+    private Controller controller;
+    private JPanel mailBoxScreenContent;
 
+    private JLabel noAnswersLabel;
+    private JLabel openRequestsLabel;
+    private JScrollPane answerScrollPane;
+
+    private AnswerList rowList;
     private AnswerTableModel answerTableModel;
     private JBTable answerOverviewTable;
 
-    private AnswerList rowList;
-    private JPanel mailBoxScreenContent;
 
-    public JTextField noAnswersTextfield;
-    private JLabel openRequestsLabel;
-    //26.11.
-    private JLabel title;
-
-    private Controller controller;
-    public JBScrollPane answerScrollPane;
-    private JBScrollPane detailScrollPane;
-
-    private AnswerDetailScreen answerDetailScreen;
-
-    private ToolWindow toolWindow;
-    private BalloonPopup balloonPopup;
-
-    public MailBoxScreen(Controller controller, ToolWindow toolWindow) throws IOException {
+    public MailBoxScreen(Controller controller) {
         this.controller = controller;
-        this.toolWindow = toolWindow;
         controller.mailBoxScreen = this;
 
-        balloonPopup = new BalloonPopup();
-        //14.10.
-        answerDetailScreen = new AnswerDetailScreen(controller.mailBoxScreen, controller);
+        openRequestsLabel.setText(Constants.DEFAULT_OPEN_REQUEST_LABEL);
+        //openRequestsLabel.setText("Offene Anfragen: " + String.valueOf(controller.XMLFileReader.readOpenRequestsValueFromXML()));
 
-        rowList = controller.gitHubModel.answerList;
+        rowList = controller.answerList;
+        answerTableModel = new AnswerTableModel(controller.answerList);
 
-        //TODO: Das noch fixen
-        mailBoxScreenContent = new JPanel();
-        noAnswersTextfield = new JTextField();
-        //19.11.
-        openRequestsLabel = new JLabel();
-        //26.11. TODO
-        title = new JLabel("Alle Antworten");
-
-
-        noAnswersTextfield.setText("Noch keine Antworten vorhanden.");
-        noAnswersTextfield.setEditable(false);
+        //Tabelle wird nicht über form gemacht, sondern neu erstellt
         answerOverviewTable = new JBTable();
         answerOverviewTable.setDragEnabled(false);
         answerOverviewTable.setSelectionBackground(Constants.HEIDENELKENROT);
-
-        //controller!
-        answerTableModel = new AnswerTableModel(controller.gitHubModel.answerList);
         answerOverviewTable.setModel(answerTableModel);
-        //12.10.
         answerOverviewTable.setRowSelectionAllowed(true);
         ListSelectionModel rowSelectionModel = answerOverviewTable.getSelectionModel();
         rowSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-
-        //Das gehört zur Tabelle
-        answerScrollPane = new JBScrollPane(answerOverviewTable);
         answerScrollPane.setViewportView(answerOverviewTable);
-        //scrollPane.setSize(400,400);
-        //19.11.
-        openRequestsLabel.setText(Constants.DEFAULT_OPEN_REQUEST_LABEL);
-        //23.11.
-        mailBoxScreenContent.add(openRequestsLabel);
-        mailBoxScreenContent.add(noAnswersTextfield);
-        //
-        mailBoxScreenContent.add(answerScrollPane);
-
-        detailScrollPane = answerDetailScreen.answerDetailScrollPane;
-
-        changeVisibilityOfTextFieldAndTable();
 
         answerOverviewTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                //Zeile kann mit Einfach- oder mit Doppelklick ausgewählt werden
                 if (e.getClickCount() == 2) {
                     JTable target = (JTable) e.getSource();
                     int row = target.rowAtPoint(e.getPoint());
                     if(row >= 0) {
+                        //TODO
                         controller.onAnswerSelected(answerTableModel.getAnswerAt(row));
                         controller.logData("Antwort geöffnet");
                     }
                 }
             }
         });
+
+        changeVisibilityOfTextFieldAndTable();
     }
 
-
-    public void showAnswerDetailContent(Answer answer) {
-        mailBoxScreenContent.remove(answerScrollPane);
-        mailBoxScreenContent.remove(noAnswersTextfield);
-        mailBoxScreenContent.remove(openRequestsLabel);
-        mailBoxScreenContent.add(detailScrollPane);
-        detailScrollPane.setVisible(true);
-
-        //setCorrectContents();
-        answerDetailScreen.detailedAnswerField.setText(answer.getAnswerMessage());
-        if(answerDetailScreen.imageButtonList.size() == 0) {
-            answerDetailScreen.createImageFromAttachedImageFile(answer.getImageUrls());
-        }
-
-        //createAnswerDetailTitle();
-        String answerTitle = "";
-        String tutorName = answer.getTutorName();
-        //NPE gefixt?
-        if(tutorName.length() > 0) {
-            answerTitle = Constants.ANSWER_TITLE_BEGINNING + Constants.SEPARATOR + tutorName;
-            answerDetailScreen.answerTitleLabel.setText(answerTitle);
-        } else {
-            answerTitle = Constants.ANSWER_TITLE_BEGINNING;
-            answerDetailScreen.answerTitleLabel.setText(answerTitle);
-        }
-        mailBoxScreenContent.revalidate();
-    }
-
-
-    public void navigateBackToTable() {
-        mailBoxScreenContent.remove(detailScrollPane);
-        mailBoxScreenContent.add(answerScrollPane);
-        mailBoxScreenContent.add(openRequestsLabel);
-        mailBoxScreenContent.revalidate();
-        controller.logData("Antwortansicht verlassen");
+    public void updateNoAnswersLabel() {
+        noAnswersLabel.setVisible(false);
     }
 
 
     public void refreshTable() {
+        //updateNoAnswersLabel();
         answerTableModel.fireTableDataChanged();
         answerScrollPane.setVisible(true);
-        noAnswersTextfield.setVisible(false);
+        noAnswersLabel.setVisible(false);
         //TODO: Fixen
         //toolWindow.getContentManager().setSelectedContent(toolWindow.getContentManager().getContent(mailBoxScreenContent));
     }
@@ -160,9 +83,9 @@ public class MailBoxScreen {
         try {
             if (rowList.getAnswerList().size() == 0) {
                 answerScrollPane.setVisible(false);
-                noAnswersTextfield.setVisible(true);
+                noAnswersLabel.setVisible(true);
             } else if (rowList.getAnswerList().size() > 0) {
-                noAnswersTextfield.setVisible(false);
+                noAnswersLabel.setVisible(false);
                 answerScrollPane.setVisible(true);
             }
         } catch (Exception e) {
@@ -170,22 +93,10 @@ public class MailBoxScreen {
         }
     }
 
-    public JPanel getContent() {
-        return mailBoxScreenContent;
-    }
-
-
-    public void showWelcomeBackInfo() {
-        balloonPopup.createBalloonPopup(mailBoxScreenContent, Balloon.Position.above, "Willkommen zurück! Du hast jetzt wieder Zugriff auf deine Antworten.", MessageType.INFO);
-    }
-
     public void showNotification() {
         showMessageDialog(null, "Neue Antwort von Tutor!");
-        //TODO: Set selected content auf mailboxscreen setzen
-        //26.11. Versuch - TODO noch ausprobieren daheim  jetzt keinen Bock mehr!
-       // toolWindow.getContentManager().setSelectedContent(controller.toolWindowFactory.getContentMailBox());
         if(!mailBoxScreenContent.isVisible()) {
-            navigateBackToTable();
+           // navigateBackToTable();
         }
     }
 
@@ -195,5 +106,22 @@ public class MailBoxScreen {
         } else {
             openRequestsLabel.setText("Offene Anfragen: " + String.valueOf(controller.XMLFileReader.readOpenRequestsValueFromXML()));
         }
+    }
+
+    public void showAnswerDetailContent(Answer answer) {
+        System.out.println("showDetailContent");
+        controller.answerDetailScreen1.detailAnswerTitleLabel.setText(Constants.ANSWER_TITLE_BEGINNING + answer.getTutorName());
+        controller.answerDetailScreen1.previousMessageTextArea.setText(controller.getRequestMessage());
+        controller.answerDetailScreen1.tutorAnswerTextArea.setText(answer.getAnswerMessage());
+
+        //TODO!!!
+        /*if(controller.answerDetailScreen1.imageButtonList.size() == 0) {
+            controller.answerDetailScreen1.createImageFromAttachedImageFile(answer.getImageUrls());
+        }*/
+
+    }
+
+    public JPanel getContent() {
+        return mailBoxScreenContent;
     }
 }
