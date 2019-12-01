@@ -5,15 +5,20 @@ import java.awt.*;
 public class Constants {
     //Repozugang
     public static final String REPO_URL = "https://github.com/OOP-Feedback-Test/OOP-Feedback-2.0.git";
+    //public static final String REPO_URL = "https://github.com/alexanderbazo/OOP-Feedback-Repo.git";
+
    // public static final String REPO_NAME = "OOP-Feedback/OOP-Feedback";
     public static final String REPO_NAME = "OOP-Feedback-Test/OOP-Feedback-2.0";
+    //public static final String REPO_NAME = "alexanderbazo/OOP-Feedback-Repo";
     public static final String REPO_LOGIN = "OOP-Feedback-Test";
     public static final String REPO_PASSWORD = "FredFeedback1920";
     //directories
     public static final String SCREENSHOT_FOLDER = "/screenshots";
-    public static final String TUTOR_COMMENTS_FOLDER = "/tutor_comments";
+    public static final String TUTOR_COMMENTS_FOLDER = "/.idea/tutor_comments";
     public static final String CLONED_REPO_FOLDER = "/clonedBranch";
     public static final String CLONED_SRC_FOLDER = TUTOR_COMMENTS_FOLDER + CLONED_REPO_FOLDER + "/src";
+    public static final String CONFIG_FILE_PATH = "/.idea/personalConfig.xml";
+    public static final String GIT_IGNORE_PATH = "/.idea/.gitignore";
 //Seafile
     public static final String SEAFILE_SERVER_URL = "http://regensburger-forscher.de:9999/upload/";
     //UI
@@ -48,10 +53,9 @@ public class Constants {
     public static final String PORT = "587";
     //Date
     public static final String DATE_FORMAT = "dd.MM.yyyy HH:mm";
-    //Config
-    public static final String CONFIG_FILE_PATH = "/.idea/personalConfig.xml";
+    public static final String SIMPLE_DATE_FORMAT = "dd/MM/yyyy";
     //Password
-    public static final int MINIMUM_PASSWORD_LENGTH = 8;
+    public static final int MINIMUM_PASSWORD_LENGTH = 5;
     //Threading
     public static final long THREAD_MILLISECONDS = 10000;
 }

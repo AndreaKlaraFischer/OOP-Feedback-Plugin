@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="gui.TutorialScreen">
-  <grid id="27dc6" binding="tutorialScreenContent" layout-manager="GridLayoutManager" row-count="23" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+  <grid id="27dc6" binding="tutorialScreenContent" layout-manager="GridLayoutManager" row-count="19" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
       <xy x="75" y="20" width="2485" height="1011"/>
@@ -14,30 +14,9 @@
       <color color="-8585156"/>
     </border>
     <children>
-      <component id="4cdf9" class="javax.swing.JButton" binding="testi" default-binding="true">
-        <constraints>
-          <grid row="22" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="2471" height="30"/>
-          </grid>
-        </constraints>
-        <properties>
-          <text value="Testbutton für registration menü"/>
-        </properties>
-      </component>
-      <component id="6b0e1" class="javax.swing.JLabel">
-        <constraints>
-          <grid row="16" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
-            <preferred-size width="2471" height="20"/>
-          </grid>
-        </constraints>
-        <properties>
-          <font size="16" style="1"/>
-          <text value="Was passiert mit meinen Daten?"/>
-        </properties>
-      </component>
       <component id="7e346" class="javax.swing.JLabel">
         <constraints>
-          <grid row="18" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+          <grid row="15" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="2471" height="20"/>
           </grid>
         </constraints>
@@ -48,7 +27,7 @@
       </component>
       <component id="11148" class="javax.swing.JLabel">
         <constraints>
-          <grid row="14" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+          <grid row="13" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="2471" height="20"/>
           </grid>
         </constraints>
@@ -59,7 +38,7 @@
       </component>
       <component id="32a29" class="javax.swing.JLabel">
         <constraints>
-          <grid row="12" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+          <grid row="11" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="2471" height="20"/>
           </grid>
         </constraints>
@@ -70,7 +49,7 @@
       </component>
       <component id="ce93e" class="javax.swing.JLabel">
         <constraints>
-          <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+          <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="2471" height="20"/>
           </grid>
         </constraints>
@@ -81,7 +60,7 @@
       </component>
       <component id="6d6a1" class="javax.swing.JLabel">
         <constraints>
-          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="2471" height="20"/>
           </grid>
         </constraints>
@@ -92,7 +71,7 @@
       </component>
       <component id="bfc45" class="javax.swing.JLabel">
         <constraints>
-          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="2471" height="20"/>
           </grid>
         </constraints>
@@ -103,7 +82,7 @@
       </component>
       <component id="6644a" class="javax.swing.JLabel">
         <constraints>
-          <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+          <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="2471" height="20"/>
           </grid>
         </constraints>
@@ -112,102 +91,93 @@
           <text value="Feedback für Feedback geben"/>
         </properties>
       </component>
-      <component id="6219c" class="javax.swing.JTextPane" binding="dieAntwortenBefindenSichTextPane" default-binding="true">
+      <component id="d956f" class="javax.swing.JTextPane" binding="changeNameTextPane" default-binding="true">
         <constraints>
-          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <preferred-size width="2471" height="50"/>
           </grid>
         </constraints>
         <properties>
-          <text value="Die Antworten befinden sich unter dem Reiter &quot;Antworten&quot;. Dort befindet sich eine Anzeige, wie viele Anfragen noch unbeantwortet sind.&#10;Sobald eine Anfrage beantwortet wurde, kommt eine Meldung, dass eine neue Antwort da ist. Alle Antworten werden in einer Tabelle angezeigt, jede Zeile repräsentiert eine Antwort. Bei Doppelklick auf die gewünschte Zeile erscheint die Detailansicht zu der Antwort.&#10;"/>
-        </properties>
-      </component>
-      <component id="d956f" class="javax.swing.JTextPane" binding="namenUndEmailadresseKönnenTextPane" default-binding="true">
-        <constraints>
-          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
-            <preferred-size width="2471" height="50"/>
-          </grid>
-        </constraints>
-        <properties>
+          <editable value="false"/>
           <text value="Namen und Emailadresse können im Reiter &quot;Einstellungen&quot; geändert werden.&#10;&#10;Eine Emailadresse muss angegeben werden, damit die Antwort des Tutoren als Sicherung noch über Mail verschickt wird. Die Mail wird vom Programm automatisch geschickt und die Tutoren sehen somit die Adresse nicht."/>
         </properties>
       </component>
-      <component id="2cce" class="javax.swing.JTextPane" binding="dieStudienleistungKannAuchTextPane" default-binding="true">
+      <component id="2cce" class="javax.swing.JTextPane" binding="withoutLoginTextPane" default-binding="true">
         <constraints>
-          <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <preferred-size width="2471" height="50"/>
           </grid>
         </constraints>
         <properties>
+          <editable value="false"/>
           <text value="Die Studienleistung kann auch bearbeitet werden, ohne sich einzuloggen (das Loginfenster kann weggeklickt werden mit dem X). Öffnet man das Projekt, ohne sich einzuloggen, ist das Plugin nicht benutzbar - es gibt lediglich zwei Tabs. Man kann sich jederzeit nachträglich einloggen und hat wieder Zugriff auf seine Antworten und kann Anfragen schicken. Dieser Reiter (&quot;Tutorial&quot;) kann jederzeit gelesen werden."/>
           <toolTipText value="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."/>
         </properties>
       </component>
-      <component id="eed45" class="javax.swing.JTextPane" binding="nachdemDuEineAntwortTextPane" default-binding="true">
+      <component id="eed45" class="javax.swing.JTextPane" binding="feedbackForFeedbackTextPane" default-binding="true">
         <constraints>
-          <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+          <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <preferred-size width="2471" height="50"/>
           </grid>
         </constraints>
         <properties>
+          <editable value="false"/>
+          <enabled value="true"/>
           <text value="Nachdem du eine Antwort erhalten hast, kannst du dem Tutorenteam mitteilen, wie hilfreich diese Antwort war und ob das Problem erfolgreich gelöst wurde. Es gibt drei Buttons, um auszuwählen, wie hilfreich es war. Dazu besteht die Möglichkeit, noch einen Freitext zu schreiben. Mit dem Button &quot;Feedback abschicken&quot; wird das Feedback abgeschickt an die Tutoren. Um zu sagen, dass das Problem erfolgreich gelöst wurde, einfach den Haken bei der Checkbox setzen.&#10;"/>
         </properties>
       </component>
-      <component id="3db96" class="javax.swing.JTextPane" binding="screenshotsKannManEntwederTextPane" default-binding="true">
+      <component id="3db96" class="javax.swing.JTextPane" binding="screenshotTextPane" default-binding="true">
         <constraints>
-          <grid row="11" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+          <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <preferred-size width="2471" height="50"/>
           </grid>
         </constraints>
         <properties>
+          <editable value="false"/>
           <text value="Screenshots kann man entweder erstellen, indem man die &quot;Druck&quot;-Taste betätigt und dann in einem Grafikprogramm seiner Wahl einfügt oder mit einem Programm, wie beispielsweise &quot;Snipping Tool&quot;."/>
         </properties>
       </component>
-      <component id="bbd91" class="javax.swing.JTextPane" binding="möchtestDuAnonymFragenTextPane" default-binding="true">
+      <component id="bbd91" class="javax.swing.JTextPane" binding="anonymousQuestionsTextPane" default-binding="true">
         <constraints>
-          <grid row="13" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+          <grid row="12" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <preferred-size width="2471" height="50"/>
           </grid>
         </constraints>
         <properties>
+          <editable value="false"/>
           <text value=" Möchtest du Anonym fragen stellen, kannst du dir über den Button den Namen erstellen lassen oder du wählst selbst einen beliebigen."/>
         </properties>
       </component>
-      <component id="67013" class="javax.swing.JTextPane" binding="umDieStellenImTextPane" default-binding="true">
+      <component id="67013" class="javax.swing.JTextPane" binding="bookmarksTextPane" default-binding="true">
         <constraints>
-          <grid row="15" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+          <grid row="14" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <preferred-size width="2471" height="50"/>
           </grid>
         </constraints>
         <properties>
+          <editable value="false"/>
           <text value="Um die Stellen im Code zu markieren, die Probleme verursachen, klicke in die jeweilige Zeile und drücke entweder &quot;F11&quot;, um sogenannte anonyme Bookmarks zu setzen oder Strg + &quot;F11&quot;, um die Bookmarks mit Ziffern oder Buchstaben zu nummerieren.&#10;&#10;Bookmarks löschen: Bookmarks reagieren nicht auf Mausklicks, um sie zu entfernen, nochmal F11 drücken!"/>
         </properties>
       </component>
-      <component id="c02f9" class="javax.swing.JTextPane" binding="textPane6" default-binding="true">
+      <component id="1c40d" class="javax.swing.JTextPane" binding="multipleDeviceTextPane" default-binding="true">
         <constraints>
-          <grid row="17" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
-            <preferred-size width="2471" height="50"/>
-          </grid>
-        </constraints>
-        <properties/>
-      </component>
-      <component id="1c40d" class="javax.swing.JTextPane" binding="dasPluginKannAuchTextPane" default-binding="true">
-        <constraints>
-          <grid row="19" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+          <grid row="16" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <preferred-size width="2471" height="50"/>
           </grid>
         </constraints>
         <properties>
+          <editable value="false"/>
           <text value="Das Plugin kann auch auf verschiedenen Geräten verwendet werden durch die Loginfunktion."/>
         </properties>
       </component>
-      <component id="5bd65" class="javax.swing.JTextPane" binding="umEineAnfrageZuTextPane" default-binding="true">
+      <component id="5bd65" class="javax.swing.JTextPane" binding="sendRequestTextPane">
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <preferred-size width="2471" height="20"/>
           </grid>
         </constraints>
         <properties>
+          <editable value="false"/>
           <text value="Um eine Anfrage zu stellen, muss ein Name und eine gültige E-Mailadresse angegeben werden. &#10;Die Anfragen können im Tab &quot;Tutor fragen&quot; gestellt werden. Das Problem beschreiben und dann - um sie abzuschicken - auf den Button rechts unten klicken. Wurde die Anfrage erfolgreich abgeschickt, erscheint eine Meldung."/>
         </properties>
       </component>
@@ -235,20 +205,21 @@
       </component>
       <component id="c2a60" class="javax.swing.JLabel">
         <constraints>
-          <grid row="20" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="17" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <font size="16" style="1"/>
           <text value="Was mache ich, wenn ich mein Passwort vergessen habe?"/>
         </properties>
       </component>
-      <component id="a6ba4" class="javax.swing.JTextPane" binding="sollteDasPasswortVergessenTextPane" default-binding="true">
+      <component id="a6ba4" class="javax.swing.JTextPane" binding="forgotPasswordTextPane" default-binding="true">
         <constraints>
-          <grid row="21" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+          <grid row="18" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="50"/>
           </grid>
         </constraints>
         <properties>
+          <editable value="false"/>
           <text value="Sollte das Passwort vergessen werden, wende dich bitte an die Testleiterin Andrea Fischer, um ein neues Passwort zugewiesen zu bekommen."/>
         </properties>
       </component>

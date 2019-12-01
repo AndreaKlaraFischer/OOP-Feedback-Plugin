@@ -1,4 +1,4 @@
-package fileReaders;
+package fileHandler;
 
 import com.intellij.openapi.project.Project;
 import controller.Controller;

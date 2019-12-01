@@ -10,11 +10,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class ScreenshotModel {
 
     private File[] screenshots;
-    private File screenshotFolder;
+    public File screenshotFolder;
     public Controller controller;
     private String allImagesString;
     private boolean screenshotAttached;
@@ -25,7 +26,7 @@ public class ScreenshotModel {
         screenshotTitles = new ArrayList<>();
     }
 
-    public void chooseFiles() {
+    public File[] chooseFiles() {
         try {
             //https://www.mkyong.com/swing/java-swing-jfilechooser-example/
             //Damit der FileChooser so aussieht wie im jeweiligen Betriebssystem und nicht wie der von IntelliJ
@@ -51,12 +52,13 @@ public class ScreenshotModel {
                 screenshotAttached = true;
                 addScreenshotTitlesToLabel();
                 addScreenshotsToBranch();
-                addScreenshotsToIssue(screenshots);
+                controller.sendRequestScreen.showScreenshotAttachedInfo();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        controller.sendRequestScreen.showScreenshotAttachedInfo();
+
+        return screenshots;
     }
 
     private void addScreenshotTitlesToLabel() {
@@ -68,47 +70,13 @@ public class ScreenshotModel {
         return screenshotAttached;
     }
 
-    //Hier das Bild zusammenwurschteln und das dann dem Issue mitgeben! --> Im Controller!
-    private String addScreenshotsToIssue(File[] screenshots) {
-        String imageUrl = ""; // Das wird spannend
-        String image;
-        if (screenshots.length > 0) {
-            for (File screenshot : screenshots) {
-                String fileName = screenshot.getName();
-                String imageName = fileName.substring(0, fileName.lastIndexOf('.'));
-                System.out.println("Imagename: " + imageName);
-                //TODO: ?
-                String linkToImage = createImageUrl();
-                System.out.println(linkToImage);
-                //String fileExtension = fileName.substring(fileName.lastIndexOf('.'));
-                // System.out.println("Endung: " + fileExtension);
-                //https://github.com/OOP-Feedback-Test/OOP-Feedback/blob/branch-zdt-2-2810-2107/screenshots/testBild.jpg
-                //imageUrl = "https://user-images.githubusercontent.com/" + linkToImage + fileName;
-                imageUrl = "https://raw.githubusercontent.com/" + linkToImage + fileName;
-                image = "![" + imageName + "]" + "(" + imageUrl + ")" + "\n";
-                allImagesString += image;
-            }
-        }
-        System.out.println(allImagesString);
-        return allImagesString;
-    }
-
-    public String createImageUrl() {
-        return "OOP-Feedback-Test/OOP-Feedback/blob/" + controller.getBranchName() + "/screenshots/";
-    }
-
-    public String getAllImagesString() {
-        return allImagesString;
-    }
 
     private void addScreenshotsToBranch() {
-        //TODO: Warum Umweg über das gitmodel?- Refactor
         String projectPath = controller.project.getBasePath();
         screenshotFolder = new File(projectPath + Constants.SCREENSHOT_FOLDER);
         screenshotFolder.mkdir();
 
         for (File file : screenshots) {
-            System.out.println(controller.gitModel.projectPath + Constants.SCREENSHOT_FOLDER + "/" + file.getName());
             File screenshot = new File(projectPath + Constants.SCREENSHOT_FOLDER + "/" + file.getName());
             try {
                 FileUtils.copyFile(file, screenshot);
@@ -119,12 +87,13 @@ public class ScreenshotModel {
     }
 
     public void clearScreenshotFolder() {
-       // if (screenshots.length == 0) {
+        //if(Objects.requireNonNull(screenshotFolder.listFiles()).length != 0) {
             try {
                 FileUtils.cleanDirectory(screenshotFolder);
             } catch (Exception e) {
                 System.out.println("Ordner löschen " + e.toString());
             }
-       // }
+            // }
+        //} TODO: NPE - Fixen?
     }
 }

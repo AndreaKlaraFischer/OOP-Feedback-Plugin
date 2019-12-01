@@ -10,7 +10,6 @@ public class BranchNameCreator {
 
     public BranchNameCreator(Controller controller) {
         this.controller = controller;
-        counter = 0;
         controller.XMLFileReader.modifyCounter(counter);
         controller.XMLFileReader.readCounterValueFromXML();
         counter = controller.XMLFileReader.readCounterValueFromXML();

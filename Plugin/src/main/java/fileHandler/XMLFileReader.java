@@ -1,10 +1,8 @@
-package fileReaders;
+package fileHandler;
 
-import android.util.BinaryLogEntry;
 import com.intellij.openapi.project.Project;
 import config.Constants;
 import controller.Controller;
-import gherkin.lexer.El;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

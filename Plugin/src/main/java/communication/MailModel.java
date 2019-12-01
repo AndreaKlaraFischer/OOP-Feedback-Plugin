@@ -1,9 +1,7 @@
 package communication;
 
-import android.os.SystemPropertiesProto;
 import config.Constants;
 import controller.Controller;
-
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -61,7 +59,6 @@ public class MailModel {
         };
     }
 
-    //TODO: rausfinden, ob ich direkten Link zum Issue einfügen kann in den body!
     private static void sendEmail(Session session, String fromMail, String toEmail, String subject, String body) {
         try {
             MimeMessage message = new MimeMessage(session);
