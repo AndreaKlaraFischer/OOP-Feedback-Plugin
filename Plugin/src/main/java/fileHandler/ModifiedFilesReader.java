@@ -1,15 +1,9 @@
-package fileReaders;
+package fileHandler;
 
-import android.os.SystemPropertiesProto;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
 import com.intellij.openapi.project.Project;
-import config.Constants;
 import controller.Controller;
 import org.apache.commons.io.FileUtils;
-import org.eclipse.jgit.api.errors.GitAPIException;
 
-import javax.swing.text.BadLocationException;
 import java.io.*;
 import java.util.*;
 
@@ -30,12 +24,8 @@ public class ModifiedFilesReader {
         project = controller.project;
     }
 
-    //30.11. Test
-    public void printTestLists(String branchName) throws IOException {
-        //30.11. Test
+    public void saveFilesInHashMaps(String branchName) throws IOException {
         srcFolderPathLocalRepo = project.getBasePath() + "/src";
-        //30.11. hardgecodet aus Testzwecken
-        //branchName = "Branch-Andi-1-3011-1754";
         srcFolderPathClonedRepo = project.getBasePath() + "/.idea/tutor_comments/" + branchName + "/src";
         System.out.println("srcFolderPathClonedRepo: " + srcFolderPathClonedRepo);
 

@@ -1,7 +1,9 @@
 package gui;
 
+import com.intellij.ui.TabbedPane;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.components.JBTabbedPane;
+import com.intellij.uiDesigner.core.GridLayoutManager;
 import controller.Controller;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
@@ -25,20 +27,27 @@ public class AnnotatedCodeWindow extends JFrame {
     }
 
     // https://www.tutorialspoint.com/swingexamples/example_of_tabbed_pane.htm
+    //30.11. auskommentiert zu Testzwecken --> Erstmal nur Tab anzeigen
     public void createWindow(List<File> modifiedFiles) throws BadLocationException, GitAPIException, IOException {
+    //public void createWindow() throws BadLocationException, GitAPIException, IOException {
         JFrame codeFrame = new JFrame("Annotierter Code");
+        //30.11.
         createUI(codeFrame, modifiedFiles);
+        //createUI(codeFrame);
         codeFrame.setSize(560, 600);
         codeFrame.setLocationRelativeTo(null);
         codeFrame.setVisible(true);
     }
 
     //TODO: Das muss noch ausgelagert werden, oder? Am besten nicht in der View.
-    private void createUI(JFrame codeFrame, List<File> modifiedFiles) throws BadLocationException, GitAPIException, IOException {
+     private void createUI(JFrame codeFrame, List<File> modifiedFiles) throws BadLocationException, GitAPIException, IOException {
+    //private void createUI(JFrame codeFrame) throws BadLocationException, GitAPIException, IOException {
         JBTabbedPane tabbedPane = new JBTabbedPane();
-        for (File modifiedFile : modifiedFiles) {
+
+       for (File modifiedFile : modifiedFiles) {
             createTab(tabbedPane, modifiedFile.getName(), controller.modifiedFilesReader.readCode(modifiedFile.getAbsolutePath()));
         }
+        //createTab(tabbedPane, "Testtitel", "Testbody");
         codeFrame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
     }
 
