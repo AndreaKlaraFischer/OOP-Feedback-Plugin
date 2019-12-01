@@ -29,7 +29,7 @@ public class XMLFileReader {
         docString = doc.toString();
     }
 
-    public void modifyXMLTokenAndPassword(String password) throws IOException {
+    public void modifyPassword(String password) throws IOException {
         for (Element e : doc.getElementsByTag("password")) {
             if (e.text().length() == 0) {
                 e.appendText(password);
