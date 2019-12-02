@@ -30,7 +30,8 @@ public class ScreenshotModel {
         try {
             //https://www.mkyong.com/swing/java-swing-jfilechooser-example/
             //Damit der FileChooser so aussieht wie im jeweiligen Betriebssystem und nicht wie der von IntelliJ
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+           // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            //UIManager.addAuxiliaryLookAndFeel(UIManager.getLookAndFeel());
             JFileChooser screenshotUploader = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
 
             screenshotUploader.setDialogTitle("Screenshots auswählen");
@@ -57,12 +58,12 @@ public class ScreenshotModel {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return screenshots;
     }
 
+    //TODO: Refactoren
     private void addScreenshotTitlesToLabel() {
-        controller.sendRequestScreen.attachedScreenshotsLabel.setText(String.valueOf(controller.screenshotModel.screenshotTitles));
+        controller.sendRequestScreen.attachedScreenshotsLabel.setText("Hochzuladende Screenshots: " + String.valueOf(controller.screenshotModel.screenshotTitles));
         controller.sendRequestScreen.attachedScreenshotsLabel.setVisible(true);
     }
 
