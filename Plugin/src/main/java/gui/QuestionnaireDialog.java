@@ -1,10 +1,12 @@
 package gui;
 
+import config.Constants;
 import controller.Controller;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 
 public class QuestionnaireDialog implements ActionListener {
     private JPanel contentPane;
@@ -30,6 +32,8 @@ public class QuestionnaireDialog implements ActionListener {
     public void hideQuestionnaireDialog() {
         questionnaireDialog.dispose();
     }
+
+
 
     @Override
     public void actionPerformed(ActionEvent e) {

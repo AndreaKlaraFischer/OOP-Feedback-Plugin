@@ -33,11 +33,16 @@ public class AnswerDetailScreen  implements ActionListener {
 
     private JPanel answerDetailPanel;
     public JTextField detailedAnswerField;
+    //27.11.
+    public JTextField previousRequestMessageField;
+    //
     public JLabel answerTitleLabel;
     public JTextArea feedbackInputField;
     private JButton sendFeedbackButton;
     private JCheckBox solvedCheckbox;
-    private JTextPane textPane1;
+    private JTextPane dasSollteInKursivTextPane;
+    private JTextPane textPane2;
+    private JButton button1;
 
     public int selectedHelpfulness;
     public String taskSuccessfullySolved;
@@ -59,6 +64,9 @@ public class AnswerDetailScreen  implements ActionListener {
         GridLayout testLayout = new GridLayout(3,2);
         detailedAnswerField = new JTextField();
         detailedAnswerField.setEditable(false);
+        //27.11.
+        previousRequestMessageField = new JTextField();
+        previousRequestMessageField.setEditable(false);
 
         answerTitleLabel = new JLabel();
 
@@ -67,7 +75,8 @@ public class AnswerDetailScreen  implements ActionListener {
         JButton openCodeButton = new JButton();
         openCodeButton.setText("zum Code");
         openCodeButton.addActionListener(this);
-        openCodeButton.setVisible(false);
+        //27.11. zu testzwecken ein
+        openCodeButton.setVisible(true);
         sendFeedbackButton.addActionListener(this);
         JButton backButton = new JButton();
         //backButton.setText("Zurück zur Übersicht");
@@ -84,8 +93,10 @@ public class AnswerDetailScreen  implements ActionListener {
         answerDetailPanel = new JPanel();
         answerDetailPanel.setLayout(testLayout);
         answerDetailPanel.setSize(500,600);
-
+        //27.11.
+        answerDetailPanel.add(previousRequestMessageField);
         answerDetailPanel.add(detailedAnswerField);
+
         answerDetailPanel.add(openCodeButton);
         answerDetailPanel.add(answerTitleLabel);
         //answerDetailPanel.add(backButton);
@@ -101,6 +112,7 @@ public class AnswerDetailScreen  implements ActionListener {
         //TODO: Wenn Anfragen abgeschickt wurden und noch nicht beantwortet sind, dann anzeigen! Liste mit offenen Anfragen (Visability of system state) --> Ganzes Feature, nicht unterschätzen
         answerDetailScrollPane = new JBScrollPane(answerDetailPanel);
     }
+
 
     public void createImageFromAttachedImageFile(List<String> imageUrls) {
         try {
@@ -136,37 +148,32 @@ public class AnswerDetailScreen  implements ActionListener {
         JFrame f = new JFrame("Image pane");
         f.setSize(img.getWidth() / 2, img.getHeight() / 2);
         Image scaledImg = img.getScaledInstance(img.getWidth() / 2, img.getHeight() / 2, Image.SCALE_SMOOTH);
-        JBScrollPane scrolli = new JBScrollPane(new ImagePanel(scaledImg));
+        JBScrollPane imageScollPane = new JBScrollPane(new ImagePanel(scaledImg));
         //f.setContentPane(scrolli);
-        f.getContentPane().add(scrolli);
+        f.getContentPane().add(imageScollPane);
         //f.pack();
         f.setVisible(true);
     }
 
-    //TODO: Hier dann das Fenster öffnen, was aktuell noch im Tutorialscreen aufgerufen wird
 
-    //TODO: Das geht nicht! Das funktioniert nicht mit dem TutorialScreen
     //TODO: Wenn keine Änderungen im Code vom Tutor vorgenommen wurden, soll der Button gar nicht erst sichtbar sein
     //--> Sorgt sonst nur für Verwirrung
     //10.11. Ausgabe wird aufgerufen, aber der Button wird nicht manipuliert. Vielleicht sollte ich das umgekehrt machen
     //--> Standardmäßig nicht zeigen, aber wenn Änderungen da sind, enablen
+
     public void activateOpenCodeButton() throws GitAPIException, IOException, BadLocationException {
-        if(controller.getDiffEntries().size() > 0) {
+        System.out.println("controller hasChanges, sollte false sein: " + controller.hasChanges);
+        if(controller.getModifiedFiles().size() > 0) {
             controller.hasChanges = true;
-        }
-        System.out.println(controller.hasChanges);
-        if(controller.hasChanges) {
+            System.out.println("controller hasChanges, sollte true sein: " + controller.hasChanges);
             openCodeButton.setVisible(true);
             openCodeButton.setEnabled(true);
-        } /*else {
-            System.out.println("keine Änderungen!");
-            openCodeButton.setVisible(false);
-            openCodeButton.setEnabled(false);
-        }*/
+        }
     }
 
     private void backToTable(ActionEvent e) {
-        mailBoxScreen.navigateBackToTable();
+        System.out.println("30.11. auskommentiert wegen UI");
+       // mailBoxScreen.navigateBackToTable();
     }
 
     private Object getClickedButton(ActionEvent e) {
@@ -183,7 +190,7 @@ public class AnswerDetailScreen  implements ActionListener {
         } else if (clickedButton == notHelpfulButton) {
             selectedHelpfulness = 2;
         } else if (clickedButton == sendFeedbackButton) {
-            controller.sendFeedbackForFeedback();
+            controller.sendFeedbackForFeedback(selectedHelpfulness);
         } else if(clickedButton == solvedCheckbox) {
             taskSuccessfullySolved = Constants.PROBLEM_SOLVED_SUCCESSFULLY;
             controller.sendProblemSolved();

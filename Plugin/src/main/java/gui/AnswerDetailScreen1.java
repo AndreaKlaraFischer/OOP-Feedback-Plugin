@@ -28,8 +28,6 @@ public class AnswerDetailScreen1 implements ActionListener {
     public JTextPane tutorAnswerField;
     public JLabel detailAnswerTitleLabel;
     private JLabel feedbackForFeedbackLabel;
-    private JLabel selectFeedbackIntroductionLabel;
-    private JLabel introductionFeedbackTextLabel;
     private JButton openCodeButton;
     private JButton helpfulFeedbackButton;
     private JButton neutralFeedbackButton;
@@ -39,16 +37,31 @@ public class AnswerDetailScreen1 implements ActionListener {
     public JTextArea feedbackTextField;
     public JTextArea tutorAnswerTextArea;
     public JTextArea previousMessageTextArea;
+    public JPanel screenshotPanel;
+    private JPanel Container;
+    private JPanel SmilieContainer;
+    private JPanel AnswerContainer;
+    private JBScrollPane RequestsPane;
+    private JBScrollPane AnswerPane;
+    private JPanel FeedbackPane;
+    private JTextPane feedbackTextPane1;
+    private JTextPane feedbackTextPane2;
+    private BalloonPopup balloonPopup;
+
 
     public int selectedHelpfulness;
 
-    private JFrame highResolutionFrame;
+    public JFrame highResolutionFrame;
     //17.11.
     public ArrayList<JButton> imageButtonList;
 
     public AnswerDetailScreen1(Controller controller) {
         this.controller = controller;
         controller.answerDetailScreen1 = this;
+        balloonPopup = new BalloonPopup();
+        //30.11. Versuch, zu retten
+        imageButtonList = new ArrayList<>();
+        //
         backToTableButton.addActionListener(this);
         openCodeButton.addActionListener(this);
         helpfulFeedbackButton.addActionListener(this);
@@ -87,10 +100,17 @@ public class AnswerDetailScreen1 implements ActionListener {
             controller.logData("Nicht hilfreiche Button ausgewählt");
             selectedHelpfulness = 3;
         } else if(clickedButton == sendFeedbackButton) {
+            //01.12. Test, ob ich so beide Buttons verknüpfen kann
+            //TODO: NPE beheben!
+            if(solvedProblemCheckbox.isSelected()) {
+                controller.sendProblemSolved();
+            }
             controller.logData("Feedback abgeschickt");
             controller.sendFeedbackForFeedback(selectedHelpfulness);
+            controller.sendProblemSolved();
         }
     }
+
 
     public void createFeedbackText() {
         String prefix = Constants.GITHUB_BOLD_AND_ITALIC + Constants.FEEDBACK_FOR_FEEDBACK + Constants.GITHUB_BOLD_AND_ITALIC;
@@ -106,11 +126,13 @@ public class AnswerDetailScreen1 implements ActionListener {
         balloonPopup.createBalloonPopup(answerDetailScreenContent, Balloon.Position.above, "Feedback zum Feedback wurde abgeschickt", MessageType.INFO);
     }
 
+
+
     public void activateOpenCodeButton() throws GitAPIException, IOException, BadLocationException {
         System.out.println("controller hasChanges, sollte false sein: " + controller.hasChanges);
         if(controller.getModifiedFiles().size() > 0) {
             //TODO: Das woanders noch machen!
-            controller.hasChanges = true;
+            //controller.hasChanges = true;
             System.out.println("controller hasChanges, sollte true sein: " + controller.hasChanges);
             openCodeButton.setVisible(true);
             openCodeButton.setEnabled(true);
@@ -125,7 +147,7 @@ public class AnswerDetailScreen1 implements ActionListener {
                 ImageIcon icon = new ImageIcon(img);
                 //Bild transformieren
                 Image image = icon.getImage();
-                Image scaledImage = image.getScaledInstance(120, 120, Image.SCALE_SMOOTH);
+                Image scaledImage = image.getScaledInstance(80 , 80, Image.SCALE_SMOOTH);
                 icon = new ImageIcon(scaledImage);
                 //Bild dem Button hinzufügen
                 JButton imageButton = new JButton(icon);
@@ -135,8 +157,11 @@ public class AnswerDetailScreen1 implements ActionListener {
                     openImageHighResolution(img);
                     controller.logData("Screenshot geöffnet");
                 });
-                answerDetailScreenContent.add(imageButton);
-                //answerDetailPanel.add(imageButton);
+                //answerDetailScreenContent.add(imageButton);
+                System.out.println("screenshotPaneL vor neu erstellen: " + screenshotPanel);
+                System.out.println("imagebutton vor neu erstellen: " + imageButton);
+                screenshotPanel.add(imageButton);
+                System.out.println("screenshotPanel nach neu erstellem: " + screenshotPanel);
 
                 //Versuch
                 //addImageToFrame(image);
@@ -157,5 +182,9 @@ public class AnswerDetailScreen1 implements ActionListener {
         f.getContentPane().add(imageSrcollPane);
         //f.pack();
         f.setVisible(true);
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
     }
 }

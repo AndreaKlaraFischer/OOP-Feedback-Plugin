@@ -15,6 +15,7 @@ public class AssistanceScreen {
     private JLabel subtitleXY;
     private JTextPane loremIpsumDolorSitTextPane1;
     private JTextPane loremIpsumDolorSitTextPane2;
+    private JPanel container;
 
     public AssistanceScreen(Controller controller) {
         this.controller = controller;

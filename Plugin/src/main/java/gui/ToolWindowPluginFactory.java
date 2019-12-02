@@ -18,6 +18,7 @@ import javax.swing.text.BadLocationException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.IOException;
+import java.text.ParseException;
 
 public class ToolWindowPluginFactory implements ToolWindowFactory {
     // Tool window content gets created
@@ -53,7 +54,12 @@ public class ToolWindowPluginFactory implements ToolWindowFactory {
         //MailBoxScreen mailBoxScreen = null;
         //mailBoxScreen = new MailBoxScreen(controller, toolWindow);
         MailBoxScreen mailBoxScreen = new MailBoxScreen(controller);
-        SettingScreen settingScreen = new SettingScreen(controller);
+        SettingScreen settingScreen = null;
+        try {
+            settingScreen = new SettingScreen(controller);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         AssistanceScreen assistanceScreen = new AssistanceScreen(controller);
         LoginScreen loginScreen = new LoginScreen(controller);
         //30.11.

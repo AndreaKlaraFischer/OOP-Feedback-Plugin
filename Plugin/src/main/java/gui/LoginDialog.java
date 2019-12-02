@@ -1,6 +1,6 @@
 package gui;
 
-import android.util.Log;
+
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.openapi.ui.popup.Balloon;
 import controller.Controller;
@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.text.ParseException;
 
 public class LoginDialog implements ActionListener {
     private JDialog loginDialog;
@@ -41,6 +42,10 @@ public class LoginDialog implements ActionListener {
         balloonPopup.createBalloonPopup(contentPane, Balloon.Position.above, "Passwort ist falsch! Probiere es nochmal.", MessageType.ERROR);
     }
 
+    public void showEmptyPasswordError() {
+        balloonPopup.createBalloonPopup(contentPane, Balloon.Position.above, "Bitte ein Passwort eingeben!", MessageType.ERROR);
+    }
+
     public void hideLoginMenu() {
         loginDialog.dispose();
     }
@@ -49,7 +54,7 @@ public class LoginDialog implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         try {
             controller.onLoginButtonPressed();
-        } catch (IOException ex) {
+        } catch (IOException | ParseException ex) {
             ex.printStackTrace();
         }
     }

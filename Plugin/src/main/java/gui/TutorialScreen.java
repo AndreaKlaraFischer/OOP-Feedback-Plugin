@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class TutorialScreen {
+    //TODO: Scrollable!
     private JPanel tutorialScreenContent;
     private JTextPane sendRequestTextPane;
     private JTextPane findAnswersTextPane;
@@ -20,9 +21,10 @@ public class TutorialScreen {
     private JTextPane feedbackForFeedbackTextPane;
     private JTextPane screenshotTextPane;
     private JTextPane anonymousQuestionsTextPane;
-    private JTextPane bookmarksTextPane;
     private JTextPane multipleDeviceTextPane;
     private JTextPane forgotPasswordTextPane;
+    private JTextPane findAnswerTextPane;
+    private JPanel Container;
 
 
     public TutorialScreen()  {

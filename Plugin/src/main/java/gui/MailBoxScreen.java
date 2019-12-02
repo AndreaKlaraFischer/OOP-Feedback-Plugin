@@ -110,14 +110,16 @@ public class MailBoxScreen {
 
     public void showAnswerDetailContent(Answer answer) {
         System.out.println("showDetailContent");
+        //TODO:
         controller.answerDetailScreen1.detailAnswerTitleLabel.setText(Constants.ANSWER_TITLE_BEGINNING + answer.getTutorName());
         controller.answerDetailScreen1.previousMessageTextArea.setText(controller.getRequestMessage());
         controller.answerDetailScreen1.tutorAnswerTextArea.setText(answer.getAnswerMessage());
 
         //TODO!!!
-        /*if(controller.answerDetailScreen1.imageButtonList.size() == 0) {
+        if(controller.answerDetailScreen1.imageButtonList.size() == 0) {
             controller.answerDetailScreen1.createImageFromAttachedImageFile(answer.getImageUrls());
-        }*/
+            controller.answerDetailScreen1.screenshotPanel.setVisible(true);
+        }
 
     }
 

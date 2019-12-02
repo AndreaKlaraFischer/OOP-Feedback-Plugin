@@ -15,11 +15,15 @@ public class SendRequestScreen implements ActionListener{
     private JButton submitRequestButton;
     private JPanel sendRequestScreenContent;
     public JComboBox selectCategory;
+    //TODO: Maximalwidth!
     public JTextArea inputMessageArea;
     private JButton selectFileButton;
     private JLabel bookmarkHyperlink;
     private JLabel screenshotHyperlink;
     public JLabel attachedScreenshotsLabel;
+    private JPanel container;
+    private JPanel introductionPanel;
+    private JPanel sendRequestPanel;
     public Controller controller;
     private BalloonPopup balloonPopup;
 
@@ -64,31 +68,7 @@ public class SendRequestScreen implements ActionListener{
 
             }
         });
-        bookmarkHyperlink.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-               toolWindow.getContentManager().setSelectedContent(toolWindow.getContentManager().getContent(tutorialScreen.getContent()));
-            }
 
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
-        });
     }
 
     public JPanel getContent() {

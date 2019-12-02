@@ -8,6 +8,7 @@
     <properties/>
     <border type="line" title="Antworten">
       <font name="Monospaced" size="18" style="1"/>
+      <title-color color="-4473925"/>
       <color color="-8585156"/>
     </border>
     <children>

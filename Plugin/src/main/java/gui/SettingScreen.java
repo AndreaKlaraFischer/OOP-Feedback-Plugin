@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.text.ParseException;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
@@ -23,16 +24,24 @@ public class SettingScreen implements ActionListener {
     private JButton saveSettingsButton;
     public JTextField inputMailAddressField;
     private JTextPane gibHierBitteEineTextPane;
+    private JButton toQuestionnaireButton;
+    private JPanel toQuestionnairePanel;
+    private JPanel Container;
+    private JPanel nameInputPanel;
+    private JPanel mailInputPanel;
+    private JPanel settingPanel;
     public static String studentNameInput;
     private Controller controller;
     private BalloonPopup balloonPopup;
 
-    public SettingScreen(Controller controller) {
+    public SettingScreen(Controller controller) throws ParseException {
         controller.settingScreen = this;
         this.controller = controller;
         studentNameInput = inputNameField.getText(); //Brauche ich das überhaupt noch?
         generateAnonymousNameButton.addActionListener(this);
         saveSettingsButton.addActionListener(this);
+        toQuestionnaireButton.addActionListener(this);
+
         balloonPopup = new BalloonPopup();
         inputNameField.setText(controller.getStudentNameInXML());
         inputMailAddressField.setText(controller.getStudentMailInXML());
@@ -40,6 +49,14 @@ public class SettingScreen implements ActionListener {
         if(controller.isNewRegistered) {
             showWelcomeInfo();
         }
+        updateToQuestionnaireButton();
+    }
+
+    public void updateToQuestionnaireButton() throws ParseException {
+        if(controller.questionnaireTimeCalculator.calculateQuestionnaireDelta()) {
+           toQuestionnairePanel.setVisible(true);
+        }
+
     }
 
 
@@ -73,6 +90,9 @@ public class SettingScreen implements ActionListener {
                     showInvalidMailError();
                 }
             }
+        } else if(clickedButton == toQuestionnaireButton) {
+            controller.onSubmitQuestionnaireButtonPressed();
+            toQuestionnairePanel.setVisible(false);
         }
     }
     public void showWelcomeInfo() {
@@ -94,5 +114,6 @@ public class SettingScreen implements ActionListener {
     private void showNoNameError() {
         balloonPopup.createBalloonPopup(settingScreenContent, Balloon.Position.above, "Bitte einen Namen eingeben!.", MessageType.ERROR);
     }
+
 
 }

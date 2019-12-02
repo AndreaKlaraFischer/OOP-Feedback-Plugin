@@ -1,12 +1,14 @@
 package gui;
 
-import android.util.Log;
+
 import controller.Controller;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 
 public class LoginScreen implements ActionListener {
 
@@ -31,7 +33,15 @@ public class LoginScreen implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         controller.showWelcomeMenu();
-        controller.updateToolWindow();
+        //TODO: Das muss woanders stehen!
+        try {
+            if(controller.onLoginButtonPressed()) {
+                controller.updateToolWindow();
+            }
+        } catch (IOException | ParseException ex) {
+            ex.printStackTrace();
+        }
+        //controller.updateToolWindow();
         //30.11. auskommentiert UI
        // controller.mailBoxScreen.refreshTable();
         //showWelcomeBackInfo();
