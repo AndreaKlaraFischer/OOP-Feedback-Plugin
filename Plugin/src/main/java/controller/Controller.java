@@ -14,6 +14,7 @@ import answers.AnswerList;
 import com.intellij.openapi.project.Project;
 import config.Constants;
 import gui.*;
+import login.QuestionnaireTimeCalculator;
 import login.XMLFileCreator;
 import fileHandler.XMLFileReader;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -38,6 +39,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
@@ -64,7 +66,8 @@ public class Controller {
     public MailModel mailModel;
     public LoginManager loginManager;
     //28.11.
-    private QuestionnaireDialog questionnaireDialog;
+    public QuestionnaireDialog questionnaireDialog;
+    public QuestionnaireTimeCalculator questionnaireTimeCalculator;
     //29.11.
     public LoginDialog loginDialog;
     public RegistrationDialog registrationDialog;
@@ -105,6 +108,7 @@ public class Controller {
         loginManager = new LoginManager(this);
         registrationDialog = new RegistrationDialog(this);
         loginDialog = new LoginDialog(this);
+        questionnaireTimeCalculator = new QuestionnaireTimeCalculator(this);
         questionnaireDialog = new QuestionnaireDialog(this);
         //
         //Create File: file wird nur einmal angelegt.
@@ -161,18 +165,11 @@ public class Controller {
         showWelcomeMenu();
     }
 
-//https://stackoverflow.com/questions/12087419/adding-days-to-a-date-in-java
-    private void checkForQuestionnaire() {
-        //TODO: Das noch richtig machen!
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constants.SIMPLE_DATE_FORMAT);
-        //Das mache ich jetzt erstmal total gefaket
-        String currentDate = "28.11.2019 15:50";
-        String expectedQuestionnaireDate = "28.11.2019 15:50";
 
-        if (expectedQuestionnaireDate.equals(currentDate)) {
+    private void checkForQuestionnaire() throws ParseException {
+        if(questionnaireTimeCalculator.calculateQuestionnaireDelta()) {
             questionnaireDialog.showQuestionnaireDialog();
         }
-        //TODO: Hier festen Zeitabstand und den dann irgendwie draufrechnen! (2Tage) --> Konstante, als Test 2 Minuten.
     }
 
     public void showWelcomeMenu() {
@@ -221,25 +218,45 @@ public class Controller {
        }
     }
 
-    public void onLoginButtonPressed() throws IOException {
-        logData("LoginButton gedrückt");
-        if (loginManager.checkPassword()) {
-            loginDialog.hideLoginMenu();
-            showAnswersOnProgramStart();
-            isLoggedIn = true;
-            checkForQuestionnaire();
-            //26.11. Thread starten
-            startLookForAnswersThread();
+    //01.12. Versuch mit Rückgabe
+    public boolean onLoginButtonPressed() throws IOException, ParseException {
+        if(getPasswordLogin().length() > 0) {
+            if (loginManager.checkPassword()) {
+                loginDialog.hideLoginMenu();
+                showAnswersOnProgramStart();
+                isLoggedIn = true;
+                logData("Eingeloggt");
+                checkForQuestionnaire();
+                //26.11. Thread starten
+                startLookForAnswersThread();
+                return true;
+            } else {
+                loginDialog.showWrongPasswordError();
+            }
         } else {
-            //loginMenu.showWrongPasswordError();
-            loginDialog.showWrongPasswordError();
+            loginDialog.showEmptyPasswordError();
         }
+        return false;
     }
 
+    //TODO NPE BEHEBEN und nicht mehr im Controller haben!
     public void updateToolWindow() {
-        toolWindow.getContentManager().removeContent(toolWindowFactory.getContentLogin(), true);
-        toolWindowFactory.addDefaultContents();
-        toolWindow.getContentManager().setSelectedContent(toolWindow.getContentManager().getContent(sendRequestScreen.getContent()));
+            toolWindow.getContentManager().removeContent(toolWindowFactory.getContentLogin(), true);
+            toolWindowFactory.addDefaultContents();
+            toolWindow.getContentManager().setSelectedContent(toolWindow.getContentManager().getContent(sendRequestScreen.getContent()));
+    }
+
+    public void onSubmitQuestionnaireButtonPressed() {
+        //Hier wird der Link zusammengebaut aus festem Link und der userID
+        String urlString = XMLFileReader.readLinkFromXML() + XMLFileReader.readUserIDFromXML();
+        //Datum wird angepasst, damit man wieder zwei Tage drauf rechnen kann
+        String date = getCurrentDate();
+        XMLFileReader.modifyDate(date);
+        try {
+            Desktop.getDesktop().browse(new URL(urlString).toURI());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void startLookForAnswersThread() {
@@ -271,7 +288,6 @@ public class Controller {
         if (XMLFileReader.readOpenRequestsValueFromXML() > 0) {
             XMLFileReader.modifyOpenRequestsCounter(Integer.parseInt(openRequestsModel.decrementOpenRequestsNumber()));
         }
-        //30.11. auskommentiert, da UI neu gemacht wird
         mailBoxScreen.updateOpenRequest();
         mailBoxScreen.refreshTable();
         mailBoxScreen.showNotification();
@@ -311,20 +327,19 @@ public class Controller {
                 //System.out.println("openRequestsModel.openRequestList: " + openRequestsModel.openRequestList);
                 //26.11. Versuch.
                 XMLFileReader.modifyOpenRequestsCounter(Integer.parseInt(openRequestsModel.incrementOpenRequestsNumber()));
-                //30.11. UI neu machen
-                //mailBoxScreen.updateOpenRequest();
+                //30.11. UI neu machen, 01.12. ist das hier noch richtig? TODO
+                mailBoxScreen.updateOpenRequest();
 
 
                 //29.11. Hierher verschoben.
                 sendRequestScreen.showSentRequestInfo();
                 screenshotModel.clearScreenshotFolder();
+                //TODO: ID
                 logData("Anfrage abgeschickt");
             } catch (IOException e) {
                 //Fehlermeldung (sinnvoll)
                 e.printStackTrace();
                 sendRequestScreen.showErrorMessage(e.getMessage());
-                return;
-            //} catch (GitAPIException | URISyntaxException e) {
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -358,6 +373,7 @@ public class Controller {
         } else if(selectedHelpfulness == 3) {
             gitHubModel.setNotHelpfulFeedbackLabel();
         }
+
 
         //TODO:
         answerDetailScreen1.createFeedbackText();
@@ -448,7 +464,7 @@ public class Controller {
         return taskNameReader.readNameOfTaskFromNameFile();
     }
 //TODO: Hier vllt auch noch anpassen, welches DateFormat übergeebn werden soll
-    private String getCurrentDate() {
+    public String getCurrentDate() {
         DateFormat dateFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
         Date currentTime = new Date();
         return dateFormat.format(currentTime);
@@ -484,16 +500,5 @@ public class Controller {
         return gitHubModel.updateIssueList();
     }
 
-        public void onSubmitQuestionnaireButtonPressed() {
-        //Hier wird der Link zusammengebaut aus festem Link und der userID
-        String urlString = XMLFileReader.readLinkFromXML() + XMLFileReader.readUserIDFromXML();
-        //Datum wird angepasst, damit man wieder zwei Tage drauf rechnen kann
-        String date = getCurrentDate();
-        XMLFileReader.modifyDate(date);
-        try {
-            Desktop.getDesktop().browse(new URL(urlString).toURI());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+
 }

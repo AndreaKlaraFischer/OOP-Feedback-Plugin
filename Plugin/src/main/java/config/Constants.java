@@ -53,9 +53,10 @@ public class Constants {
     public static final String PORT = "587";
     //Date
     public static final String DATE_FORMAT = "dd.MM.yyyy HH:mm";
-    public static final String SIMPLE_DATE_FORMAT = "dd/MM/yyyy";
-    //Password
+    public static final String SIMPLE_DATE_FORMAT = "dd.MM.yyyy";
+    //Passwor.
     public static final int MINIMUM_PASSWORD_LENGTH = 5;
+    public static final int DAYS_BETWEEN_QUESTIONNAIRES = 3;
     //Threading
     public static final long THREAD_MILLISECONDS = 10000;
 }

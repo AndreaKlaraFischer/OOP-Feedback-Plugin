@@ -133,6 +133,7 @@ public class XMLFileReader {
     }
 
     public void modifyDate(String currentDate) {
+        //saves one day (substring instead of"SimpleDateFormat")
         String date = currentDate.substring(0,10);
         for (Element e : doc.getElementsByTag("date")) {
             e.text(date);
