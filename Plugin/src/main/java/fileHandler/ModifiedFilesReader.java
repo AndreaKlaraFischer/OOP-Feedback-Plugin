@@ -11,13 +11,7 @@ public class ModifiedFilesReader {
     public Controller controller;
     public Project project;
 
-    public List<File> filesSrcFolderLocalRepo;
-    public List<File> filesSrcFolderClonedRepo;
-
-    public String srcFolderPathLocalRepo;
-    public String srcFolderPathClonedRepo;
-
-    public HashMap<String, File> localFileMap, clonedFileMap;
+    private HashMap<String, File> localFileMap, clonedFileMap;
 
     public ModifiedFilesReader(Controller controller) {
         this.controller = controller;
@@ -25,14 +19,14 @@ public class ModifiedFilesReader {
     }
 
     public void saveFilesInHashMaps(String branchName) throws IOException {
-        srcFolderPathLocalRepo = project.getBasePath() + "/src";
-        srcFolderPathClonedRepo = project.getBasePath() + "/.idea/tutor_comments/" + branchName + "/src";
+        String srcFolderPathLocalRepo = project.getBasePath() + "/src";
+        String srcFolderPathClonedRepo = project.getBasePath() + "/.idea/tutor_comments/" + branchName + "/src";
         System.out.println("srcFolderPathClonedRepo: " + srcFolderPathClonedRepo);
 
-        filesSrcFolderLocalRepo = listAllFiles(srcFolderPathLocalRepo);
+        List<File> filesSrcFolderLocalRepo = listAllFiles(srcFolderPathLocalRepo);
         System.out.println(" filesSrcFolderLocalRepo: " + filesSrcFolderLocalRepo);
 
-        filesSrcFolderClonedRepo = listAllFiles(srcFolderPathClonedRepo);
+        List<File> filesSrcFolderClonedRepo = listAllFiles(srcFolderPathClonedRepo);
         System.out.println(" filesSrcFolderClonedRepo: " + filesSrcFolderClonedRepo);
 
         localFileMap = new HashMap<>();
@@ -72,7 +66,7 @@ public class ModifiedFilesReader {
 
     //https://stackoverflow.com/questions/14676407/list-all-files-in-the-folder-and-also-sub-folders
     //Use ArrayList instead of array as return value
-    public List<File> listAllFiles(String directoryName) {
+    private List<File> listAllFiles(String directoryName) {
         File srcFolder = new File(directoryName);
 
         List<File> allFilesList = new ArrayList<>();

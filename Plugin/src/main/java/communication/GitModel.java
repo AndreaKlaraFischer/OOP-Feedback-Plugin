@@ -107,7 +107,7 @@ public class GitModel {
         }
     }
 
-    private void commitChanges() throws GitAPIException {
+    public void commitChanges() throws GitAPIException {
         AddCommand addCommand = git.add();
         addCommand.addFilepattern(".");
         addCommand.call();

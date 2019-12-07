@@ -1,6 +1,7 @@
 package controller;
 
 import com.intellij.openapi.wm.ToolWindow;
+import com.intellij.ui.JBColor;
 import de.ur.mi.pluginhelper.logger.Log;
 import de.ur.mi.pluginhelper.logger.LogDataType;
 import de.ur.mi.pluginhelper.logger.LogManager;
@@ -37,6 +38,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -59,7 +61,6 @@ public class Controller {
     private GitHubListener gitHubListener;
     public MailBoxScreen mailBoxScreen;
     public AnswerDetailScreen answerDetailScreen;
-    public AnswerDetailScreen1 answerDetailScreen1;
     public SendRequestScreen sendRequestScreen;
     public SettingScreen settingScreen;
     public ScreenshotModel screenshotModel;
@@ -246,7 +247,7 @@ public class Controller {
             toolWindow.getContentManager().setSelectedContent(toolWindow.getContentManager().getContent(sendRequestScreen.getContent()));
     }
 
-    public void onSubmitQuestionnaireButtonPressed() {
+    public void onSubmitQuestionnaireButtonPressed() throws IOException {
         //Hier wird der Link zusammengebaut aus festem Link und der userID
         String urlString = XMLFileReader.readLinkFromXML() + XMLFileReader.readUserIDFromXML();
         //Datum wird angepasst, damit man wieder zwei Tage drauf rechnen kann
@@ -271,10 +272,6 @@ public class Controller {
         List<Answer> alreadyAnsweredRequests = getAlreadyAnsweredRequests();
         for (Answer answer : alreadyAnsweredRequests) {
             answerList.add(answer);
-            //TODO
-            if (answerList.getAnswerList().size() > 0) {
-                // mailBoxScreen.refreshTable();
-            }
         }
     }
 
@@ -291,7 +288,7 @@ public class Controller {
         mailBoxScreen.updateOpenRequest();
         mailBoxScreen.refreshTable();
         mailBoxScreen.showNotification();
-        //TODO: Falls der AnswerDetailScreen sichtbar ist, den MailboxScreen wieder erstellen
+
         System.out.println("Nach Decrement: " + getOpenRequestsValue());
     }
 
@@ -299,12 +296,95 @@ public class Controller {
         screenshotModel.chooseFiles();
     }
 
+    class RequestAnswerThread extends Thread{
+        String studentName, requestDate, requestMessage;
+        RequestAnswerThread(String studentName, String requestDate, String requestMessage) {
+            this.studentName = studentName;
+            this.requestDate = requestDate;
+            this.requestMessage = requestMessage;
+        }
+
+        public void run() {
+            String title = gitHubModel.createIssueTitle(studentName, requestDate);
+            String labelCategory = getProblemCategory();
+            //TODO: das noch ausbessern
+            String labelTask = "WS1920 SL2";
+            //03.12. auskommentiert, weil .name file nicht vorhanden
+            /*String labelTask = null;
+            try {
+                //TODO: noch abfangen, ob es überhaupt eine .name gibt.
+                labelTask = getTaskNameFromFile();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }*/
+            String labelBranchName = Constants.COMMON_LABEL_BEGIN + getBranchName();
+            String labelScreenshot = getScreenShotLabel();
+            //28.11. auskommentiert wegen Fehlermeldung.
+            try {
+                gitModel.createAndPushBranch(getBranchName());
+            } catch (IOException | URISyntaxException | GitAPIException e) {
+                e.printStackTrace();
+            }
+            gitHubModel.createIssue(title, requestMessage, labelCategory, labelTask, labelBranchName, labelScreenshot);
+
+            System.out.println("E");
+
+
+            //23.11.
+            // openRequestsModel.openRequestList.add( gitHubModel.createIssue(title, requestMessage, labelCategory, labelTask, labelBranchName, labelScreenshot));
+            //System.out.println("openRequestsModel.openRequestList: " + openRequestsModel.openRequestList);
+            //26.11. Versuch.
+            try {
+                XMLFileReader.modifyOpenRequestsCounter(Integer.parseInt(openRequestsModel.incrementOpenRequestsNumber()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+            // AS: ab hier nicht mehr cool
+            //30.11. UI neu machen, 01.12. ist das hier noch richtig? TODO
+            mailBoxScreen.updateOpenRequest();
+
+            //
+            //29.11. Hierher verschoben.
+            sendRequestScreen.showSentRequestInfo();
+            screenshotModel.clearScreenshotFolder();
+            //2.12. Test
+            try {
+                gitModel.commitChanges();
+            } catch (GitAPIException e) {
+                e.printStackTrace();
+            }
+            //TODO: ID
+            logData("Anfrage abgeschickt");
+
+
+
+            mailModel.sendMailToTutors();
+            //02.12./ODO
+            resetSubmitButton();
+
+        }
+    }
+
+    //TODO: Auslagern / schöner machen
+    private void resetSubmitButton() {
+        sendRequestScreen.inputMessageArea.setText("");
+        screenshotModel.deleteScreenshots();
+        sendRequestScreen.submitRequestButton.setBackground(Constants.HEIDENELKENROT);
+        sendRequestScreen.submitRequestButton.setEnabled(true);
+        sendRequestScreen.submitRequestButton.setText("Hilfe anfragen");
+    }
+
     public void onSubmitRequestButtonPressed() {
+
         String requestCounter = branchNameCreator.incrementRequestCounter();
         String requestDate = getCurrentDate();
         String requestMessage = getRequestMessage();
+
         //String requestMessage = sendRequestScreen.getInputMessage() + "\n" + "\n" + screenshotModel.getAllImagesString();
         System.out.println("requestMessage: (Bildtest)" + requestMessage);
+        System.out.println("A");
         String studentName = getStudentName();
 
         if (requestMessage.length() == 0) { //TODO: Die Images müssen hier noch rausgelöscht werden!
@@ -312,36 +392,31 @@ public class Controller {
         } else if (studentName.length() == 0) {
             sendRequestScreen.showNoNameError();
         } else {
+
+            System.out.println("B");
             try {
-                String title = gitHubModel.createIssueTitle(studentName, requestDate);
-                String labelCategory = getProblemCategory();
-                String labelTask = getTaskNameFromFile();
-                String labelBranchName = Constants.COMMON_LABEL_BEGIN + getBranchName();
-                String labelScreenshot = getScreenShotLabel();
-                //28.11. auskommentiert wegen Fehlermeldung.
-                gitModel.createAndPushBranch(getBranchName());
-                gitHubModel.createIssue(title, requestMessage, labelCategory, labelTask, labelBranchName, labelScreenshot);
-                mailModel.sendMailToTutors();
-                //23.11.
-                // openRequestsModel.openRequestList.add( gitHubModel.createIssue(title, requestMessage, labelCategory, labelTask, labelBranchName, labelScreenshot));
-                //System.out.println("openRequestsModel.openRequestList: " + openRequestsModel.openRequestList);
-                //26.11. Versuch.
-                XMLFileReader.modifyOpenRequestsCounter(Integer.parseInt(openRequestsModel.incrementOpenRequestsNumber()));
-                //30.11. UI neu machen, 01.12. ist das hier noch richtig? TODO
-                mailBoxScreen.updateOpenRequest();
+                //02.12.
+                sendRequestScreen.submitRequestButton.setBackground(JBColor.LIGHT_GRAY);
+                sendRequestScreen.submitRequestButton.setText("Anfrage wird verarbeitet");
+                System.out.println("C");
+                sendRequestScreen.submitRequestButton.setEnabled(false);
+                sendRequestScreen.getContent().validate();
+                sendRequestScreen.submitRequestButton.repaint();
+                // sendRequestScreen.getContent().repaint();
+                // TimeUnit.SECONDS.sleep(1);
+                System.out.println("D");
 
+                new RequestAnswerThread(studentName, requestDate, requestMessage).start();
+                //
 
-                //29.11. Hierher verschoben.
-                sendRequestScreen.showSentRequestInfo();
-                screenshotModel.clearScreenshotFolder();
-                //TODO: ID
-                logData("Anfrage abgeschickt");
-            } catch (IOException e) {
+            //} catch (IOException e) {
+
+            } catch (Exception e) {
                 //Fehlermeldung (sinnvoll)
                 e.printStackTrace();
                 sendRequestScreen.showErrorMessage(e.getMessage());
-            } catch (Exception e) {
-                e.printStackTrace();
+            /*} catch (Exception e) {
+                e.printStackTrace();*/
             }
 
         }
@@ -352,6 +427,8 @@ public class Controller {
         String studentMail = getStudentMail();
         XMLFileReader.modifyXMLNameAndMail(studentName, studentMail);
         toolWindow.getContentManager().setSelectedContent(toolWindow.getContentManager().getContent(sendRequestScreen.getContent()));
+        //3.12.
+        sendRequestScreen.updateLabel();
     }
 
     public void onOpenCodeButtonPressed() {
@@ -374,16 +451,20 @@ public class Controller {
             gitHubModel.setNotHelpfulFeedbackLabel();
         }
 
+        if(selectedHelpfulness == 4) {
+            gitHubModel.setProblemSolvedLabel();
+        }
+
 
         //TODO:
-        answerDetailScreen1.createFeedbackText();
+        answerDetailScreen.createFeedbackText();
         //sendProblemSolved();
-        answerDetailScreen1.showSentFeedbackBalloon();
+        answerDetailScreen.showSentFeedbackBalloon();
     }
 
-
+//TODO:
     public void sendProblemSolved() {
-        logData("Problem erfolgreich gelöst CheckBox");
+
         gitHubModel.matchFeedbackAndRequest(gitHubModel.answerNumber);
         gitHubModel.setProblemSolvedLabel();
     }
@@ -456,7 +537,7 @@ public class Controller {
         return gitHubModel.getAlreadyAnsweredRequestsOnProgramStart(getSavedAnswers(), gitHubModel.issueList);
     }
 
-    public String getRequestMessage() {
+    private String getRequestMessage() {
         return sendRequestScreen.inputMessageArea.getText().trim();
     }
 

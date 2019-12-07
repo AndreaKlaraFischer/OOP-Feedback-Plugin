@@ -18,14 +18,23 @@ public class Answer {
     private String tutorName;
     private Date answerDate;
     private List<String> imageUrls;
+    private boolean hasChanges;
+    //2.12.
+    private String requestMessage;
 
-    public Answer(int number, long id, String message, String tutor, Date date) {
+    //02.12. Test
+    //public Answer(int number, long id, String message, String tutor, Date date) {
+    public Answer(int number, long id, String message, String tutor, Date date, String requestText) {
+        //public Answer(int number, long id, String message, String tutor, Date date, String requestText, boolean changes) {
         answerNumber = number;
         answerId = id;
         tutorName = tutor;
         answerDate = date;
         imageUrls = new ArrayList<>();
         answerMessage = extractImagesFromMessage(message);
+        //2.12.
+        requestMessage = requestText;
+        hasChanges = false;
 
         System.out.println("answerMessage:" + answerMessage);
         System.out.println("imageUrls." + imageUrls);
@@ -84,6 +93,14 @@ public class Answer {
 
     public int getAnswerNumber() {
         return answerNumber;
+    }
+
+    public String getRequestMessage() {
+        return requestMessage;
+    }
+
+    public boolean isHasChanges() {
+        return hasChanges;
     }
 
     @Override

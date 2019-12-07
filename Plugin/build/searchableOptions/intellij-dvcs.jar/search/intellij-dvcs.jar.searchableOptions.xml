@@ -2,9 +2,15 @@
 <options>
   <configurable id="preferences.keymap" configurable_name="Keymap">
     <option name="" path="ActionManager" hit="" />
+    <option name="add" path="ActionManager" hit="Add" />
     <option name="add" path="ActionManager" hit="Add to VCS" />
     <option name="to" path="ActionManager" hit="Add to VCS" />
     <option name="vcs" path="ActionManager" hit="Add to VCS" />
+    <option name="align" path="ActionManager" hit="Align References to the Left" />
+    <option name="left" path="ActionManager" hit="Align References to the Left" />
+    <option name="references" path="ActionManager" hit="Align References to the Left" />
+    <option name="the" path="ActionManager" hit="Align References to the Left" />
+    <option name="to" path="ActionManager" hit="Align References to the Left" />
     <option name="amend" path="ActionManager" hit="Amend Commit" />
     <option name="commit" path="ActionManager" hit="Amend Commit" />
     <option name="annotate" path="ActionManager" hit="Annotate" />
@@ -65,21 +71,12 @@
     <option name="necessary" path="ActionManager" hit="Check for new commits and refresh Log if necessary" />
     <option name="new" path="ActionManager" hit="Check for new commits and refresh Log if necessary" />
     <option name="refresh" path="ActionManager" hit="Check for new commits and refresh Log if necessary" />
-    <option name="check" path="ActionManager" hit="Check out from Version Control" />
-    <option name="control" path="ActionManager" hit="Check out from Version Control" />
-    <option name="from" path="ActionManager" hit="Check out from Version Control" />
-    <option name="out" path="ActionManager" hit="Check out from Version Control" />
-    <option name="version" path="ActionManager" hit="Check out from Version Control" />
     <option name="check" path="ActionManager" hit="Check out selected files for editing" />
     <option name="editing" path="ActionManager" hit="Check out selected files for editing" />
     <option name="files" path="ActionManager" hit="Check out selected files for editing" />
     <option name="for" path="ActionManager" hit="Check out selected files for editing" />
     <option name="out" path="ActionManager" hit="Check out selected files for editing" />
     <option name="selected" path="ActionManager" hit="Check out selected files for editing" />
-    <option name="checkout" path="ActionManager" hit="Checkout from Version Control" />
-    <option name="control" path="ActionManager" hit="Checkout from Version Control" />
-    <option name="from" path="ActionManager" hit="Checkout from Version Control" />
-    <option name="version" path="ActionManager" hit="Checkout from Version Control" />
     <option name="cherry-pick" path="ActionManager" hit="Cherry-Pick" />
     <option name="already" path="ActionManager" hit="Clean Already Unshelved..." />
     <option name="clean" path="ActionManager" hit="Clean Already Unshelved..." />
@@ -159,6 +156,12 @@
     <option name="with" path="ActionManager" hit="Compare with..." />
     <option name="configure" path="ActionManager" hit="Configure Layout" />
     <option name="layout" path="ActionManager" hit="Configure Layout" />
+    <option name="configure" path="ActionManager" hit="Configure presentation of the File History" />
+    <option name="file" path="ActionManager" hit="Configure presentation of the File History" />
+    <option name="history" path="ActionManager" hit="Configure presentation of the File History" />
+    <option name="of" path="ActionManager" hit="Configure presentation of the File History" />
+    <option name="presentation" path="ActionManager" hit="Configure presentation of the File History" />
+    <option name="the" path="ActionManager" hit="Configure presentation of the File History" />
     <option name="configure" path="ActionManager" hit="Configure presentation of the Log" />
     <option name="log" path="ActionManager" hit="Configure presentation of the Log" />
     <option name="of" path="ActionManager" hit="Configure presentation of the Log" />
@@ -290,6 +293,10 @@
     <option name="force" path="ActionManager" hit="Force Push" />
     <option name="push" path="ActionManager" hit="Force Push" />
     <option name="get" path="ActionManager" hit="Get" />
+    <option name="control" path="ActionManager" hit="Get from Version Control..." />
+    <option name="from" path="ActionManager" hit="Get from Version Control..." />
+    <option name="get" path="ActionManager" hit="Get from Version Control..." />
+    <option name="version" path="ActionManager" hit="Get from Version Control..." />
     <option name="from" path="ActionManager" hit="Get version from repository" />
     <option name="get" path="ActionManager" hit="Get version from repository" />
     <option name="repository" path="ActionManager" hit="Get version from repository" />
@@ -407,6 +414,10 @@
     <option name="open" path="ActionManager" hit="Open Repository Version" />
     <option name="repository" path="ActionManager" hit="Open Repository Version" />
     <option name="version" path="ActionManager" hit="Open Repository Version" />
+    <option name="another" path="ActionManager" hit="Open another log tab" />
+    <option name="log" path="ActionManager" hit="Open another log tab" />
+    <option name="open" path="ActionManager" hit="Open another log tab" />
+    <option name="tab" path="ActionManager" hit="Open another log tab" />
     <option name="editor" path="ActionManager" hit="Open editor with selected revision of the file" />
     <option name="file" path="ActionManager" hit="Open editor with selected revision of the file" />
     <option name="of" path="ActionManager" hit="Open editor with selected revision of the file" />
@@ -422,6 +433,10 @@
     <option name="settings" path="ActionManager" hit="Presentation Settings" />
     <option name="change" path="ActionManager" hit="Previous Change" />
     <option name="previous" path="ActionManager" hit="Previous Change" />
+    <option name="control" path="ActionManager" hit="Project from Version Control..." />
+    <option name="from" path="ActionManager" hit="Project from Version Control..." />
+    <option name="project" path="ActionManager" hit="Project from Version Control..." />
+    <option name="version" path="ActionManager" hit="Project from Version Control..." />
     <option name="push" path="ActionManager" hit="Push..." />
     <option name="commit" path="ActionManager" hit="Reformat commit message" />
     <option name="message" path="ActionManager" hit="Reformat commit message" />
@@ -457,6 +472,9 @@
     <option name="refresh" path="ActionManager" hit="Refresh the list of incoming changes" />
     <option name="the" path="ActionManager" hit="Refresh the list of incoming changes" />
     <option name="regex" path="ActionManager" hit="Regex" />
+    <option name="disk" path="ActionManager" hit="Reload from Disk" />
+    <option name="from" path="ActionManager" hit="Reload from Disk" />
+    <option name="reload" path="ActionManager" hit="Reload from Disk" />
     <option name="all" path="ActionManager" hit="Remove changelist and move all changes to another" />
     <option name="and" path="ActionManager" hit="Remove changelist and move all changes to another" />
     <option name="another" path="ActionManager" hit="Remove changelist and move all changes to another" />
@@ -476,7 +494,6 @@
     <option name="restore" path="ActionManager" hit="Restore" />
     <option name="indexing" path="ActionManager" hit="Resume Indexing" />
     <option name="resume" path="ActionManager" hit="Resume Indexing" />
-    <option name="revert" path="ActionManager" hit="Revert" />
     <option name="changes" path="ActionManager" hit="Revert Changes" />
     <option name="revert" path="ActionManager" hit="Revert Changes" />
     <option name="changes" path="ActionManager" hit="Revert Selected Changes" />
@@ -485,6 +502,7 @@
     <option name="changes" path="ActionManager" hit="Revert selected changes" />
     <option name="revert" path="ActionManager" hit="Revert selected changes" />
     <option name="selected" path="ActionManager" hit="Revert selected changes" />
+    <option name="rollback" path="ActionManager" hit="Rollback" />
     <option name="lines" path="ActionManager" hit="Rollback Lines" />
     <option name="rollback" path="ActionManager" hit="Rollback Lines" />
     <option name="changes" path="ActionManager" hit="Rollback changes in selected lines" />
@@ -520,6 +538,13 @@
     <option name="selected" path="ActionManager" hit="Schedule selected files to be removed from VCS" />
     <option name="to" path="ActionManager" hit="Schedule selected files to be removed from VCS" />
     <option name="vcs" path="ActionManager" hit="Schedule selected files to be removed from VCS" />
+    <option name="columns" path="ActionManager" hit="Select columns to see in the table" />
+    <option name="in" path="ActionManager" hit="Select columns to see in the table" />
+    <option name="see" path="ActionManager" hit="Select columns to see in the table" />
+    <option name="select" path="ActionManager" hit="Select columns to see in the table" />
+    <option name="table" path="ActionManager" hit="Select columns to see in the table" />
+    <option name="the" path="ActionManager" hit="Select columns to see in the table" />
+    <option name="to" path="ActionManager" hit="Select columns to see in the table" />
     <option name="filter" path="ActionManager" hit="Select text filter options" />
     <option name="options" path="ActionManager" hit="Select text filter options" />
     <option name="select" path="ActionManager" hit="Select text filter options" />
@@ -565,6 +590,9 @@
     <option name="commit" path="ActionManager" hit="Show Commit Options" />
     <option name="options" path="ActionManager" hit="Show Commit Options" />
     <option name="show" path="ActionManager" hit="Show Commit Options" />
+    <option name="commit" path="ActionManager" hit="Show Commit Timestamp" />
+    <option name="show" path="ActionManager" hit="Show Commit Timestamp" />
+    <option name="timestamp" path="ActionManager" hit="Show Commit Timestamp" />
     <option name="commit" path="ActionManager" hit="Show Commit Tooltip" />
     <option name="show" path="ActionManager" hit="Show Commit Tooltip" />
     <option name="tooltip" path="ActionManager" hit="Show Commit Tooltip" />
@@ -580,11 +608,6 @@
     <option name="panel" path="ActionManager" hit="Show Diff Preview Panel" />
     <option name="preview" path="ActionManager" hit="Show Diff Preview Panel" />
     <option name="show" path="ActionManager" hit="Show Diff Preview Panel" />
-    <option name="diff" path="ActionManager" hit="Show Diff Preview in Editor" />
-    <option name="editor" path="ActionManager" hit="Show Diff Preview in Editor" />
-    <option name="in" path="ActionManager" hit="Show Diff Preview in Editor" />
-    <option name="preview" path="ActionManager" hit="Show Diff Preview in Editor" />
-    <option name="show" path="ActionManager" hit="Show Diff Preview in Editor" />
     <option name="at" path="ActionManager" hit="Show File at Revision" />
     <option name="file" path="ActionManager" hit="Show File at Revision" />
     <option name="revision" path="ActionManager" hit="Show File at Revision" />
@@ -699,6 +722,14 @@
     <option name="recently" path="ActionManager" hit="Show recently deleted shelves" />
     <option name="shelves" path="ActionManager" hit="Show recently deleted shelves" />
     <option name="show" path="ActionManager" hit="Show recently deleted shelves" />
+    <option name="commit" path="ActionManager" hit="Show references on the left of commit message" />
+    <option name="left" path="ActionManager" hit="Show references on the left of commit message" />
+    <option name="message" path="ActionManager" hit="Show references on the left of commit message" />
+    <option name="of" path="ActionManager" hit="Show references on the left of commit message" />
+    <option name="on" path="ActionManager" hit="Show references on the left of commit message" />
+    <option name="references" path="ActionManager" hit="Show references on the left of commit message" />
+    <option name="show" path="ActionManager" hit="Show references on the left of commit message" />
+    <option name="the" path="ActionManager" hit="Show references on the left of commit message" />
     <option name="also" path="ActionManager" hit="Show the latest modification date and author for each line (also known as &quot;Blame&quot;)" />
     <option name="and" path="ActionManager" hit="Show the latest modification date and author for each line (also known as &quot;Blame&quot;)" />
     <option name="as" path="ActionManager" hit="Show the latest modification date and author for each line (also known as &quot;Blame&quot;)" />
@@ -713,6 +744,16 @@
     <option name="modification" path="ActionManager" hit="Show the latest modification date and author for each line (also known as &quot;Blame&quot;)" />
     <option name="show" path="ActionManager" hit="Show the latest modification date and author for each line (also known as &quot;Blame&quot;)" />
     <option name="the" path="ActionManager" hit="Show the latest modification date and author for each line (also known as &quot;Blame&quot;)" />
+    <option name="authored" path="ActionManager" hit="Show the time when the change was committed, rather than authored." />
+    <option name="change" path="ActionManager" hit="Show the time when the change was committed, rather than authored." />
+    <option name="committed" path="ActionManager" hit="Show the time when the change was committed, rather than authored." />
+    <option name="rather" path="ActionManager" hit="Show the time when the change was committed, rather than authored." />
+    <option name="show" path="ActionManager" hit="Show the time when the change was committed, rather than authored." />
+    <option name="than" path="ActionManager" hit="Show the time when the change was committed, rather than authored." />
+    <option name="the" path="ActionManager" hit="Show the time when the change was committed, rather than authored." />
+    <option name="time" path="ActionManager" hit="Show the time when the change was committed, rather than authored." />
+    <option name="was" path="ActionManager" hit="Show the time when the change was committed, rather than authored." />
+    <option name="when" path="ActionManager" hit="Show the time when the change was committed, rather than authored." />
     <option name="commit" path="ActionManager" hit="Show tooltip for currently selected commit in the Log" />
     <option name="currently" path="ActionManager" hit="Show tooltip for currently selected commit in the Log" />
     <option name="for" path="ActionManager" hit="Show tooltip for currently selected commit in the Log" />
@@ -754,9 +795,6 @@
     <option name="only" path="ActionManager" hit="Switch between showing only current branch and all branches" />
     <option name="showing" path="ActionManager" hit="Switch between showing only current branch and all branches" />
     <option name="switch" path="ActionManager" hit="Switch between showing only current branch and all branches" />
-    <option name="file" path="ActionManager" hit="Synchronize selected file" />
-    <option name="selected" path="ActionManager" hit="Synchronize selected file" />
-    <option name="synchronize" path="ActionManager" hit="Synchronize selected file" />
     <option name="filter" path="ActionManager" hit="Text Filter Settings" />
     <option name="settings" path="ActionManager" hit="Text Filter Settings" />
     <option name="text" path="ActionManager" hit="Text Filter Settings" />
@@ -799,27 +837,6 @@
     <option name="history" path="ActionManager" hit="View history of committed changes" />
     <option name="of" path="ActionManager" hit="View history of committed changes" />
     <option name="view" path="ActionManager" hit="View history of committed changes" />
-    <option name="a" path="ActionManager" hit="You can check out an entire project from a Version Control System. Click the icon or link to select your VCS." />
-    <option name="an" path="ActionManager" hit="You can check out an entire project from a Version Control System. Click the icon or link to select your VCS." />
-    <option name="can" path="ActionManager" hit="You can check out an entire project from a Version Control System. Click the icon or link to select your VCS." />
-    <option name="check" path="ActionManager" hit="You can check out an entire project from a Version Control System. Click the icon or link to select your VCS." />
-    <option name="click" path="ActionManager" hit="You can check out an entire project from a Version Control System. Click the icon or link to select your VCS." />
-    <option name="control" path="ActionManager" hit="You can check out an entire project from a Version Control System. Click the icon or link to select your VCS." />
-    <option name="entire" path="ActionManager" hit="You can check out an entire project from a Version Control System. Click the icon or link to select your VCS." />
-    <option name="from" path="ActionManager" hit="You can check out an entire project from a Version Control System. Click the icon or link to select your VCS." />
-    <option name="icon" path="ActionManager" hit="You can check out an entire project from a Version Control System. Click the icon or link to select your VCS." />
-    <option name="link" path="ActionManager" hit="You can check out an entire project from a Version Control System. Click the icon or link to select your VCS." />
-    <option name="or" path="ActionManager" hit="You can check out an entire project from a Version Control System. Click the icon or link to select your VCS." />
-    <option name="out" path="ActionManager" hit="You can check out an entire project from a Version Control System. Click the icon or link to select your VCS." />
-    <option name="project" path="ActionManager" hit="You can check out an entire project from a Version Control System. Click the icon or link to select your VCS." />
-    <option name="select" path="ActionManager" hit="You can check out an entire project from a Version Control System. Click the icon or link to select your VCS." />
-    <option name="system" path="ActionManager" hit="You can check out an entire project from a Version Control System. Click the icon or link to select your VCS." />
-    <option name="the" path="ActionManager" hit="You can check out an entire project from a Version Control System. Click the icon or link to select your VCS." />
-    <option name="to" path="ActionManager" hit="You can check out an entire project from a Version Control System. Click the icon or link to select your VCS." />
-    <option name="vcs" path="ActionManager" hit="You can check out an entire project from a Version Control System. Click the icon or link to select your VCS." />
-    <option name="version" path="ActionManager" hit="You can check out an entire project from a Version Control System. Click the icon or link to select your VCS." />
-    <option name="you" path="ActionManager" hit="You can check out an entire project from a Version Control System. Click the icon or link to select your VCS." />
-    <option name="your" path="ActionManager" hit="You can check out an entire project from a Version Control System. Click the icon or link to select your VCS." />
   </configurable>
   <configurable id="reference.settingsdialog.IDE.editor.colors.VCS" configurable_name="VCS">
     <option name="background" hit="Background" />
@@ -843,6 +860,12 @@
     <option name="underscored" hit="Underscored" />
     <option name="underwaved" hit="Underwaved" />
     <option name="vcs" hit="VCS" />
+    <option name="added" hit="Editor Gutter//Added ignored lines border" />
+    <option name="border" hit="Editor Gutter//Added ignored lines border" />
+    <option name="editor" hit="Editor Gutter//Added ignored lines border" />
+    <option name="gutter" hit="Editor Gutter//Added ignored lines border" />
+    <option name="ignored" hit="Editor Gutter//Added ignored lines border" />
+    <option name="lines" hit="Editor Gutter//Added ignored lines border" />
     <option name="added" hit="Editor Gutter//Added lines" />
     <option name="editor" hit="Editor Gutter//Added lines" />
     <option name="gutter" hit="Editor Gutter//Added lines" />
@@ -850,10 +873,22 @@
     <option name="border" hit="Editor Gutter//Border" />
     <option name="editor" hit="Editor Gutter//Border" />
     <option name="gutter" hit="Editor Gutter//Border" />
+    <option name="border" hit="Editor Gutter//Deleted ignored lines border" />
+    <option name="deleted" hit="Editor Gutter//Deleted ignored lines border" />
+    <option name="editor" hit="Editor Gutter//Deleted ignored lines border" />
+    <option name="gutter" hit="Editor Gutter//Deleted ignored lines border" />
+    <option name="ignored" hit="Editor Gutter//Deleted ignored lines border" />
+    <option name="lines" hit="Editor Gutter//Deleted ignored lines border" />
     <option name="deleted" hit="Editor Gutter//Deleted lines" />
     <option name="editor" hit="Editor Gutter//Deleted lines" />
     <option name="gutter" hit="Editor Gutter//Deleted lines" />
     <option name="lines" hit="Editor Gutter//Deleted lines" />
+    <option name="border" hit="Editor Gutter//Modified ignored lines border" />
+    <option name="editor" hit="Editor Gutter//Modified ignored lines border" />
+    <option name="gutter" hit="Editor Gutter//Modified ignored lines border" />
+    <option name="ignored" hit="Editor Gutter//Modified ignored lines border" />
+    <option name="lines" hit="Editor Gutter//Modified ignored lines border" />
+    <option name="modified" hit="Editor Gutter//Modified ignored lines border" />
     <option name="editor" hit="Editor Gutter//Modified lines" />
     <option name="gutter" hit="Editor Gutter//Modified lines" />
     <option name="lines" hit="Editor Gutter//Modified lines" />
@@ -933,18 +968,8 @@
     <option name="background" hit="Background" />
     <option name="background" hit="Background Operations" />
     <option name="operations" hit="Background Operations" />
-    <option name="cache" hit="Changelists to cache initially:" />
-    <option name="changelists" hit="Changelists to cache initially:" />
-    <option name="initially" hit="Changelists to cache initially:" />
-    <option name="to" hit="Changelists to cache initially:" />
     <option name="check" hit="Check every" />
     <option name="every" hit="Check every" />
-    <option name="cache" hit="Days of history to cache initially:" />
-    <option name="days" hit="Days of history to cache initially:" />
-    <option name="history" hit="Days of history to cache initially:" />
-    <option name="initially" hit="Days of history to cache initially:" />
-    <option name="of" hit="Days of history to cache initially:" />
-    <option name="to" hit="Days of history to cache initially:" />
     <option name="add" hit="Perform Add/Remove in background" />
     <option name="background" hit="Perform Add/Remove in background" />
     <option name="in" hit="Perform Add/Remove in background" />
@@ -977,13 +1002,6 @@
     <option name="perform" hit="Perform update from VCS in background" />
     <option name="update" hit="Perform update from VCS in background" />
     <option name="vcs" hit="Perform update from VCS in background" />
-    <option name="changes" hit="Refresh changes every" />
-    <option name="every" hit="Refresh changes every" />
-    <option name="refresh" hit="Refresh changes every" />
-    <option name="cache" hit="VCS History Cache Settings" />
-    <option name="history" hit="VCS History Cache Settings" />
-    <option name="settings" hit="VCS History Cache Settings" />
-    <option name="vcs" hit="VCS History Cache Settings" />
     <option name="minutes" hit="minutes" />
   </configurable>
   <configurable id="project.propVCSSupport.CommitDialog" configurable_name="Commit Dialog">

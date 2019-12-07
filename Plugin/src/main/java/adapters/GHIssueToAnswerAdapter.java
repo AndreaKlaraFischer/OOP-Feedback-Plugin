@@ -4,6 +4,7 @@ import answers.Answer;
 import org.kohsuke.github.GHIssue;
 import org.kohsuke.github.GHIssueComment;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +14,13 @@ public class GHIssueToAnswerAdapter implements BaseAdapter<GHIssue, Answer> {
 
     @Override
     public Answer transform(GHIssue issue) throws IOException {
-        return new Answer(issue.getNumber(), issue.getId(), getAnswerText(issue), getTutorName(issue), issue.getClosedAt());
+        //return new Answer(issue.getNumber(), issue.getId(), getAnswerText(issue), getTutorName(issue), issue.getClosedAt());
+        return new Answer(issue.getNumber(), issue.getId(), getAnswerText(issue), getTutorName(issue), issue.getClosedAt(), issue.getBody());
+        //return new Answer(issue.getNumber(), issue.getId(), getAnswerText(issue), getTutorName(issue), issue.getClosedAt(), issue.getBody(), hasChanges());
     }
+
+
+
 
     private String getAnswerText(GHIssue issue) {
         //Hier werden die Kommentare geholt
@@ -44,11 +50,10 @@ public class GHIssueToAnswerAdapter implements BaseAdapter<GHIssue, Answer> {
         return result.toString();
     }
 
-    private String getTutorName(GHIssue issue) throws IOException {
+    private String getTutorName(GHIssue issue) {
         String result;
         try {
             System.out.println("Assignes: " + issue.getAssignees());
-            //String assignee = getAssignee(issue);
             String assignee = issue.getAssignee().getLogin();
             result = mapGitHubUsernameWithRealName(assignee);
 
@@ -80,27 +85,20 @@ public class GHIssueToAnswerAdapter implements BaseAdapter<GHIssue, Answer> {
             case "realdegrees" :
                 result = "Fabian Schebera";
                 break;
-            case "msms":
+            case "tina-e":
                 result = "Martina Emmert";
                 break;
-            case "hfhhf":
+            case "erikblank":
                 result = "Erik Blank";
                 break;
-            case "hfehe":
+            case "FlorinSchwappach":
                 result = "Florin Schwappach";
                 break;
-            case "hgwgw":
+            case "alexanderbazo":
                 result = "Alexander Bazo";
                 break;
-        }
-        return result;
-    }
-
-    private String getAssignee(GHIssue issue) {
-        String result = "";
-        for (int i = 0; i < issue.getAssignees().size(); i++) {
-            result = issue.getAssignees().get(i).getLogin();
-            System.out.println("In Forschleife mit Assignees: " + result);
+            default:
+                result = "Tutorenteam";
         }
         return result;
     }

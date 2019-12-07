@@ -314,18 +314,6 @@
     <option name="private" hit="private" />
     <option name="protected" hit="protected" />
     <option name="public" hit="public" />
-    <option_top_hit name="GUI Designer: Automatically copy form runtime classes to the output directory" />
-    <option_top_hit name="GUI Designer | Default accessibility for UI-bound fields | BorderLayout" />
-    <option_top_hit name="GUI Designer | Default accessibility for UI-bound fields | CardLayout" />
-    <option_top_hit name="GUI Designer | Default accessibility for UI-bound fields | FlowLayout" />
-    <option_top_hit name="GUI Designer | Default accessibility for UI-bound fields | FormLayout (JGoodies)" />
-    <option_top_hit name="GUI Designer | Default accessibility for UI-bound fields | GridBagLayout" />
-    <option_top_hit name="GUI Designer | Default accessibility for UI-bound fields | GridLayoutManager (IntelliJ)" />
-    <option_top_hit name="GUI Designer | Default accessibility for UI-bound fields | private" />
-    <option_top_hit name="GUI Designer | Default accessibility for UI-bound fields | package-private" />
-    <option_top_hit name="GUI Designer | Default accessibility for UI-bound fields | protected" />
-    <option_top_hit name="GUI Designer | Default accessibility for UI-bound fields | public" />
-    <option_top_hit name="GUI Designer: Resize column and row headers with mouse" />
   </configurable>
 </options>
 

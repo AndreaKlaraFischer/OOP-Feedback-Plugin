@@ -3,8 +3,35 @@
   <configurable id="preferences.keymap" configurable_name="Keymap">
     <option name="" path="ActionManager" hit="" />
     <option name="action" path="ActionManager" hit="Action" />
+    <option name="analyze" path="ActionManager" hit="Analyze EP Usage" />
+    <option name="ep" path="ActionManager" hit="Analyze EP Usage" />
+    <option name="usage" path="ActionManager" hit="Analyze EP Usage" />
+    <option name="analyze" path="ActionManager" hit="Analyze Unloadable Plugins" />
+    <option name="plugins" path="ActionManager" hit="Analyze Unloadable Plugins" />
+    <option name="unloadable" path="ActionManager" hit="Analyze Unloadable Plugins" />
     <option name="application" path="ActionManager" hit="Application Service" />
     <option name="service" path="ActionManager" hit="Application Service" />
+    <option name="an" path="ActionManager" hit="Builds an installation of IntelliJ IDEA from the currently opened sources and replace the current installation by it." />
+    <option name="and" path="ActionManager" hit="Builds an installation of IntelliJ IDEA from the currently opened sources and replace the current installation by it." />
+    <option name="builds" path="ActionManager" hit="Builds an installation of IntelliJ IDEA from the currently opened sources and replace the current installation by it." />
+    <option name="by" path="ActionManager" hit="Builds an installation of IntelliJ IDEA from the currently opened sources and replace the current installation by it." />
+    <option name="current" path="ActionManager" hit="Builds an installation of IntelliJ IDEA from the currently opened sources and replace the current installation by it." />
+    <option name="currently" path="ActionManager" hit="Builds an installation of IntelliJ IDEA from the currently opened sources and replace the current installation by it." />
+    <option name="from" path="ActionManager" hit="Builds an installation of IntelliJ IDEA from the currently opened sources and replace the current installation by it." />
+    <option name="idea" path="ActionManager" hit="Builds an installation of IntelliJ IDEA from the currently opened sources and replace the current installation by it." />
+    <option name="installation" path="ActionManager" hit="Builds an installation of IntelliJ IDEA from the currently opened sources and replace the current installation by it." />
+    <option name="intellij" path="ActionManager" hit="Builds an installation of IntelliJ IDEA from the currently opened sources and replace the current installation by it." />
+    <option name="it" path="ActionManager" hit="Builds an installation of IntelliJ IDEA from the currently opened sources and replace the current installation by it." />
+    <option name="of" path="ActionManager" hit="Builds an installation of IntelliJ IDEA from the currently opened sources and replace the current installation by it." />
+    <option name="opened" path="ActionManager" hit="Builds an installation of IntelliJ IDEA from the currently opened sources and replace the current installation by it." />
+    <option name="replace" path="ActionManager" hit="Builds an installation of IntelliJ IDEA from the currently opened sources and replace the current installation by it." />
+    <option name="sources" path="ActionManager" hit="Builds an installation of IntelliJ IDEA from the currently opened sources and replace the current installation by it." />
+    <option name="the" path="ActionManager" hit="Builds an installation of IntelliJ IDEA from the currently opened sources and replace the current installation by it." />
+    <option name="convert" path="ActionManager" hit="Convert Form to UI DSL" />
+    <option name="dsl" path="ActionManager" hit="Convert Form to UI DSL" />
+    <option name="form" path="ActionManager" hit="Convert Form to UI DSL" />
+    <option name="to" path="ActionManager" hit="Convert Form to UI DSL" />
+    <option name="ui" path="ActionManager" hit="Convert Form to UI DSL" />
     <option name="action" path="ActionManager" hit="Create new action" />
     <option name="create" path="ActionManager" hit="Create new action" />
     <option name="new" path="ActionManager" hit="Create new action" />
@@ -60,8 +87,11 @@
     <option name="serialized" path="ActionManager" hit="Show Serialized XML for Class" />
     <option name="show" path="ActionManager" hit="Show Serialized XML for Class" />
     <option name="xml" path="ActionManager" hit="Show Serialized XML for Class" />
-    <option name="names" path="ActionManager" hit="Shuffle Names" />
-    <option name="shuffle" path="ActionManager" hit="Shuffle Names" />
+    <option name="anonymize" path="ActionManager" hit="Shuffle/Scramble/Anonymize/Permute Names" />
+    <option name="names" path="ActionManager" hit="Shuffle/Scramble/Anonymize/Permute Names" />
+    <option name="permute" path="ActionManager" hit="Shuffle/Scramble/Anonymize/Permute Names" />
+    <option name="scramble" path="ActionManager" hit="Shuffle/Scramble/Anonymize/Permute Names" />
+    <option name="shuffle" path="ActionManager" hit="Shuffle/Scramble/Anonymize/Permute Names" />
     <option name="preview" path="ActionManager" hit="Stop Theme Preview" />
     <option name="stop" path="ActionManager" hit="Stop Theme Preview" />
     <option name="theme" path="ActionManager" hit="Stop Theme Preview" />
@@ -70,6 +100,15 @@
     <option name="highlighting" path="ActionManager" hit="Toggle Expected Highlighting Markup" />
     <option name="markup" path="ActionManager" hit="Toggle Expected Highlighting Markup" />
     <option name="toggle" path="ActionManager" hit="Toggle Expected Highlighting Markup" />
+    <option name="from" path="ActionManager" hit="Update IDE from Sources Settings..." />
+    <option name="ide" path="ActionManager" hit="Update IDE from Sources Settings..." />
+    <option name="settings" path="ActionManager" hit="Update IDE from Sources Settings..." />
+    <option name="sources" path="ActionManager" hit="Update IDE from Sources Settings..." />
+    <option name="update" path="ActionManager" hit="Update IDE from Sources Settings..." />
+    <option name="from" path="ActionManager" hit="Update IDE from Sources..." />
+    <option name="ide" path="ActionManager" hit="Update IDE from Sources..." />
+    <option name="sources" path="ActionManager" hit="Update IDE from Sources..." />
+    <option name="update" path="ActionManager" hit="Update IDE from Sources..." />
   </configurable>
 </options>
 

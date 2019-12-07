@@ -6,6 +6,7 @@ import com.intellij.openapi.ui.popup.Balloon;
 import controller.Controller;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -26,6 +27,7 @@ public class LoginDialog implements ActionListener {
         loginDialog = new JDialog();
         loginDialog.setContentPane(contentPane);
         loginDialog.setModal(true);
+        loginButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         loginButton.addActionListener(this);
     }
 

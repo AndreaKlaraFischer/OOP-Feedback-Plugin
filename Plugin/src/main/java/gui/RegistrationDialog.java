@@ -6,6 +6,7 @@ import config.Constants;
 import controller.Controller;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -29,6 +30,7 @@ public class RegistrationDialog  implements ActionListener {
         //TODO Schaffen, dass es richtig geht
         //registrationDialog.getRootPane().setDefaultButton(registrationButton);
         registrationDialog.setModal(true);
+        registrationButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         registrationButton.addActionListener(this);
     }
 
@@ -47,7 +49,7 @@ public class RegistrationDialog  implements ActionListener {
     }
     //TODO: UTF-8!
     public void showPasswordsNotEqualError() {
-        balloonPopup.createBalloonPopup(contentPane, Balloon.Position.above, "Passwörter stimmen nicht überein!", MessageType.ERROR);
+        balloonPopup.createBalloonPopup(contentPane, Balloon.Position.above, "Eingaben nicht identisch!", MessageType.ERROR);
     }
 
     public void showValidPasswordInfo() {

@@ -11,10 +11,7 @@ public class AssistanceScreen {
     private JTextPane howTo;
     private JLabel title2;
     private JLabel subtitleNPE;
-    private JTextPane loremIpsumDolorSitTextPane;
-    private JLabel subtitleXY;
-    private JTextPane loremIpsumDolorSitTextPane1;
-    private JTextPane loremIpsumDolorSitTextPane2;
+    private JTextPane eineNullPointerExceptionTrittDannTextPane;
     private JPanel container;
 
     public AssistanceScreen(Controller controller) {

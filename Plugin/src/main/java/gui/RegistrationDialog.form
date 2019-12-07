@@ -17,7 +17,7 @@
           <grid row="1" column="0" row-span="1" col-span="5" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Wähle hier ein Passwort (mindestens 5 Zeichen lang), um deine Kommunikation mit dem Tutorenteam zu schützen."/>
+          <text value="Wähle hier ein Passwort, um deine Kommunikation mit dem Tutorenteam zu schützen."/>
         </properties>
       </component>
       <hspacer id="8d58d">

@@ -43,7 +43,10 @@ public class LoginScreen implements ActionListener {
         }
         //controller.updateToolWindow();
         //30.11. auskommentiert UI
-       // controller.mailBoxScreen.refreshTable();
+        //TODO: Das fixen - hier Antworten holen!
+
+      controller.mailBoxScreen.refreshTable2();
+
         //showWelcomeBackInfo();
     }
 

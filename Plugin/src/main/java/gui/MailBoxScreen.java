@@ -3,7 +3,6 @@ package gui;
 import answers.Answer;
 import answers.AnswerList;
 import answers.AnswerTableModel;
-import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.table.JBTable;
 import config.Constants;
 import controller.Controller;
@@ -49,7 +48,7 @@ public class MailBoxScreen {
 
         answerOverviewTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
+                if (e.getClickCount() == 2 || e.getClickCount() == 1) {
                     JTable target = (JTable) e.getSource();
                     int row = target.rowAtPoint(e.getPoint());
                     if(row >= 0) {
@@ -72,6 +71,15 @@ public class MailBoxScreen {
     public void refreshTable() {
         //updateNoAnswersLabel();
         answerTableModel.fireTableDataChanged();
+        answerScrollPane.setVisible(true);
+        noAnswersLabel.setVisible(false);
+        //TODO: Fixen
+        //toolWindow.getContentManager().setSelectedContent(toolWindow.getContentManager().getContent(mailBoxScreenContent));
+    }
+
+    public void refreshTable2() {
+        //updateNoAnswersLabel();
+      //  answerTableModel.fireTableDataChanged();
         answerScrollPane.setVisible(true);
         noAnswersLabel.setVisible(false);
         //TODO: Fixen
@@ -111,14 +119,17 @@ public class MailBoxScreen {
     public void showAnswerDetailContent(Answer answer) {
         System.out.println("showDetailContent");
         //TODO:
-        controller.answerDetailScreen1.detailAnswerTitleLabel.setText(Constants.ANSWER_TITLE_BEGINNING + answer.getTutorName());
-        controller.answerDetailScreen1.previousMessageTextArea.setText(controller.getRequestMessage());
-        controller.answerDetailScreen1.tutorAnswerTextArea.setText(answer.getAnswerMessage());
+        controller.answerDetailScreen.detailAnswerTitleLabel.setText(Constants.ANSWER_TITLE_BEGINNING + answer.getTutorName());
+        //controller.answerDetailScreen1.previousMessageTextArea.setText(controller.getRequestMessage());
+        //2.12.
+        controller.answerDetailScreen.previousMessageTextArea.setText(answer.getRequestMessage());
+
+        controller.answerDetailScreen.tutorAnswerTextArea.setText(answer.getAnswerMessage());
 
         //TODO!!!
-        if(controller.answerDetailScreen1.imageButtonList.size() == 0) {
-            controller.answerDetailScreen1.createImageFromAttachedImageFile(answer.getImageUrls());
-            controller.answerDetailScreen1.screenshotPanel.setVisible(true);
+        if(controller.answerDetailScreen.imageButtonList.size() == 0) {
+            controller.answerDetailScreen.createImageFromAttachedImageFile(answer.getImageUrls());
+            controller.answerDetailScreen.screenshotPanel.setVisible(true);
         }
 
     }

@@ -11,7 +11,6 @@ import controller.Controller;
 import org.jetbrains.annotations.NotNull;
 import org.xml.sax.SAXException;
 
-import javax.swing.*;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.text.BadLocationException;
@@ -50,7 +49,7 @@ public class ToolWindowPluginFactory implements ToolWindowFactory {
         TutorialScreen tutorialScreen = new TutorialScreen();
 
 
-        SendRequestScreen sendRequestScreen = new SendRequestScreen(controller, toolWindow, tutorialScreen);
+
         //MailBoxScreen mailBoxScreen = null;
         //mailBoxScreen = new MailBoxScreen(controller, toolWindow);
         MailBoxScreen mailBoxScreen = new MailBoxScreen(controller);
@@ -60,20 +59,23 @@ public class ToolWindowPluginFactory implements ToolWindowFactory {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
         AssistanceScreen assistanceScreen = new AssistanceScreen(controller);
+        SendRequestScreen sendRequestScreen = new SendRequestScreen(controller, toolWindow, assistanceScreen, settingScreen);
         LoginScreen loginScreen = new LoginScreen(controller);
         //30.11.
-        AnswerDetailScreen1 answerDetailScreen1 = new AnswerDetailScreen1(controller);
+        AnswerDetailScreen answerDetailScreen = new AnswerDetailScreen(controller);
 
         //30.11.
         contentRequest = contentFactory.createContent(sendRequestScreen.getContent(), "Hilfe anfragen", false);
         contentMailBox = contentFactory.createContent(mailBoxScreen.getContent(), "Antworten", false);
+        assert settingScreen != null;
         contentSettings = contentFactory.createContent(settingScreen.getContent(), "Einstellungen", false);
         contentAssistance = contentFactory.createContent(assistanceScreen.getContent(), "Hilfestellung", false);
         contentTutorial = contentFactory.createContent(tutorialScreen.getContent(), "Tutorial", false);
         contentLogin = contentFactory.createContent(loginScreen.getContent(), "Login", false);
         //30.11.
-        contentAnswerDetail = contentFactory.createContent(answerDetailScreen1.getContent(), "Detailansicht", false);
+        contentAnswerDetail = contentFactory.createContent(answerDetailScreen.getContent(), "Detailansicht", false);
 
         //Angezeigte Inhalte werden hier gemanaged
         if (controller.isLoggedIn) {

@@ -1,7 +1,6 @@
 package communication;
 
 import adapters.GHIssueToAnswerAdapter;
-import android.os.SystemPropertiesProto;
 import answers.Answer;
 import answers.AnswerList;
 import config.Constants;
@@ -139,8 +138,9 @@ public class GitHubModel {
                     Answer answer = adapter.transform(closedIssue);
 
                     if(!answerList.containsId(idxSent)) {
-                        controller.mailModel.sendMailToStudent(answer.getAnswerMessage());
+
                         answerList.add(answer);
+                        controller.mailModel.sendMailToStudent(answer.getAnswerMessage());
                         //18.10. Wichtig! Im Repo kann man nach einem Issue nur nur mit der Nummer, also dem fortlaufendem Index suchen
                         answerNumber = answer.getAnswerNumber();
                         controller.XMLFileReader.modifyAnswerList(answerNumber);
@@ -150,10 +150,11 @@ public class GitHubModel {
                         controller.gitModel.cloneBranch(matchIssueWithBranch(closedIssue));
                         controller.onNewAnswerData();
                         //28.11. auskommentiert wegen NullpointerException
-                        controller.answerDetailScreen1.activateOpenCodeButton();
+                        //02.12. BUG - für Studienzwecke sollen die Tutoren bitte immer was kommentieren
+                       // controller.answerDetailScreen1.activateOpenCodeButton();
                         //controller.openRequestsModel.decrementOpenRequestsNumber();
 
-                        controller.logData("Anfrage beantwortet");
+                        controller.logData("Anfrage beantwortet, Nummer: " + answer.getAnswerNumber() );
                     }
                 }
             }
@@ -214,6 +215,16 @@ public class GitHubModel {
         }
     }
 
+    //TODO verknüpfen, reparieren!!
+    public void setProblemSolvedLabel() {
+        String problemSolvedLabel = Constants.PROBLEM_SOLVED_SUCCESSFULLY;
+        try {
+            issue.addLabels(problemSolvedLabel);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void setFeedbackText(String prefix, String feedbackMessage) {
         try {
             feedbackComment = issue.comment(prefix + Constants.SEPARATOR + feedbackMessage);
@@ -222,13 +233,5 @@ public class GitHubModel {
         }
     }
 
-    //TODO verknüpfen
-    public void setProblemSolvedLabel() {
-        String problemSolvedLabel = "Problem erfolgreich gelöst!";
-        try {
-            issue.addLabels(problemSolvedLabel);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+
 }

@@ -190,10 +190,6 @@
     <option name="wheel" hit="Zoom image with  mouse wheel (Ctrl+Mouse Wheel)" />
     <option name="with" hit="Zoom image with  mouse wheel (Ctrl+Mouse Wheel)" />
     <option name="zoom" hit="Zoom image with  mouse wheel (Ctrl+Mouse Wheel)" />
-    <option_top_hit name="Images: Editor: Show Grid lines by default" />
-    <option_top_hit name="Images: Editor: Show transparency chessboard by default" />
-    <option_top_hit name="Images: Editor: Zoom image with \u001Bmouse wheel (Ctrl+Mouse Wheel)" />
-    <option_top_hit name="Images: Editor: Enable smart zooming" />
   </configurable>
 </options>
 

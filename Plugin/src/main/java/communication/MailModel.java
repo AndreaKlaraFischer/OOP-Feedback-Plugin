@@ -22,10 +22,11 @@ public class MailModel {
     }
 
     public void sendMailToTutors() {
-        String toEmail = "andrea.fischer@stud.uni-regensburg.de";
+        //String toEmail = "andrea.fischer@stud.uni-regensburg.de";
+        String toEmail = Constants.EMAIL_ADDRESS_LIST_TUTORS;
         //Test Mail an mich, später soll es natürlich an den Mailverteiler der Tutoren gehen
         Session session = Session.getInstance(props, auth);
-        String body = " Hallo liebes Tutorenteam,\n \n" + Constants.EMAIL_BODY + "https://github.com" + "\n \n" + Constants.EMAIL_BODY_INFORMATION;
+        String body =  Constants.EMAIL_BODY + "\n \n" + Constants.EMAIL_BODY_INFORMATION;
         //private String toEmail = Constants.EMAIL_ADDRESS_LIST_TUTORS;
 
         sendEmail(session, fromEmail, toEmail, Constants.EMAIL_SUBJECT, body);

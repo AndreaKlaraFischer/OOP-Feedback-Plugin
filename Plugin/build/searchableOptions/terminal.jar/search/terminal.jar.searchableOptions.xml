@@ -66,6 +66,9 @@
     <option name="shell" hit="Shell integration" />
     <option name="path" hit="Shell path" />
     <option name="shell" hit="Shell path" />
+    <option name="command" hit="Smart command handling" />
+    <option name="handling" hit="Smart command handling" />
+    <option name="smart" hit="Smart command handling" />
     <option name="directory" hit="Start directory" />
     <option name="start" hit="Start directory" />
     <option name="name" hit="Tab name" />

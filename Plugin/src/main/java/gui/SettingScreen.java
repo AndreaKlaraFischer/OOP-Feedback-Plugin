@@ -6,6 +6,7 @@ import com.intellij.openapi.ui.popup.Balloon;
 import controller.Controller;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -38,13 +39,17 @@ public class SettingScreen implements ActionListener {
         controller.settingScreen = this;
         this.controller = controller;
         studentNameInput = inputNameField.getText(); //Brauche ich das überhaupt noch?
+        generateAnonymousNameButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         generateAnonymousNameButton.addActionListener(this);
+        saveSettingsButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         saveSettingsButton.addActionListener(this);
+        toQuestionnaireButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         toQuestionnaireButton.addActionListener(this);
 
         balloonPopup = new BalloonPopup();
         inputNameField.setText(controller.getStudentNameInXML());
         inputMailAddressField.setText(controller.getStudentMailInXML());
+
 
         if(controller.isNewRegistered) {
             showWelcomeInfo();
@@ -91,7 +96,11 @@ public class SettingScreen implements ActionListener {
                 }
             }
         } else if(clickedButton == toQuestionnaireButton) {
-            controller.onSubmitQuestionnaireButtonPressed();
+            try {
+                controller.onSubmitQuestionnaireButtonPressed();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
             toQuestionnairePanel.setVisible(false);
         }
     }
@@ -104,16 +113,14 @@ public class SettingScreen implements ActionListener {
     }
 
     private void showInvalidMailError() {
-        balloonPopup.createBalloonPopup(settingScreenContent, Balloon.Position.above, "Ungültige Email-Adresse!", MessageType.ERROR);
+        balloonPopup.createBalloonPopup(settingScreenContent, Balloon.Position.above, "Ungueltige Email-Adresse!", MessageType.ERROR);
     }
 
     private void showNoMailError() {
-        balloonPopup.createBalloonPopup(settingScreenContent, Balloon.Position.above, "Bitte eine gültige Mailadresse angeben!", MessageType.ERROR);
+        balloonPopup.createBalloonPopup(settingScreenContent, Balloon.Position.above, "Bitte eine gueltige Mailadresse angeben!", MessageType.ERROR);
     }
 
     private void showNoNameError() {
         balloonPopup.createBalloonPopup(settingScreenContent, Balloon.Position.above, "Bitte einen Namen eingeben!.", MessageType.ERROR);
     }
-
-
 }

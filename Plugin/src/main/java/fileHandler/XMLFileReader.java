@@ -132,12 +132,21 @@ public class XMLFileReader {
         bw.close();
     }
 
-    public void modifyDate(String currentDate) {
+    public void modifyDate(String currentDate) throws IOException {
         //saves one day (substring instead of"SimpleDateFormat")
         String date = currentDate.substring(0,10);
         for (Element e : doc.getElementsByTag("date")) {
             e.text(date);
         }
+
+        File file = new File(xmlFilePath);
+        String content = doc.toString();
+
+        FileWriter fw = new FileWriter(file.getAbsoluteFile());
+        BufferedWriter bw = new BufferedWriter(fw);
+        // Write in file, overwrites file
+        bw.write(content);
+        bw.close();
     }
 
     public void modifyUserID(String userID) {

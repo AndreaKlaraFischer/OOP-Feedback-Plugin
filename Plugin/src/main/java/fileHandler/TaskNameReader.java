@@ -18,6 +18,7 @@ public class TaskNameReader {
 
     //https://howtodoinjava.com/java/io/java-read-file-to-string-examples/
     //Hier hole ich den Namen der Studienleistung
+    //TODO: if(.name.exists)
     public String readNameOfTaskFromNameFile() throws FileNotFoundException {
         Scanner taskNameScanner = new Scanner(new File(nameFilePath)).useDelimiter("\n");
         String taskName;

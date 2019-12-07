@@ -3,49 +3,101 @@ package gui;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.openapi.ui.popup.Balloon;
 import com.intellij.openapi.wm.ToolWindow;
+import com.sun.javafx.cursor.CursorType;
 import controller.Controller;
+import org.intellij.lang.annotations.JdkConstants;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class SendRequestScreen implements ActionListener{
-    private JButton submitRequestButton;
+    public JButton submitRequestButton;
     private JPanel sendRequestScreenContent;
     public JComboBox selectCategory;
     //TODO: Maximalwidth!
     public JTextArea inputMessageArea;
     private JButton selectFileButton;
     private JLabel bookmarkHyperlink;
-    private JLabel screenshotHyperlink;
     public JLabel attachedScreenshotsLabel;
     private JPanel container;
     private JPanel introductionPanel;
     private JPanel sendRequestPanel;
+    private JTextPane introductionTextPane;
+    private JLabel settingsHyperlink;
+    public JButton deleteScreenshotsButton;
+    public JPanel attachedScreenshotPanel;
+    private JLabel assistanceHyperlink;
+    private JLabel currentNameLabel;
+    private JPanel nameSettingsPanel;
     public Controller controller;
     private BalloonPopup balloonPopup;
 
     //Beschreiben, wie man Screenshots macht (Screenshot Tool, Druck-Taste)
 
 
-    public SendRequestScreen(Controller controller, ToolWindow toolWindow, TutorialScreen tutorialScreen) {
+    public SendRequestScreen(Controller controller, ToolWindow toolWindow, AssistanceScreen assistanceScreen, SettingScreen settingScreen) {
         this.controller = controller;
         controller.sendRequestScreen = this;
         balloonPopup = new BalloonPopup();
-
+        //02.12.
+        currentNameLabel.setText("Angemeldet als " + controller.getStudentNameInXML());
+        String settingHyperlinkText = "Namen bearbeiten";
+        ///ByteBuffer byteBuffer = StandardCharsets.UTF_8.encode(settingHyperlinkText);
+        byte[] bytes = settingHyperlinkText.getBytes(StandardCharsets.UTF_8);
+        String settingHyperlinkText2 = new String(bytes, StandardCharsets.UTF_8);
+        settingsHyperlink.setText("<HTML><U>" + settingHyperlinkText2 + "</U></HTML>");
+        settingsHyperlink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        String assistanceHyperlinkText = "Hilfestellung";
+        assistanceHyperlink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        assistanceHyperlink.setText("<HTML><U>Wenn du dir mit einer Fehlermeldung unsicher bist, schaue in der "  + assistanceHyperlinkText + " nach</U></HTML>");
+        deleteScreenshotsButton.addActionListener(this);
+        deleteScreenshotsButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         submitRequestButton.addActionListener(this);
+        submitRequestButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         selectFileButton.addActionListener(this::openFileSelector);
-        attachedScreenshotsLabel.setVisible(false);
+        selectFileButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        //TODO: Labeltext ändern zu: noch kein Name angegeben (wenn leer)
 
         if(controller.isLoggedIn) {
             showWelcomeBackInfo();
         }
-        screenshotHyperlink.addMouseListener(new MouseAdapter() {
+        assistanceHyperlink.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                toolWindow.getContentManager().setSelectedContent(toolWindow.getContentManager().getContent(tutorialScreen.getContent()));
+                toolWindow.getContentManager().setSelectedContent(toolWindow.getContentManager().getContent(assistanceScreen.getContent()));
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+        settingsHyperlink.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                toolWindow.getContentManager().setSelectedContent(toolWindow.getContentManager().getContent(settingScreen.getContent()));
             }
 
             @Override
@@ -75,6 +127,10 @@ public class SendRequestScreen implements ActionListener{
         return sendRequestScreenContent;
     }
 
+    private Object getClickedButton(ActionEvent e) {
+        return e.getSource();
+    }
+
 
     private void openFileSelector(ActionEvent actionEvent)  {
         controller.onSelectFileButtonPressed();
@@ -83,12 +139,26 @@ public class SendRequestScreen implements ActionListener{
     //https://javabeginners.de/Design_Patterns/Model-View-Controller.php
     @Override
     public void actionPerformed(ActionEvent e) {
-        saveSelectedCategoryAsString();
-        controller.onSubmitRequestButtonPressed();
+        Object clickedButton = getClickedButton(e);
+        if(clickedButton == deleteScreenshotsButton) {
+            //TODO: Refactoren
+            if(controller.screenshotModel.screenshotTitles.size() > 0) {
+                controller.screenshotModel.deleteScreenshots();
+                showDeletedScreenshotListWarning();
+            }
+        } else if (clickedButton == submitRequestButton) {
+            saveSelectedCategoryAsString();
+            controller.onSubmitRequestButtonPressed();
+        }
+
     }
 
-    public void showWelcomeBackInfo() {
-        balloonPopup.createBalloonPopup(sendRequestScreenContent, Balloon.Position.above, "Willkommen zurück!" + controller.getStudentNameInXML(), MessageType.INFO);
+    private void showDeletedScreenshotListWarning() {
+        balloonPopup.createBalloonPopup(sendRequestScreenContent, Balloon.Position.above, "Screenshots entfernt", MessageType.WARNING );
+    }
+
+    private void showWelcomeBackInfo() {
+        balloonPopup.createBalloonPopup(sendRequestScreenContent, Balloon.Position.above, "Willkommen!" + controller.getStudentNameInXML(), MessageType.INFO);
     }
 
     public void showEmptyMessageError() {
@@ -117,5 +187,10 @@ public class SendRequestScreen implements ActionListener{
 
     public void showNoInternetWarning() {
         balloonPopup.createBalloonPopup(sendRequestScreenContent, Balloon.Position.above, "Keine Internetverbindung! Um Anfragen zu stellen, musst du mit dem Internet verbunden sein", MessageType.WARNING);
+    }
+
+    //3.12. TODO Das weniger duplicate
+    public void updateLabel() {
+        currentNameLabel.setText("Angemeldet als " + controller.getStudentNameInXML());
     }
 }

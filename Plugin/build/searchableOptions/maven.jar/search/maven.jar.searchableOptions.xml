@@ -244,19 +244,9 @@
     <option name="projects" path="ActionManager" hit="Reimport selected Maven projects" />
     <option name="reimport" path="ActionManager" hit="Reimport selected Maven projects" />
     <option name="selected" path="ActionManager" hit="Reimport selected Maven projects" />
-    <option name="projects" path="ActionManager" hit="Remove Projects" />
-    <option name="remove" path="ActionManager" hit="Remove Projects" />
     <option name="configuration" path="ActionManager" hit="Remove Run Configuration" />
     <option name="remove" path="ActionManager" hit="Remove Run Configuration" />
     <option name="run" path="ActionManager" hit="Remove Run Configuration" />
-    <option name="from" path="ActionManager" hit="Remove selected Maven projects from the project tree" />
-    <option name="maven" path="ActionManager" hit="Remove selected Maven projects from the project tree" />
-    <option name="project" path="ActionManager" hit="Remove selected Maven projects from the project tree" />
-    <option name="projects" path="ActionManager" hit="Remove selected Maven projects from the project tree" />
-    <option name="remove" path="ActionManager" hit="Remove selected Maven projects from the project tree" />
-    <option name="selected" path="ActionManager" hit="Remove selected Maven projects from the project tree" />
-    <option name="the" path="ActionManager" hit="Remove selected Maven projects from the project tree" />
-    <option name="tree" path="ActionManager" hit="Remove selected Maven projects from the project tree" />
     <option name="build" path="ActionManager" hit="Run Maven Build" />
     <option name="maven" path="ActionManager" hit="Run Maven Build" />
     <option name="run" path="ActionManager" hit="Run Maven Build" />
@@ -306,6 +296,20 @@
     <option name="mode" path="ActionManager" hit="Toggle offline mode for Maven builds" />
     <option name="offline" path="ActionManager" hit="Toggle offline mode for Maven builds" />
     <option name="toggle" path="ActionManager" hit="Toggle offline mode for Maven builds" />
+    <option name="maven" path="ActionManager" hit="Unlink Maven Projects" />
+    <option name="projects" path="ActionManager" hit="Unlink Maven Projects" />
+    <option name="unlink" path="ActionManager" hit="Unlink Maven Projects" />
+    <option name="and" path="ActionManager" hit="Unlink selected Maven projects and their subprojects from the project tree" />
+    <option name="from" path="ActionManager" hit="Unlink selected Maven projects and their subprojects from the project tree" />
+    <option name="maven" path="ActionManager" hit="Unlink selected Maven projects and their subprojects from the project tree" />
+    <option name="project" path="ActionManager" hit="Unlink selected Maven projects and their subprojects from the project tree" />
+    <option name="projects" path="ActionManager" hit="Unlink selected Maven projects and their subprojects from the project tree" />
+    <option name="selected" path="ActionManager" hit="Unlink selected Maven projects and their subprojects from the project tree" />
+    <option name="subprojects" path="ActionManager" hit="Unlink selected Maven projects and their subprojects from the project tree" />
+    <option name="the" path="ActionManager" hit="Unlink selected Maven projects and their subprojects from the project tree" />
+    <option name="their" path="ActionManager" hit="Unlink selected Maven projects and their subprojects from the project tree" />
+    <option name="tree" path="ActionManager" hit="Unlink selected Maven projects and their subprojects from the project tree" />
+    <option name="unlink" path="ActionManager" hit="Unlink selected Maven projects and their subprojects from the project tree" />
   </configurable>
   <configurable id="MavenSettings" configurable_name="Maven">
     <option name="-t" hit="-T option" />
@@ -316,27 +320,27 @@
     <option name="3" hit="Bundled (Maven 3)" />
     <option name="bundled" hit="Bundled (Maven 3)" />
     <option name="maven" hit="Bundled (Maven 3)" />
-    <option name="1" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.2.1/301f1c6520e1bee7f89a8b129cd983fe524b4ba5/ideaIC-2019.2.1/plugins/maven/lib/maven3" />
-    <option name="2" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.2.1/301f1c6520e1bee7f89a8b129cd983fe524b4ba5/ideaIC-2019.2.1/plugins/maven/lib/maven3" />
-    <option name="2019" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.2.1/301f1c6520e1bee7f89a8b129cd983fe524b4ba5/ideaIC-2019.2.1/plugins/maven/lib/maven3" />
-    <option name="301f1c6520e1bee7f89a8b129cd983fe524b4ba5" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.2.1/301f1c6520e1bee7f89a8b129cd983fe524b4ba5/ideaIC-2019.2.1/plugins/maven/lib/maven3" />
-    <option name="c" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.2.1/301f1c6520e1bee7f89a8b129cd983fe524b4ba5/ideaIC-2019.2.1/plugins/maven/lib/maven3" />
-    <option name="caches" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.2.1/301f1c6520e1bee7f89a8b129cd983fe524b4ba5/ideaIC-2019.2.1/plugins/maven/lib/maven3" />
-    <option name="com" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.2.1/301f1c6520e1bee7f89a8b129cd983fe524b4ba5/ideaIC-2019.2.1/plugins/maven/lib/maven3" />
-    <option name="files-2" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.2.1/301f1c6520e1bee7f89a8b129cd983fe524b4ba5/ideaIC-2019.2.1/plugins/maven/lib/maven3" />
-    <option name="gradle" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.2.1/301f1c6520e1bee7f89a8b129cd983fe524b4ba5/ideaIC-2019.2.1/plugins/maven/lib/maven3" />
-    <option name="idea" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.2.1/301f1c6520e1bee7f89a8b129cd983fe524b4ba5/ideaIC-2019.2.1/plugins/maven/lib/maven3" />
-    <option name="ideaic" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.2.1/301f1c6520e1bee7f89a8b129cd983fe524b4ba5/ideaIC-2019.2.1/plugins/maven/lib/maven3" />
-    <option name="ideaic-2019" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.2.1/301f1c6520e1bee7f89a8b129cd983fe524b4ba5/ideaIC-2019.2.1/plugins/maven/lib/maven3" />
-    <option name="intellij" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.2.1/301f1c6520e1bee7f89a8b129cd983fe524b4ba5/ideaIC-2019.2.1/plugins/maven/lib/maven3" />
-    <option name="jetbrains" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.2.1/301f1c6520e1bee7f89a8b129cd983fe524b4ba5/ideaIC-2019.2.1/plugins/maven/lib/maven3" />
-    <option name="lib" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.2.1/301f1c6520e1bee7f89a8b129cd983fe524b4ba5/ideaIC-2019.2.1/plugins/maven/lib/maven3" />
-    <option name="localadmin" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.2.1/301f1c6520e1bee7f89a8b129cd983fe524b4ba5/ideaIC-2019.2.1/plugins/maven/lib/maven3" />
-    <option name="maven" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.2.1/301f1c6520e1bee7f89a8b129cd983fe524b4ba5/ideaIC-2019.2.1/plugins/maven/lib/maven3" />
-    <option name="maven3" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.2.1/301f1c6520e1bee7f89a8b129cd983fe524b4ba5/ideaIC-2019.2.1/plugins/maven/lib/maven3" />
-    <option name="modules-2" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.2.1/301f1c6520e1bee7f89a8b129cd983fe524b4ba5/ideaIC-2019.2.1/plugins/maven/lib/maven3" />
-    <option name="plugins" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.2.1/301f1c6520e1bee7f89a8b129cd983fe524b4ba5/ideaIC-2019.2.1/plugins/maven/lib/maven3" />
-    <option name="users" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.2.1/301f1c6520e1bee7f89a8b129cd983fe524b4ba5/ideaIC-2019.2.1/plugins/maven/lib/maven3" />
+    <option name="1" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.3/5a74bbe98a814d61e6069abd0902b46668f1278c/ideaIC-2019.3/plugins/maven/lib/maven3" />
+    <option name="2019" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.3/5a74bbe98a814d61e6069abd0902b46668f1278c/ideaIC-2019.3/plugins/maven/lib/maven3" />
+    <option name="3" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.3/5a74bbe98a814d61e6069abd0902b46668f1278c/ideaIC-2019.3/plugins/maven/lib/maven3" />
+    <option name="5a74bbe98a814d61e6069abd0902b46668f1278c" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.3/5a74bbe98a814d61e6069abd0902b46668f1278c/ideaIC-2019.3/plugins/maven/lib/maven3" />
+    <option name="c" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.3/5a74bbe98a814d61e6069abd0902b46668f1278c/ideaIC-2019.3/plugins/maven/lib/maven3" />
+    <option name="caches" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.3/5a74bbe98a814d61e6069abd0902b46668f1278c/ideaIC-2019.3/plugins/maven/lib/maven3" />
+    <option name="com" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.3/5a74bbe98a814d61e6069abd0902b46668f1278c/ideaIC-2019.3/plugins/maven/lib/maven3" />
+    <option name="files-2" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.3/5a74bbe98a814d61e6069abd0902b46668f1278c/ideaIC-2019.3/plugins/maven/lib/maven3" />
+    <option name="gradle" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.3/5a74bbe98a814d61e6069abd0902b46668f1278c/ideaIC-2019.3/plugins/maven/lib/maven3" />
+    <option name="idea" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.3/5a74bbe98a814d61e6069abd0902b46668f1278c/ideaIC-2019.3/plugins/maven/lib/maven3" />
+    <option name="ideaic" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.3/5a74bbe98a814d61e6069abd0902b46668f1278c/ideaIC-2019.3/plugins/maven/lib/maven3" />
+    <option name="ideaic-2019" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.3/5a74bbe98a814d61e6069abd0902b46668f1278c/ideaIC-2019.3/plugins/maven/lib/maven3" />
+    <option name="intellij" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.3/5a74bbe98a814d61e6069abd0902b46668f1278c/ideaIC-2019.3/plugins/maven/lib/maven3" />
+    <option name="jetbrains" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.3/5a74bbe98a814d61e6069abd0902b46668f1278c/ideaIC-2019.3/plugins/maven/lib/maven3" />
+    <option name="lib" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.3/5a74bbe98a814d61e6069abd0902b46668f1278c/ideaIC-2019.3/plugins/maven/lib/maven3" />
+    <option name="localadmin" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.3/5a74bbe98a814d61e6069abd0902b46668f1278c/ideaIC-2019.3/plugins/maven/lib/maven3" />
+    <option name="maven" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.3/5a74bbe98a814d61e6069abd0902b46668f1278c/ideaIC-2019.3/plugins/maven/lib/maven3" />
+    <option name="maven3" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.3/5a74bbe98a814d61e6069abd0902b46668f1278c/ideaIC-2019.3/plugins/maven/lib/maven3" />
+    <option name="modules-2" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.3/5a74bbe98a814d61e6069abd0902b46668f1278c/ideaIC-2019.3/plugins/maven/lib/maven3" />
+    <option name="plugins" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.3/5a74bbe98a814d61e6069abd0902b46668f1278c/ideaIC-2019.3/plugins/maven/lib/maven3" />
+    <option name="users" hit="C:/Users/LocalAdmin/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2019.3/5a74bbe98a814d61e6069abd0902b46668f1278c/ideaIC-2019.3/plugins/maven/lib/maven3" />
     <option name="check" hit="Check For Updates" />
     <option name="for" hit="Check For Updates" />
     <option name="updates" hit="Check For Updates" />
@@ -558,14 +562,14 @@
   <configurable id="reference.settings.project.maven.ignored.files" configurable_name="Ignored Files">
     <option name="files" hit="Ignored Files" />
     <option name="ignored" hit="Ignored Files" />
-    <option name="files" hit="Ignored files" />
-    <option name="ignored" hit="Ignored files" />
-    <option name="allowed" hit="Path patterns (comma-separated, '*' and '?' wildcards allowed)" />
-    <option name="and" hit="Path patterns (comma-separated, '*' and '?' wildcards allowed)" />
-    <option name="comma-separated" hit="Path patterns (comma-separated, '*' and '?' wildcards allowed)" />
-    <option name="path" hit="Path patterns (comma-separated, '*' and '?' wildcards allowed)" />
-    <option name="patterns" hit="Path patterns (comma-separated, '*' and '?' wildcards allowed)" />
-    <option name="wildcards" hit="Path patterns (comma-separated, '*' and '?' wildcards allowed)" />
+    <option name="files" hit="Ignored files:" />
+    <option name="ignored" hit="Ignored files:" />
+    <option name="allowed" hit="Path patterns (comma-separated, '*' and '?' wildcards allowed):" />
+    <option name="and" hit="Path patterns (comma-separated, '*' and '?' wildcards allowed):" />
+    <option name="comma-separated" hit="Path patterns (comma-separated, '*' and '?' wildcards allowed):" />
+    <option name="path" hit="Path patterns (comma-separated, '*' and '?' wildcards allowed):" />
+    <option name="patterns" hit="Path patterns (comma-separated, '*' and '?' wildcards allowed):" />
+    <option name="wildcards" hit="Path patterns (comma-separated, '*' and '?' wildcards allowed):" />
   </configurable>
   <configurable id="reference.settings.project.maven.runner" configurable_name="Runner">
     <option name="actions" hit="Delegate IDE build/run actions to Maven" />

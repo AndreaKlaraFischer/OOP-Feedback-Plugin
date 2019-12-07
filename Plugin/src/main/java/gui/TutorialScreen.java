@@ -18,13 +18,20 @@ public class TutorialScreen {
     private JTextPane findAnswersTextPane;
     private JTextPane changeNameTextPane;
     private JTextPane withoutLoginTextPane;
-    private JTextPane feedbackForFeedbackTextPane;
-    private JTextPane screenshotTextPane;
-    private JTextPane anonymousQuestionsTextPane;
-    private JTextPane multipleDeviceTextPane;
-    private JTextPane forgotPasswordTextPane;
+    private JTextPane attachScreenshotsLabel;
+    private JTextPane durchDieLoginfunktionKannTextPane;
+    private JTextPane sollteDasPasswortVergessenTextPane;
     private JTextPane findAnswerTextPane;
     private JPanel Container;
+    private JTextPane questionnaireTextPane;
+    private JPanel sendRequestsPanel;
+    private JPanel attachScreenshotsPanel;
+    private JPanel changeNamePanel;
+    private JPanel withoutLoginPanel;
+    private JPanel multipleDevicePanel;
+    private JPanel forgotPasswordPanel;
+    private JPanel questionnairePanel;
+    private JPanel findAnswersPanel;
 
 
     public TutorialScreen()  {

@@ -3,28 +3,21 @@
   <change-notes>
       Add change notes here.&lt;br&gt;
       &lt;em&gt;most HTML tags may be used&lt;/em&gt;</change-notes>
-  <idea-version since-build="192.6262" until-build="192.*"/>
+  <idea-version since-build="193.5233" until-build="193.*"/>
   <id>oop_feedback_tool</id>
   <name>OOP-Feedback-Tool</name>
   <vendor email="" url="">Andrea Fischer Masterarbeit </vendor>
   <description>
-    Kurze Beschreibung des Plugins.&lt;br&gt;
-    &lt;em&gt;Kurze Beschreibung&lt;/em&gt;
+    Willkommen zum Feedback Plugin!.&lt;br&gt;
+    &lt;em&gt;Danke, dass du bei dieser Studie mitmachst. Mit diesem Plugin kannst du aus der Entwicklungsumgebung direkt heraus Fragen an das Tutorenteam stellen.&lt;/em&gt;
     </description>
-  <project-components>
-    <component>
-      <implementation-class>
-                controller.Controller
-            </implementation-class>
-    </component>
-  </project-components>
   <extensions defaultExtensionNs="com.intellij">
-    <toolWindow id="Plugin Tool Window" icon="/icons/preview.svg" anchor="right" factoryClass="gui.ToolWindowPluginFactory"/>
+    <toolWindow id="Feedback Plugin" anchor="right" factoryClass="gui.ToolWindowPluginFactory"/>
   </extensions>
   <actions>
-    <group id="MyPlugin.SampleMenu" text="Cooles neues Plugin" description="Greeting menu">
+    <group id="MyPlugin.SampleMenu" text="Feedback Plugin" description="Greeting menu">
       <add-to-group group-id="MainMenu" anchor="last"/>
-      <action id="Myplugin.Textboxes" class="actions.HelloAction" text="Hello" description="Says hello"/>
+      <action id="Myplugin.Textboxes" class="actions.OpenToolWindowAction" text="Zum Plugin"/>
     </group>
   </actions>
 </idea-plugin>

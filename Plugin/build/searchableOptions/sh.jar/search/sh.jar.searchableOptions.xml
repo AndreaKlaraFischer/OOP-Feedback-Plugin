@@ -133,6 +133,8 @@
     <option name="indented" hit="Switch cases will be indented" />
     <option name="switch" hit="Switch cases will be indented" />
     <option name="will" hit="Switch cases will be indented" />
+    <option name="size" hit="Tab size:" />
+    <option name="tab" hit="Tab size:" />
     <option name="character" hit="Use tab character" />
     <option name="tab" hit="Use tab character" />
     <option name="use" hit="Use tab character" />
