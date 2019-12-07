@@ -19,7 +19,7 @@ public class ScreenshotModel {
     public Controller controller;
     private String allImagesString;
     private boolean screenshotAttached;
-    private ArrayList<String> screenshotTitles;
+   public  ArrayList<String> screenshotTitles;
 
     public ScreenshotModel(Controller controller) {
         this.controller = controller;
@@ -48,12 +48,13 @@ public class ScreenshotModel {
                     }
                 });
             }
+            System.out.println("screenShotTitles: " + screenshotTitles);
             //Wenn es Screenshots gibt, dann Ordner erstellen und Screenshots hinzufügen
             if (screenshots.length > 0) {
                 screenshotAttached = true;
                 addScreenshotTitlesToLabel();
                 addScreenshotsToBranch();
-                controller.sendRequestScreen.showScreenshotAttachedInfo();
+               // controller.sendRequestScreen.showScreenshotAttachedInfo();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -63,8 +64,13 @@ public class ScreenshotModel {
 
     //TODO: Refactoren
     private void addScreenshotTitlesToLabel() {
-        controller.sendRequestScreen.attachedScreenshotsLabel.setText("Hochzuladende Screenshots: " + String.valueOf(controller.screenshotModel.screenshotTitles));
+        //TODO: reparieren
+        controller.sendRequestScreen.attachedScreenshotPanel.setVisible(true);
         controller.sendRequestScreen.attachedScreenshotsLabel.setVisible(true);
+
+        controller.sendRequestScreen.attachedScreenshotsLabel.setText(String.valueOf(controller.screenshotModel.screenshotTitles));
+        controller.sendRequestScreen.deleteScreenshotsButton.setVisible(true);
+
     }
 
     public boolean hasScreenShotAttached() {
@@ -96,5 +102,14 @@ public class ScreenshotModel {
             }
             // }
         //} TODO: NPE - Fixen?
+    }
+
+    //02.12.
+    public void deleteScreenshots() {
+        System.out.println("ScreenshotTitles vor clear: " + screenshotTitles);
+        screenshotTitles.clear();
+        System.out.println("ScreenshotTitles nach clear: " + screenshotTitles);
+        controller.sendRequestScreen.attachedScreenshotsLabel.setVisible(false);
+        controller.sendRequestScreen.deleteScreenshotsButton.setVisible(false);
     }
 }
