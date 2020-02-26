@@ -1,0 +1,23 @@
+<idea-plugin>
+  <version>1.0</version>
+  <change-notes>
+      Add change notes here.&lt;br&gt;
+      &lt;em&gt;most HTML tags may be used&lt;/em&gt;</change-notes>
+  <idea-version since-build="193.5233" until-build="193.*"/>
+  <id>oop_feedback_tool</id>
+  <name>OOP-Feedback-Tool</name>
+  <vendor email="" url="">Andrea Fischer Masterarbeit </vendor>
+  <description>
+    Willkommen zum Feedback Plugin!.&lt;br&gt;
+    &lt;em&gt;Danke, dass du bei dieser Studie mitmachst. Mit diesem Plugin kannst du aus der Entwicklungsumgebung direkt heraus Fragen an das Tutorenteam stellen.&lt;/em&gt;
+    </description>
+  <extensions defaultExtensionNs="com.intellij">
+    <toolWindow id="Feedback Plugin" anchor="right" factoryClass="gui.ToolWindowPluginFactory"/>
+  </extensions>
+  <actions>
+    <group id="MyPlugin.SampleMenu" text="Feedback Plugin" description="Greeting menu">
+      <add-to-group group-id="MainMenu" anchor="last"/>
+      <action id="Myplugin.Textboxes" class="actions.OpenToolWindowAction" text="Zum Plugin"/>
+    </group>
+  </actions>
+</idea-plugin>

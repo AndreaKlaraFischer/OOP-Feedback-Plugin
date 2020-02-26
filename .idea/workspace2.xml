@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="95edcfca-f3e8-43e5-ad20-eb0cc3938b04" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Plugin/src/main/java/answers/AnswerList.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plugin/src/main/java/answers/FeedbackForFeedback.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plugin/src/main/java/gui/ActionToolBar.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plugin/src/main/java/gui/SimpleToolWindowPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/idea-sandbox/system/index/stubs/Stubs.storage" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/build/idea-sandbox/system/index/stubs/Stubs.storage" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/idea-sandbox/system/index/stubs/Stubs.storage.values.at" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/build/idea-sandbox/system/index/stubs/Stubs.storage.values.at" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/idea-sandbox/system/index/stubs/Stubs.storage_i" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/build/idea-sandbox/system/index/stubs/Stubs.storage_i" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/idea-sandbox/system/index/stubs/Stubs_inputs" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/build/idea-sandbox/system/index/stubs/Stubs_inputs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/idea-sandbox/system/index/stubs/Stubs_inputs.values.at" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/build/idea-sandbox/system/index/stubs/Stubs_inputs.values.at" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/idea-sandbox/system/index/stubs/Stubs_inputs_i" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/build/idea-sandbox/system/index/stubs/Stubs_inputs_i" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/idea-sandbox/system/index/stubs/markdown.header/markdown.header.storage" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/build/idea-sandbox/system/index/stubs/markdown.header/markdown.header.storage" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/idea-sandbox/system/index/stubs/markdown.header/markdown.header.storage.len" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/build/idea-sandbox/system/index/stubs/markdown.header/markdown.header.storage.len" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/idea-sandbox/system/index/todoindex/fileIdToHashId" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/build/idea-sandbox/system/index/todoindex/fileIdToHashId" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/idea-sandbox/system/index/trigram.index/Trigram.Index.storage" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/build/idea-sandbox/system/index/trigram.index/Trigram.Index.storage" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/idea-sandbox/system/index/trigram.index/Trigram.Index.storage.values.at" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/build/idea-sandbox/system/index/trigram.index/Trigram.Index.storage.values.at" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/idea-sandbox/system/index/trigram.index/Trigram.Index.storage_i" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/build/idea-sandbox/system/index/trigram.index/Trigram.Index.storage_i" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/idea-sandbox/system/index/trigram.index/fileIdToHashId" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/build/idea-sandbox/system/index/trigram.index/fileIdToHashId" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/idea-sandbox/system/index/trigram.index/fileIdToHashId_i" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/build/idea-sandbox/system/index/trigram.index/fileIdToHashId_i" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/idea-sandbox/system/log/threadDumps-freeze-20190904-104609-IC-192.6262.58-RandomAccessFile.open0-7sec/threadDump-20190904-104616.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/idea-sandbox/system/vcs-users/d265f331.2" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/build/idea-sandbox/system/vcs-users/d265f331.2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/libs/oop_feedback_tool-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/build/libs/oop_feedback_tool-1.0.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/patchedPluginXmlFiles/plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/build/patchedPluginXmlFiles/plugin.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/Groovy.jar/search/Groovy.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/adt-ui.jar/search/adt-ui.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/android.jar/search/android.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/antIntegration.jar/search/antIntegration.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/built-in-server.jar/search/built-in-server.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/byteCodeViewer.jar/search/byteCodeViewer.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/configuration-store-impl.jar/search/configuration-store-impl.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/copyright.jar/search/copyright.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/coverage.jar/search/coverage.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/credential-store.jar/search/credential-store.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/devkit.jar/search/devkit.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/eclipse.jar/search/eclipse.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/editorconfig.jar/search/editorconfig.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/git4idea.jar/search/git4idea.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/github.jar/search/github.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/gradle-common.jar/search/gradle-common.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/gradle-java-maven.jar/search/gradle-java-maven.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/gradle-java.jar/search/gradle-java.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/hg4idea.jar/search/hg4idea.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/idea-junit.jar/search/idea-junit.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/idea.jar/search/idea.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/images.jar/search/images.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/intellij-dvcs.jar/search/intellij-dvcs.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/intellij-xml.jar/search/intellij-xml.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/java-api.jar/search/java-api.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/java-decompiler.jar/search/java-decompiler.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/java-i18n.jar/search/java-i18n.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/java-impl.jar/search/java-impl.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/javaFX.jar/search/javaFX.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/java_resources_en.jar/search/java_resources_en.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/json.jar/search/json.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/kotlin-plugin.jar/search/kotlin-plugin.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/markdown.jar/search/markdown.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/maven.jar/search/maven.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/oop_feedback_tool-1.0.jar/search/oop_feedback_tool-1.0.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/openapi.jar/search/openapi.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/platform-api.jar/search/platform-api.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/platform-impl.jar/search/platform-impl.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/properties.jar/search/properties.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/resources_en.jar/search/resources_en.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/settings-repository.jar/search/settings-repository.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/sh.jar/search/sh.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/spellchecker.jar/search/spellchecker.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/stats-collector.jar/search/stats-collector.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/stream-debugger.jar/search/stream-debugger.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/svn4idea.jar/search/svn4idea.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/tasks-core.jar/search/tasks-core.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/terminal.jar/search/terminal.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/testng-plugin.jar/search/testng-plugin.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/textmate.jar/search/textmate.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/uiDesigner.jar/search/uiDesigner.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/vcs-changeReminder.jar/search/vcs-changeReminder.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/xpath.jar/search/xpath.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/build/searchableOptions/yaml.jar/search/yaml.jar.searchableOptions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/src/main/java/adapters/GHIssueToAnswerAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/src/main/java/adapters/GHIssueToAnswerAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/src/main/java/answers/Answer.java" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/src/main/java/answers/Answer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/src/main/java/config/SettingsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/src/main/java/config/SettingsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/src/main/java/controller/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/src/main/java/controller/Controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/src/main/java/gui/AnswerDetailScreen.form" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/src/main/java/gui/AnswerDetailScreen.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/src/main/java/gui/AnswerDetailScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/src/main/java/gui/AnswerDetailScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/src/main/java/gui/MailBoxScreen.form" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/src/main/java/gui/MailBoxScreen.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/src/main/java/gui/MailBoxScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/src/main/java/gui/MailBoxScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/src/main/java/gui/SendRequestScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/src/main/java/gui/SendRequestScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/src/main/java/gui/SettingScreen.form" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/src/main/java/gui/SettingScreen.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/src/main/java/gui/SettingScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/src/main/java/gui/SettingScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/src/main/java/gui/ToolWindowPlugin.form.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/src/main/java/gui/TutorialScreen.form" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/src/main/java/gui/TutorialScreen.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/src/main/java/gui/TutorialScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/src/main/java/gui/TutorialScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/src/main/java/requests/GitHubListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/src/main/java/controller/GitHubListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/src/main/java/requests/GitHubModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/src/main/java/requests/GitHubModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/src/main/java/requests/GitModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/src/main/java/requests/GitModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/src/main/java/requests/IDCreator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/src/main/java/requests/IDCreator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/src/main/java/requests/OverviewTableModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/src/main/java/answers/AnswerTableModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/src/main/java/requests/Request.java" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/src/main/java/requests/Request.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/src/main/java/requests/ScreenshotModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/src/main/java/requests/ScreenshotModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin/src/main/java/requests/StudentRequestModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin/src/main/java/requests/StudentRequestModel.java" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view />
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="XSLT Stylesheet" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1QN1ZxHlJV0Vdn813DIxP8RjVOj" />
+  <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="UI_DESIGNER_EDITOR_MODE.PaletteManager.SHOW" value="false" />
+    <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH" value="424" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="external.system.task.project.file.to.start" value="$PROJECT_DIR$/Plugin" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Plugin" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.20151372" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
+    <property name="settings.editor.splitter.proportion" value="0.28834355" />
+  </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="$PROJECT_DIR$/Plugin" />
+      <command value="gradle" />
+    </option>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="C:/Users/LocalAdmin/Documents/OOP-Feedback-Plugin/Plugin" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/Plugin" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list />
+        </option>
+        <option name="vmOptions" value="" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.C:/Users/LocalAdmin/Documents/OOP-Feedback-Plugin/Plugin" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="95edcfca-f3e8-43e5-ad20-eb0cc3938b04" name="Default Changelist" comment="" />
+      <created>1567596298471</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1567596298471</updated>
+      <workItem from="1568900626871" duration="1185000" />
+      <workItem from="1568901845412" duration="211000" />
+      <workItem from="1568904928117" duration="22000" />
+      <workItem from="1568904998089" duration="21000" />
+      <workItem from="1568905073000" duration="145000" />
+      <workItem from="1569790519416" duration="23000" />
+      <workItem from="1569790565074" duration="19000" />
+      <workItem from="1570733084842" duration="49000" />
+      <workItem from="1570733189126" duration="844000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
