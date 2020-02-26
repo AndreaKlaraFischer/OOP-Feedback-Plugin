@@ -7,7 +7,7 @@ Das Plugin kann folgendermaßen in IntelliJ IDEA installiert werden:
 File -> Setting -> Plugins. Hier auf das Zahnrad klicken und "Install from Disk" und das Plugin auswählen.
 
 ## Benutzung
-Bei der ersten Benutzung des Plugins erscheint ein Registrierungsmenü. Die Registrierung ist notwenig, um den vollen Funktionsumfang des Plugins nutzen zu können. Nach der erfolgreichen Registrierung gelangt man auf das Einstellungsmenü, wo ein Name und eine E-Mail-Adresse eingeben werden müssen, um Anfragen schicken zu können.
+Bei der ersten Benutzung des Plugins erscheint ein Registrierungsmenü. Die Registrierung ist notwenig, um den vollen Funktionsumfang des Plugins nutzen zu können. Nach der erfolgreichen Registrierung gelangt man auf das Einstellungsmenü, in welchem ein Name und eine gültige E-Mail-Adresse eingeben werden müssen, um Anfragen schicken zu können.
 
 ### Hauptfunktionen
 Die Hauptfunktionen des Plugins sind:
