@@ -64,10 +64,10 @@ public class Controller {
     public ScreenshotModel screenshotModel;
     public MailModel mailModel;
     public LoginManager loginManager;
-    // Fragebogen
+    //Between Questionnaire
     private QuestionnaireDialog questionnaireDialog;
     public QuestionnaireTimeCalculator questionnaireTimeCalculator;
-    //
+    //Login
     private LoginDialog loginDialog;
     private RegistrationDialog registrationDialog;
     public XMLFileReader XMLFileReader;
@@ -84,9 +84,8 @@ public class Controller {
     public boolean isLoggedIn;
     public boolean isNewRegistered;
     public boolean isInitialized;
-
     private String srcFolderPath;
-    //
+    //Logging function
     private de.ur.mi.pluginhelper.User.User user;
     public Log log;
 
@@ -102,7 +101,6 @@ public class Controller {
         XMLFileCreator = new XMLFileCreator(this);
         XMLFileReader = new XMLFileReader(this);
         isInitialized = XMLFileReader.checkIfInitialized();
-        //
         openRequestsModel = new OpenRequestsModel(this);
         taskNameReader = new TaskNameReader(this);
         srcFolderPath = project.getBasePath() + Constants.CLONED_SRC_FOLDER;
@@ -147,7 +145,7 @@ public class Controller {
     }
 
     public void showWelcomeMenu() {
-        //Wenn bereits etwas in der XML-Datei steht
+        //if there is a password saved in the xml file, the project is initizialized
         if (XMLFileReader.checkIfInitialized()) {
             loginDialog.showLoginDialog();
         } else {
@@ -159,7 +157,7 @@ public class Controller {
         String password = getPasswordValidateInput();
         String encryptedPassword = loginManager.encryptPassword(password);
         String date = getCurrentDate();
-        //Hier wird das Passwort validiert
+        //password gets validated
         if (getPasswordValidateInput().length() >= Constants.MINIMUM_PASSWORD_LENGTH && getPasswordFirstInput().length() >= Constants.MINIMUM_PASSWORD_LENGTH) {
             if (getPasswordValidateInput().equals(getPasswordFirstInput())) {
                 loginManager.encryptPassword(password);
@@ -171,7 +169,7 @@ public class Controller {
                 isLoggedIn = true;
                 createTutorCommentsFolder();
                 gitIgnoreModifier.modifyGitignoreFile();
-                //Thread starten
+                //Thread which look for answers gets started
                 startLookForAnswersThread();
             } else {
                 registrationDialog.showPasswordsNotEqualError();
@@ -181,6 +179,7 @@ public class Controller {
        }
     }
 
+    //Callback for login button pressed
     public boolean onLoginButtonPressed() throws IOException, ParseException {
         if(getPasswordLogin().length() > 0) {
             if (loginManager.checkPassword()) {
@@ -189,7 +188,7 @@ public class Controller {
                 isLoggedIn = true;
                 logData("Eingeloggt");
                 checkForQuestionnaire();
-                //Thread starten
+                //Thread which look for answers gets started
                 startLookForAnswersThread();
                 return true;
             } else {
@@ -226,7 +225,7 @@ public class Controller {
     }
 
     private void showAnswersOnProgramStart() throws IOException {
-        //GitHub "durchsuchen" nach IssueIDList, Diese Issues dann in einer Liste speichern und diese dann der IssueList gleichsetzen
+        //Already answered requests are searched in GitHub by number
         issueList = getIssueList();
 
         List<Answer> alreadyAnsweredRequests = getAlreadyAnsweredRequests();
@@ -261,13 +260,14 @@ public class Controller {
             this.requestMessage = requestMessage;
         }
 
-        //Das ist ein Thread, getrickst, um die richtige Reihenfolge zu bekommen
+        /*This thread is for getting the correct order of actions: on click of the submit request button,
+        * first, the button should turn grey and change its text in order to inform the user that the request is in process*/
         public void run() {
             String title = gitHubModel.createIssueTitle(studentName, requestDate);
             String labelCategory = getProblemCategory();
-            //TODO: das jeweils anpassen
+            //When there is no .name file, this has to be hardcoded for labeling the current project to the issues
             String labelTask = "WS1920 SL2";
-            //03.12. auskommentiert, weil .name file nicht vorhanden
+            //only works, if there is a .name file
             /*String labelTask = null;
             try {
 
@@ -329,17 +329,16 @@ public class Controller {
             sendRequestScreen.showNoNameError();
         } else {
             try {
-                //ausgrauen, um Feedback zu geben, dass Anfrage verarbeitet wird
+                //turns grey to inform the users that the request is in process
                 sendRequestScreen.submitRequestButton.setBackground(JBColor.LIGHT_GRAY);
                 sendRequestScreen.submitRequestButton.setText("Anfrage wird verarbeitet");
                 sendRequestScreen.submitRequestButton.setEnabled(false);
                 sendRequestScreen.getContent().validate();
                 sendRequestScreen.submitRequestButton.repaint();
-                //Thread wird gestartet, damit alles in der richtigen Reihenfolge abläuft
+                //Thread is startet for the correct order
                 new RequestAnswerThread(studentName, requestDate, requestMessage).start();
 
             } catch (Exception e) {
-                //Fehlermeldung (sinnvoll)
                 e.printStackTrace();
                 sendRequestScreen.showErrorMessage(e.getMessage());
             }
