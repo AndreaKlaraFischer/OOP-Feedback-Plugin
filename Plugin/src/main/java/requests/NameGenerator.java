@@ -17,7 +17,6 @@ public class NameGenerator {
         String firstName = faker.name().firstName();
         String lastName = faker.name().lastName();
         anonymousName = "Anonym " + firstName + " " + lastName;
-        System.out.println("anonymousName: " + anonymousName);
         controller.settingScreen.inputNameField.setText(anonymousName);
     }
 }

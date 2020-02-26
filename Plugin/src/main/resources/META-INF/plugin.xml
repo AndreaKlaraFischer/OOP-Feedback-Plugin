@@ -8,29 +8,12 @@
     <em>Danke, dass du bei dieser Studie mitmachst. Mit diesem Plugin kannst du aus der Entwicklungsumgebung direkt heraus Fragen an das Tutorenteam stellen.</em>
     ]]></description>
 
-    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
-         on how to target different products -->
-    <!-- uncomment to enable plugin in all products
-    <depends>com.intellij.modules.lang</depends>
-    -->
-
-    <!--https://www.jetbrains.org/intellij/sdk/docs/basics/plugin_structure/plugin_configuration_file.html-->
-    <!--Ruft Starterklasse auf-->
-    <!--<project-components>
-        <component>
-            <implementation-class>
-                controller.Controller
-            </implementation-class>
-        </component>
-    </project-components>-->
-
     <extensions defaultExtensionNs="com.intellij">
         <!--Toolwindow-->
         <toolWindow id="Feedback Plugin" anchor="right" factoryClass="gui.ToolWindowPluginFactory"/>
     </extensions>
 
     <actions>
-        <!-- Add your actions here -->
         <group id="MyPlugin.SampleMenu" text="Feedback Plugin" description="Greeting menu">
             <add-to-group group-id="MainMenu" anchor="last"/>
             <action id="Myplugin.Textboxes" class="actions.OpenToolWindowAction" text="Zum Plugin"/>

@@ -21,29 +21,24 @@ public class XMLFileCreator {
         this.controller = controller;
     }
 
+    //create config file in .idea folder
     public void createFile() {
         try {
             String xmlFilePath = project.getBasePath() + Constants.CONFIG_FILE_PATH;
-            System.out.println(xmlFilePath);
-
             File file = new File(xmlFilePath);
-            System.out.println(file);
-
-            // If file doesn't exists, then create it
             if (!file.exists()) {
-                file.createNewFile(); //boolean
+                file.createNewFile();
                 FileWriter fileWriter = new FileWriter(file.getAbsoluteFile(), true);
                 bufferedWriter = new BufferedWriter(fileWriter);
                 writeXMLStructure();
                 bufferedWriter.close();
             }
         } catch (Exception e) {
-            System.out.println("Hier kommt die NPE");
             System.out.println(e);
         }
     }
 
-    //"\\s" = space
+    //structure of XML file
     private void writeXMLStructure() throws IOException {
        bufferedWriter.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "\n" +
                "<configuration>" + "\n" +

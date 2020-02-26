@@ -29,19 +29,14 @@ public class AnnotatedCodeWindow extends JFrame {
     // https://www.tutorialspoint.com/swingexamples/example_of_tabbed_pane.htm
     //30.11. auskommentiert zu Testzwecken --> Erstmal nur Tab anzeigen
     public void createWindow(List<File> modifiedFiles) throws BadLocationException, GitAPIException, IOException {
-    //public void createWindow() throws BadLocationException, GitAPIException, IOException {
         JFrame codeFrame = new JFrame("Annotierter Code");
-        //30.11.
         createUI(codeFrame, modifiedFiles);
-        //createUI(codeFrame);
         codeFrame.setSize(560, 600);
         codeFrame.setLocationRelativeTo(null);
         codeFrame.setVisible(true);
     }
 
-    //TODO: Das muss noch ausgelagert werden, oder? Am besten nicht in der View.
      private void createUI(JFrame codeFrame, List<File> modifiedFiles) throws BadLocationException, GitAPIException, IOException {
-    //private void createUI(JFrame codeFrame) throws BadLocationException, GitAPIException, IOException {
         JBTabbedPane tabbedPane = new JBTabbedPane();
 
        for (File modifiedFile : modifiedFiles) {
@@ -59,7 +54,7 @@ public class AnnotatedCodeWindow extends JFrame {
         viewInfoLabel.setText("Du befindest dich in der Ansicht des vom Tutor bearbeiteten Code.");
         panel.setLayout((new GridLayout(2, 1)));
         panel.add(filler);
-        panel.add(viewInfoLabel); //TODO: Da noch rausfinden, wie ich das als ganz niedriges Label machen kann!
+        panel.add(viewInfoLabel);
         JBScrollPane scrollPane = new JBScrollPane(panel);
         scrollPane.setViewportView(panel);
         tabbedPane.addTab(title, null, scrollPane);

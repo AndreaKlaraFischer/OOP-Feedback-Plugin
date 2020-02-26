@@ -20,7 +20,6 @@ public class SendRequestScreen implements ActionListener{
     public JButton submitRequestButton;
     private JPanel sendRequestScreenContent;
     public JComboBox selectCategory;
-    //TODO: Maximalwidth!
     public JTextArea inputMessageArea;
     private JButton selectFileButton;
     private JLabel bookmarkHyperlink;
@@ -45,13 +44,9 @@ public class SendRequestScreen implements ActionListener{
         this.controller = controller;
         controller.sendRequestScreen = this;
         balloonPopup = new BalloonPopup();
-        //02.12.
         currentNameLabel.setText("Angemeldet als " + controller.getStudentNameInXML());
         String settingHyperlinkText = "Namen bearbeiten";
-        ///ByteBuffer byteBuffer = StandardCharsets.UTF_8.encode(settingHyperlinkText);
-        byte[] bytes = settingHyperlinkText.getBytes(StandardCharsets.UTF_8);
-        String settingHyperlinkText2 = new String(bytes, StandardCharsets.UTF_8);
-        settingsHyperlink.setText("<HTML><U>" + settingHyperlinkText2 + "</U></HTML>");
+        settingsHyperlink.setText("<HTML><U>" + settingHyperlinkText + "</U></HTML>");
         settingsHyperlink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         String assistanceHyperlinkText = "Hilfestellung";
         assistanceHyperlink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -141,7 +136,6 @@ public class SendRequestScreen implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         Object clickedButton = getClickedButton(e);
         if(clickedButton == deleteScreenshotsButton) {
-            //TODO: Refactoren
             if(controller.screenshotModel.screenshotTitles.size() > 0) {
                 controller.screenshotModel.deleteScreenshots();
                 showDeletedScreenshotListWarning();
@@ -185,11 +179,6 @@ public class SendRequestScreen implements ActionListener{
         return Objects.requireNonNull(selectCategory.getSelectedItem()).toString();
     }
 
-    public void showNoInternetWarning() {
-        balloonPopup.createBalloonPopup(sendRequestScreenContent, Balloon.Position.above, "Keine Internetverbindung! Um Anfragen zu stellen, musst du mit dem Internet verbunden sein", MessageType.WARNING);
-    }
-
-    //3.12. TODO Das weniger duplicate
     public void updateLabel() {
         currentNameLabel.setText("Angemeldet als " + controller.getStudentNameInXML());
     }

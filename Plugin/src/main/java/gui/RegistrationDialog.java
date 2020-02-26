@@ -21,20 +21,17 @@ public class RegistrationDialog  implements ActionListener {
     private Controller controller;
     private JDialog registrationDialog;
 
-    //TODO: Geht noch nicht.
     public RegistrationDialog(Controller controller) {
         this.controller = controller;
         registrationDialog = new JDialog();
         balloonPopup = new BalloonPopup();
         registrationDialog.setContentPane(contentPane);
-        //TODO Schaffen, dass es richtig geht
-        //registrationDialog.getRootPane().setDefaultButton(registrationButton);
         registrationDialog.setModal(true);
         registrationButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         registrationButton.addActionListener(this);
     }
 
-    public  void showRegistrationMenu (){
+    public void showRegistrationMenu() {
         registrationDialog.setSize(700,300);
         registrationDialog.setVisible(true);
     }
@@ -47,7 +44,7 @@ public class RegistrationDialog  implements ActionListener {
     public void showPasswordTooShortError() {
         balloonPopup.createBalloonPopup(contentPane, Balloon.Position.above, "Passwort muss mindestens " + Constants.MINIMUM_PASSWORD_LENGTH + " Zeichen sein!", MessageType.ERROR);
     }
-    //TODO: UTF-8!
+
     public void showPasswordsNotEqualError() {
         balloonPopup.createBalloonPopup(contentPane, Balloon.Position.above, "Eingaben nicht identisch!", MessageType.ERROR);
     }

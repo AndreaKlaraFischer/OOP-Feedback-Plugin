@@ -16,25 +16,15 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     // https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit
     compile group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '2.2.0.201212191850-r'
-    //compile group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '5.5.1.201910021850-r'
-
     // https://mvnrepository.com/artifact/org.kohsuke/github-api
     compile group: 'org.kohsuke', name: 'github-api', version: '1.95'
-
     compile group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
-
     compile group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '2.0.4.1'
-
     compile group: 'org.jsoup', name: 'jsoup', version: '1.12.1'
-
     compile group: 'com.google.guava', name: 'guava', version: '20.0'
-
     compile group: 'com.github.javafaker', name: 'javafaker', version: '0.15'
-
     // https://mvnrepository.com/artifact/org.apache.commons/commons-text
     compile group: 'org.apache.commons', name: 'commons-text', version: '1.8'
-
-
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/

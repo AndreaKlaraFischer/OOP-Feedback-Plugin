@@ -18,35 +18,25 @@ public class Answer {
     private String tutorName;
     private Date answerDate;
     private List<String> imageUrls;
-    private boolean hasChanges;
-    //2.12.
     private String requestMessage;
 
-    //02.12. Test
-    //public Answer(int number, long id, String message, String tutor, Date date) {
     public Answer(int number, long id, String message, String tutor, Date date, String requestText) {
-        //public Answer(int number, long id, String message, String tutor, Date date, String requestText, boolean changes) {
         answerNumber = number;
         answerId = id;
         tutorName = tutor;
         answerDate = date;
         imageUrls = new ArrayList<>();
         answerMessage = extractImagesFromMessage(message);
-        //2.12.
         requestMessage = requestText;
-        hasChanges = false;
-
-        System.out.println("answerMessage:" + answerMessage);
-        System.out.println("imageUrls." + imageUrls);
     }
 
     public List getImageUrls() {
         return imageUrls;
     }
 
-    public String extractImagesFromMessage(String answerMessage) {
-        System.out.println("Ganze Nachricht: " + answerMessage);
-        //ArrayList<String> matches = new ArrayList<>();
+    //check with regex if there is an image in the message (images get presented as links in a certain syntax
+    //For displaying the answers correctly without the image links, those get removed
+    private String extractImagesFromMessage(String answerMessage) {
         String imageRegex = "!\\[(.*?)\\]\\((.*?)\\)";
         String urlRegex = "(?<=\\().*?(?=\\))";
         Pattern imagePattern = Pattern.compile(imageRegex, Pattern.CASE_INSENSITIVE);
@@ -55,17 +45,13 @@ public class Answer {
 
         while (imageMatcher.find()) {
             String match = answerMessage.substring(imageMatcher.start(0), imageMatcher.end(0));
-            System.out.println("match: " + match);
-
             Matcher urlMatcher = urlPattern.matcher(match);
 
             while(urlMatcher.find()) {
-                System.out.println("Ich komme in die zweite While-Schleife");
                 imageUrls.add(urlMatcher.group());
             }
         }
         answerMessage = answerMessage.replaceAll(imageRegex, "");
-        System.out.println("Nicht mehr ganze Nachricht: " + answerMessage);
         return answerMessage;
     }
 
@@ -74,20 +60,15 @@ public class Answer {
     }
 
     public String  getTutorName() {
-        //26.11. Auskommentiert, um den Test mit closedBy und so zu machen.
-        //if(tutorName == null) {
-            //return "Anonymer Tutor";
-       // } else {
             return tutorName;
-        //}
     }
 
-    public String getAnswerDate() {
+    String getAnswerDate() {
         DateFormat dateFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
         return dateFormat.format(answerDate);
     }
 
-    public long getAnswerId() {
+    long getAnswerId() {
         return answerId;
     }
 
@@ -97,10 +78,6 @@ public class Answer {
 
     public String getRequestMessage() {
         return requestMessage;
-    }
-
-    public boolean isHasChanges() {
-        return hasChanges;
     }
 
     @Override

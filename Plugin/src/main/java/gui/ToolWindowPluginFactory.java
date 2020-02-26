@@ -28,16 +28,13 @@ public class ToolWindowPluginFactory implements ToolWindowFactory {
     private Content contentAssistance;
     private Content contentLogin;
     private Content contentMailBox;
-    //30.11.
     private Content contentAnswerDetail;
-
-    public ToolWindow toolWindow;
+    private ToolWindow toolWindow;
 
     @Override
     public void createToolWindowContent(Project project, ToolWindow toolWindow) {
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         Controller controller = null;
-        //15.11.
         this.toolWindow = toolWindow;
         try {
             controller = new Controller(project, toolWindow);
@@ -47,8 +44,6 @@ public class ToolWindowPluginFactory implements ToolWindowFactory {
         }
 
         TutorialScreen tutorialScreen = new TutorialScreen();
-
-
 
         //MailBoxScreen mailBoxScreen = null;
         //mailBoxScreen = new MailBoxScreen(controller, toolWindow);
@@ -63,18 +58,15 @@ public class ToolWindowPluginFactory implements ToolWindowFactory {
         AssistanceScreen assistanceScreen = new AssistanceScreen(controller);
         SendRequestScreen sendRequestScreen = new SendRequestScreen(controller, toolWindow, assistanceScreen, settingScreen);
         LoginScreen loginScreen = new LoginScreen(controller);
-        //30.11.
         AnswerDetailScreen answerDetailScreen = new AnswerDetailScreen(controller);
 
-        //30.11.
-        contentRequest = contentFactory.createContent(sendRequestScreen.getContent(), "Hilfe anfragen", false);
+        contentRequest = contentFactory.createContent(sendRequestScreen.getContent(), "Hilfe Anfragen", false);
         contentMailBox = contentFactory.createContent(mailBoxScreen.getContent(), "Antworten", false);
         assert settingScreen != null;
         contentSettings = contentFactory.createContent(settingScreen.getContent(), "Einstellungen", false);
         contentAssistance = contentFactory.createContent(assistanceScreen.getContent(), "Hilfestellung", false);
         contentTutorial = contentFactory.createContent(tutorialScreen.getContent(), "Tutorial", false);
         contentLogin = contentFactory.createContent(loginScreen.getContent(), "Login", false);
-        //30.11.
         contentAnswerDetail = contentFactory.createContent(answerDetailScreen.getContent(), "Detailansicht", false);
 
         //Angezeigte Inhalte werden hier gemanaged
@@ -82,7 +74,7 @@ public class ToolWindowPluginFactory implements ToolWindowFactory {
             addDefaultContents();
             if (controller.isNewRegistered) {
                 toolWindow.getContentManager().setSelectedContent(contentSettings);
-                settingScreen.showWelcomeInfo(); //TODO: Das geht leider nicht
+                settingScreen.showWelcomeInfo();
             }
         } else {
             //Plugin soll nicht benutzbar sein, wenn man nicht eingeloggt ist.
@@ -90,7 +82,6 @@ public class ToolWindowPluginFactory implements ToolWindowFactory {
         }
 
         Controller finalController = controller;
-
         Controller finalController1 = controller;
         toolWindow.getComponent().addAncestorListener(new AncestorListener() {
             @Override
@@ -150,7 +141,6 @@ public class ToolWindowPluginFactory implements ToolWindowFactory {
     }
 
     public void addAnswerDetailContent() {
-        System.out.println("addAnswerDetailContent wird aufgerufen");
         toolWindow.getContentManager().removeContent(contentMailBox, false);
         toolWindow.getContentManager().addContent(contentAnswerDetail, 1);
         toolWindow.getContentManager().setSelectedContent(contentAnswerDetail);

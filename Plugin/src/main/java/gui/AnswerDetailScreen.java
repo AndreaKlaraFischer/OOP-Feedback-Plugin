@@ -56,13 +56,9 @@ public class AnswerDetailScreen implements ActionListener {
     public int selectedHelpfulness;
 
     public JFrame highResolutionFrame;
-    //17.11.
     public ArrayList<JButton> imageButtonList;
 
-    //TODO: TextPanes noch vertauschen!! im Screen
-    //TODO: Label setzen richtig machen
-    //TODO: Button anzeigen lassen!!
-
+    //TODO: Antwort Textpane scrollbar machen
     public AnswerDetailScreen(Controller controller) {
         this.controller = controller;
         controller.answerDetailScreen = this;
@@ -216,7 +212,6 @@ public class AnswerDetailScreen implements ActionListener {
             selectedHelpfulness = 3;
         } else if(clickedButton == sendFeedbackButton) {
             //01.12. Test, ob ich so beide Buttons verknüpfen kann
-            //TODO: NPE beheben!
             if(solvedProblemCheckbox.isSelected()) {
                // controller.sendProblemSolved();
                 controller.logData("Problem erfolgreich gelöst CheckBox");
@@ -247,11 +242,7 @@ public class AnswerDetailScreen implements ActionListener {
 
 
     public void activateOpenCodeButton() throws GitAPIException, IOException, BadLocationException {
-        System.out.println("controller hasChanges, sollte false sein: " + controller.hasChanges);
         if(controller.getModifiedFiles().size() > 0) {
-            //TODO: Das woanders noch machen!
-            //controller.hasChanges = true;
-            System.out.println("controller hasChanges, sollte true sein: " + controller.hasChanges);
             openCodeButton.setVisible(true);
             openCodeButton.setEnabled(true);
         }
@@ -269,7 +260,6 @@ public class AnswerDetailScreen implements ActionListener {
                 icon = new ImageIcon(scaledImage);
                 //Bild dem Button hinzufügen
                 JButton imageButton = new JButton(icon);
-                //17.11.
                 imageButtonList.add(imageButton);
                 imageButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 imageButton.addActionListener(e -> {
@@ -277,13 +267,7 @@ public class AnswerDetailScreen implements ActionListener {
                     controller.logData("Screenshot geöffnet");
                 });
                 //answerDetailScreenContent.add(imageButton);
-                System.out.println("screenshotPaneL vor neu erstellen: " + screenshotPanel);
-                System.out.println("imagebutton vor neu erstellen: " + imageButton);
                 screenshotPanel.add(imageButton);
-                System.out.println("screenshotPanel nach neu erstellem: " + screenshotPanel);
-
-                //Versuch
-                //addImageToFrame(image);
             }
         } catch (IOException e) {
             e.printStackTrace();

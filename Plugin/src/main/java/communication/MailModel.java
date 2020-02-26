@@ -22,20 +22,15 @@ public class MailModel {
     }
 
     public void sendMailToTutors() {
-        //String toEmail = "andrea.fischer@stud.uni-regensburg.de";
         String toEmail = Constants.EMAIL_ADDRESS_LIST_TUTORS;
-        //Test Mail an mich, später soll es natürlich an den Mailverteiler der Tutoren gehen
         Session session = Session.getInstance(props, auth);
         String body =  Constants.EMAIL_BODY + "\n \n" + Constants.EMAIL_BODY_INFORMATION;
-        //private String toEmail = Constants.EMAIL_ADDRESS_LIST_TUTORS;
-
         sendEmail(session, fromEmail, toEmail, Constants.EMAIL_SUBJECT, body);
     }
 
     public void sendMailToStudent(String answerMessage) {
         Session session = Session.getInstance(props, auth);
         String toMail = controller.getStudentMail();
-        System.out.println("sendMailToStudent wurde aufgerufen");
         sendEmail(session, fromEmail, toMail, Constants.EMAIL_SUBJECT_ANSWER, answerMessage);
     }
 
@@ -75,7 +70,6 @@ public class MailModel {
 
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
             Transport.send(message);
-            System.out.println("EMail Sent Successfully!!");
         }
         catch (Exception e) {
             e.printStackTrace();

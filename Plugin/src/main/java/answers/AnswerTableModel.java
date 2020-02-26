@@ -7,11 +7,8 @@ import java.util.ArrayList;
 
 //http://www2.hawaii.edu/~takebaya/ics111/jtable_custom/jtable_custom.html
 public class AnswerTableModel extends AbstractTableModel {
-    //private String[] columnNames = {"Antwort", "Tutor", "Datum"};
-    //02.12. Test, die Tabelle zu ändern, damit die Reihenfolge sinnvoller ist
     private String[] columnNames = {"Datum", "Tutor", "Antworten"};
     private ArrayList<Answer> rowList;
-
     public AnswerTableModel(AnswerList answerList) {
         rowList = answerList.getAnswerList();
     }
@@ -37,7 +34,6 @@ public class AnswerTableModel extends AbstractTableModel {
         Object temp = null;
         if (col == 0) {
             temp = rowList.get(row).getAnswerDate();
-            //02.12. Spalte 1 und 3 vertauscht
         }
         else if (col == 1) {
             temp = rowList.get(row).getTutorName();

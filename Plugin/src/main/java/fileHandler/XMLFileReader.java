@@ -18,6 +18,7 @@ public class XMLFileReader {
     private String xmlFilePath;
     private String docString;
 
+    //https://jsoup.org/
     public XMLFileReader(Controller controller) throws IOException {
         Project project = controller.project;
         this.controller = controller;
@@ -37,13 +38,13 @@ public class XMLFileReader {
         File file = new File(xmlFilePath);
         String content = doc.toString();
 
-        FileWriter fw = new FileWriter(file.getAbsoluteFile());
-        BufferedWriter bw = new BufferedWriter(fw);
-        // Write in file, overwrites file
+        FileWriter fileWriter = new FileWriter(file.getAbsoluteFile());
+        BufferedWriter bw = new BufferedWriter(fileWriter);
         bw.write(content);
         bw.close();
     }
 
+    //If there is a password saved in the configuration file, the user is already initialized
     public boolean checkIfInitialized() {
         boolean isInitialized = false;
         for (Element e : doc.getElementsByTag("password")) {
@@ -51,12 +52,9 @@ public class XMLFileReader {
                 isInitialized = true;
             }
         }
-        System.out.println("initalisiert?" + isInitialized);
         return isInitialized;
     }
 
-
-    //TODO: Warum ist das so einfach? Geht das bei den anderen Sachen auch so leicht?
     public void modifyCounter(int counter) {
         for (Element e : doc.getElementsByTag("counter")) {
             e.text(String.valueOf(counter));
@@ -71,9 +69,8 @@ public class XMLFileReader {
         File file = new File(xmlFilePath);
         String content = doc.toString();
 
-        FileWriter fw = new FileWriter(file.getAbsoluteFile());
-        BufferedWriter bw = new BufferedWriter(fw);
-        // Write in file, overwrites file
+        FileWriter fileWriter = new FileWriter(file.getAbsoluteFile());
+        BufferedWriter bw = new BufferedWriter(fileWriter);
         bw.write(content);
         bw.close();
     }
@@ -87,10 +84,9 @@ public class XMLFileReader {
         }
 
         String content = doc.toString(); //Das hole ich mir, damit ich den TexteditorTab testen kann
-        System.out.println("content: " + content);
+        //System.out.println("content: " + content);
         File file = new File(xmlFilePath);
         FileWriter fileWriter = new FileWriter(file.getAbsoluteFile());
-        System.out.println("fw: " + fileWriter);
         BufferedWriter bw = new BufferedWriter(fileWriter);
         bw.write(content);
         bw.close();
@@ -100,34 +96,28 @@ public class XMLFileReader {
         for (Element e : doc.getElementsByTag("requests")) {
             Element newElement = e.appendElement("request");
             newElement.text(String.valueOf(id));
-            System.out.println(newElement);
         }
-        System.out.println(doc);
 
         File file = new File(xmlFilePath);
         String content = doc.toString();
 
-        FileWriter fw = new FileWriter(file.getAbsoluteFile());
-        BufferedWriter bw = new BufferedWriter(fw);
+        FileWriter fileWriter = new FileWriter(file.getAbsoluteFile());
+        BufferedWriter bw = new BufferedWriter(fileWriter);
         // Write in file, overwrites file
         bw.write(content);
         bw.close();
     }
 
     public void modifyAnswerList(int id) throws IOException {
-        System.out.println("modifyAnswerList, wurde aufgerufen");
         for (Element e : doc.getElementsByTag("answers")) {
             Element newElement = e.appendElement("answer");
             newElement.text(String.valueOf(id));
         }
-        System.out.println("Nach modify: " + doc);
-
         File file = new File(xmlFilePath);
         String content = doc.toString();
 
-        FileWriter fw = new FileWriter(file.getAbsoluteFile());
-        BufferedWriter bw = new BufferedWriter(fw);
-        // Write in file, overwrites file
+        FileWriter fileWriter = new FileWriter(file.getAbsoluteFile());
+        BufferedWriter bw = new BufferedWriter(fileWriter);
         bw.write(content);
         bw.close();
     }
@@ -142,9 +132,8 @@ public class XMLFileReader {
         File file = new File(xmlFilePath);
         String content = doc.toString();
 
-        FileWriter fw = new FileWriter(file.getAbsoluteFile());
-        BufferedWriter bw = new BufferedWriter(fw);
-        // Write in file, overwrites file
+        FileWriter fileWriter = new FileWriter(file.getAbsoluteFile());
+        BufferedWriter bw = new BufferedWriter(fileWriter);
         bw.write(content);
         bw.close();
     }
@@ -171,7 +160,6 @@ public class XMLFileReader {
         return date;
     }
 
-    //TODO: Das noch weniger duplicate Code machen?
     public String readEncryptedPasswordFromXML() {
         String encryptedPasswordXML = "";
         for (Element e : doc.getElementsByTag("password")) {
@@ -185,7 +173,6 @@ public class XMLFileReader {
         for (Element e : doc.getElementsByTag("name")) {
             studentNameInXML = e.text();
         }
-        System.out.println("studentNameInXML: " + studentNameInXML);
         return studentNameInXML;
     }
 
@@ -207,11 +194,11 @@ public class XMLFileReader {
 
     //23.11. Versuch, dort die number reinzuspeichern statt die id.
     public ArrayList<Integer> readRequestIdsFromXML() {
-        ArrayList<Integer> requestIdsFromXYMl = new ArrayList<>();
+        ArrayList<Integer> requestIdsFromXMl = new ArrayList<>();
         for (Element e : doc.getElementsByTag("request")) {
-            requestIdsFromXYMl.add(Integer.valueOf(e.text()));
+            requestIdsFromXMl.add(Integer.valueOf(e.text()));
         }
-        return requestIdsFromXYMl;
+        return requestIdsFromXMl;
     }
 
     public ArrayList<Integer> readAnswerIdsFromXML() {

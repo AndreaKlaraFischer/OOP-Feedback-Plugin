@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.IOException;
 
 public class TutorialScreen {
-    //TODO: Scrollable!
     private JPanel tutorialScreenContent;
     private JTextPane sendRequestTextPane;
     private JTextPane findAnswersTextPane;

@@ -52,7 +52,6 @@ public class MailBoxScreen {
                     JTable target = (JTable) e.getSource();
                     int row = target.rowAtPoint(e.getPoint());
                     if(row >= 0) {
-                        //TODO
                         controller.onAnswerSelected(answerTableModel.getAnswerAt(row));
                         controller.logData("Antwort geöffnet");
                     }
@@ -68,25 +67,19 @@ public class MailBoxScreen {
     }
 
 
-    public void refreshTable() {
-        //updateNoAnswersLabel();
+    public void refreshTableThread() {
         answerTableModel.fireTableDataChanged();
         answerScrollPane.setVisible(true);
         noAnswersLabel.setVisible(false);
-        //TODO: Fixen
-        //toolWindow.getContentManager().setSelectedContent(toolWindow.getContentManager().getContent(mailBoxScreenContent));
     }
 
-    public void refreshTable2() {
-        //updateNoAnswersLabel();
-      //  answerTableModel.fireTableDataChanged();
+    public void refreshTableLogin() {
         answerScrollPane.setVisible(true);
         noAnswersLabel.setVisible(false);
-        //TODO: Fixen
-        //toolWindow.getContentManager().setSelectedContent(toolWindow.getContentManager().getContent(mailBoxScreenContent));
     }
 
-    //TODO: Das noch resistenter machen. wird ja dann im Endeffekt bei refreshTable wieder aufgerufen --> dublicate code
+    //If there are no answered requests yet, a label with "Keine Antworten" is visible
+    //If the user receives an answer, the label should not be visbile
     private void changeVisibilityOfTextFieldAndTable() {
         try {
             if (rowList.getAnswerList().size() == 0) {
@@ -104,7 +97,6 @@ public class MailBoxScreen {
     public void showNotification() {
         showMessageDialog(null, "Neue Antwort von Tutor!");
         if(!mailBoxScreenContent.isVisible()) {
-           // navigateBackToTable();
         }
     }
 
@@ -117,16 +109,10 @@ public class MailBoxScreen {
     }
 
     public void showAnswerDetailContent(Answer answer) {
-        System.out.println("showDetailContent");
-        //TODO:
         controller.answerDetailScreen.detailAnswerTitleLabel.setText(Constants.ANSWER_TITLE_BEGINNING + answer.getTutorName());
-        //controller.answerDetailScreen1.previousMessageTextArea.setText(controller.getRequestMessage());
-        //2.12.
         controller.answerDetailScreen.previousMessageTextArea.setText(answer.getRequestMessage());
-
         controller.answerDetailScreen.tutorAnswerTextArea.setText(answer.getAnswerMessage());
-
-        //TODO!!!
+        //for displaying attached screenshots: image urls have to be converted to image which is visible in a a preview
         if(controller.answerDetailScreen.imageButtonList.size() == 0) {
             controller.answerDetailScreen.createImageFromAttachedImageFile(answer.getImageUrls());
             controller.answerDetailScreen.screenshotPanel.setVisible(true);

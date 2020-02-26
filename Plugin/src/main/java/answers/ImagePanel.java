@@ -18,7 +18,7 @@ public class ImagePanel extends JComponent {
     public ImagePanel(Image image) {
         this.image = image;
     }
-
+    //For showing attached screenshots on click in a scaled panel: clicked image gets background of panel
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
